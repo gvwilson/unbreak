@@ -1,5 +1,7 @@
 # Unbreaking Software
 
+<p class="subtitle">a short course on debugging</p>
+
 ## Learner Persona
 
 FIXME
@@ -7,8 +9,14 @@ FIXME
 ## Chapters
 
 <div id="lessons" markdown="1">
-1.  [Introduction](@/intro/): what this training does and doesn't cover.
-1.  [Conclusion](@/finale/): looking back and next steps.
+1.  [Introduction](@/intro/)
+1.  [Basic Python](@/basicpy/)
+1.  [Intermediate Python](@/interpy/)
+1.  [Data, I/O, and Testing](@/diot/)
+1.  [Performance and Concurrency](@/perfcon/)
+1.  [JavaScript Fundamentals](@/jsbrowser/)
+1.  [Data Science](@/datasci/)
+1.  [Conclusion](@/finale/)
 </div>
 
 ## Appendices

@@ -15,7 +15,7 @@ All contributors must abide by our Code of Conduct.
 ## FAQ
 
 Do you need help?
-:   Yes—please see the issues in [our repository][repo].
+:   Yes: please see the issues in [our repository][repo].
 
 What sort of feedback would be useful?
 :   Everything is welcome,
