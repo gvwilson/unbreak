@@ -1,0 +1,263 @@
+Debugging Tutorial: 50 Examples in Order of Increasing Difficulty
+
+Examples 1-15: Basic Python — Syntax, Types, and Runtime Errors
+
+1.  A function that builds all sliding windows of size k over a list returns one fewer
+    window than expected; the bug is `range(len(data) - k)` instead of
+    `range(len(data) - k + 1)`, so the last window is never produced. Teaches how to
+    identify off-by-one errors in index arithmetic and how to verify boundary conditions
+    with small, hand-checkable examples.
+
+2.  A script reads exam scores from a text file and computes the class average, but
+    always reports a nonsensical total because the scores are accumulated with
+    `total = total + line.strip()` (string concatenation) instead of converting each
+    line to a number first. Teaches the difference between string `+` and numeric `+`,
+    and how to check the type of a value at runtime using `type()` or `isinstance()`.
+
+3.  A function that validates whether a password meets length and character requirements
+    always rejects valid passwords; the bug is joining the two conditions with `and`
+    instead of `or` (requiring both to fail simultaneously, which almost never happens).
+    Teaches how boolean logic errors cause silent misbehavior, and how a small truth
+    table reveals which operator is correct.
+
+4.  A function converts a geographic coordinate from degrees, minutes, and seconds to
+    decimal degrees but gives wrong results because it divides seconds by 60 instead of
+    3600 (a misremembered formula). Teaches how to verify formulas against known values
+    (e.g., 1°30′0″ = 1.5°) and how to add assertion checks for values that must fall
+    within a known range.
+
+5.  A script builds a list of squared numbers but the list is always empty; the bug
+    is calling `list.sort()` (which returns `None`) and assigning the result. Teaches
+    that many list methods mutate in place and return `None`.
+
+6.  A function reads lines from a file and counts how many consecutive identical lines
+    appear in each run, but counts every line as starting a new run; the bug is that
+    the variable storing the previous line is updated outside (after) the while loop
+    body due to a missing level of indentation. Teaches how indentation governs control
+    flow in Python and how to step through a loop mentally to find where state is
+    updated at the wrong time.
+
+7.  A function filters negative numbers from a list but returns `None`; the bug is a
+    missing `return` statement (the function builds the result but does not return it).
+    Teaches that Python functions return `None` by default and how to spot missing
+    `return` in control flow.
+
+8.  A script reads a line from a file and tries to do arithmetic on it but raises a
+    `TypeError`; the bug is using the string value directly instead of converting it
+    with `int()` or `float()`. Teaches that all file I/O produces strings and how to
+    read tracebacks to identify the failing operation.
+
+9.  A function tallies word frequencies in a document but crashes with a `KeyError` on
+    the first new word it encounters because it increments `counts[word]` without first
+    checking whether the key exists. Teaches defensive dictionary access using
+    `dict.get(key, 0)` or `collections.defaultdict`, and how to read a `KeyError`
+    traceback to identify the missing key.
+
+10. A script reads a list of allowed user IDs from a JSON file and checks whether a
+    login ID is permitted, but always reports "access denied" even for valid users;
+    the bug is that the JSON file stores IDs as integers but the login ID arrives as
+    a string from user input, and `"42" != 42` in Python. Teaches how JSON types map
+    to Python types and why type conversion must happen explicitly at system boundaries.
+
+11. A recursive function computes factorials correctly for positive numbers but raises
+    a `RecursionError` for zero; the bug is a base-case condition that uses `>` instead
+    of `>=`. Teaches how to identify missing or incorrect base cases in recursion.
+
+12. A function appends items to a result list but every call starts with leftover items
+    from previous calls; the bug is a mutable default argument (`def f(result=[])`).
+    Teaches Python's mutable default argument trap and why `None` is the correct default.
+
+13. A script reads a pipe-delimited export from a spreadsheet and compares field values
+    against expected strings, but matches always fail for rows exported from certain
+    applications that pad fields with trailing spaces. Teaches that real-world data
+    often contains invisible characters, and how `.strip()` and `repr()` help diagnose
+    string comparison failures that look correct to the naked eye.
+
+14. A function censors a list of words in a message by calling `message.replace(word,
+    '***')` for each word, but the original message is unchanged at the end; the bug
+    is that `str.replace` returns a new string and the return value is never assigned
+    back. Teaches that string methods never mutate their argument, and that every
+    string transformation must be captured in a variable.
+
+15. A loop processes items from a list while removing some of them, and skips every
+    other matching item; the bug is modifying a list while iterating over it. Teaches
+    why mutating a collection during iteration causes unpredictable behavior.
+
+Examples 16-25: Intermediate Python — Scope, State, and Object Behavior
+
+16. A function is supposed to reverse a list and return the reversed copy, but the
+    original list is also reversed after the call; the bug is using `list.reverse()`
+    (mutates in place) instead of `reversed()` or slicing. Teaches aliasing and the
+    difference between in-place and copy operations.
+
+17. A class that records the transaction history of a bank account shows every account's
+    transactions in every other account; the bug is that `history = []` is defined at
+    class level, so all instances share the same list object instead of each having
+    their own. Teaches the difference between shared mutable class attributes and
+    per-instance attributes initialized in `__init__`.
+
+18. A program compares two floating-point results that should be equal but the
+    comparison returns `False`; the bug is using `==` on floats computed by different
+    routes. Teaches floating-point representation errors and how to use `math.isclose`.
+
+19. A web scraper wraps its fetch-and-parse loop in `try/except Exception: pass` to
+    tolerate network timeouts, but silently stops processing after the first malformed
+    URL because the `ValueError` raised by the URL parser is also caught and discarded.
+    Teaches how overly broad exception handlers swallow unrelated bugs, and how to use
+    `logging.exception` to record errors instead of ignoring them.
+
+20. A script reads a two-column CSV file of names and scores and reports the top scorer,
+    but crashes with an `IndexError` on some rows; the bug is that names containing a
+    comma (e.g., "Smith, John") cause `line.split(',')` to produce three fields instead
+    of two, so the index used for the score points at the wrong element. Teaches why
+    hand-rolled CSV parsing fails on real data and when to use the `csv` module.
+
+21. A function sorts filenames that contain embedded numbers (e.g., `file2.txt`,
+    `file10.txt`, `file1.txt`) expecting numeric order, but the default `sort()` gives
+    lexicographic order, placing `file10` before `file2`. Teaches the difference between
+    lexicographic and numeric sort order and how to write a `key` function that extracts
+    the embedded integer so the files sort as `file1`, `file2`, `file10`.
+
+22. A generator function is used twice in the same expression, but the second use
+    produces no results; the bug is that generators are exhausted after one pass.
+    Teaches that generators are single-use iterators and when to use lists instead.
+
+23. A caching decorator returns the same result for different inputs; the bug is that
+    the cache key does not include all function arguments (e.g., ignores keyword
+    arguments). Teaches how to construct correct cache keys and test with varied inputs.
+
+24. A subclass calls a method that exists in the parent, but the parent's `__init__`
+    is never called, leaving required attributes missing; the bug is forgetting
+    `super().__init__()`. Teaches Python's method resolution order and how to
+    use `super()` correctly.
+
+25. A function writes a processed summary to a file using `open()` without a `with`
+    statement; when an unhandled exception occurs midway through, the output file is
+    left partially written because the write buffer is never flushed and `close()` is
+    never called. Teaches why context managers guarantee file cleanup even when
+    exceptions occur, and how to use `with open(...) as f` to prevent data loss.
+
+Examples 26-35: Data, I/O, and Testing
+
+26. A CSV-parsing function misreads rows that contain commas inside quoted fields;
+    the bug is using `line.split(',')` instead of the `csv` module. Teaches why
+    hand-rolled parsers fail on real-world data and when to use standard library tools.
+
+27. A function that measures elapsed time reports negative durations when the clock
+    wraps; the bug is using `time.time()` without accounting for system clock
+    adjustments. Teaches the difference between wall time and monotonic time and when
+    to use `time.monotonic`.
+
+28. A date-arithmetic function produces results that are off by one day around daylight
+    saving time transitions; the bug is adding a `timedelta` to a naive datetime.
+    Teaches the difference between naive and timezone-aware datetimes.
+
+29. A script that downloads a web page and parses it for prices fails silently on some
+    pages; the bug is that the HTML structure varies and the selector matches zero
+    elements without raising an error. Teaches how to handle missing data in HTML
+    parsing and use assertions to catch unexpected input.
+
+30. A regular expression meant to extract email addresses also matches invalid strings;
+    the bug is a pattern that is too permissive (e.g., missing anchors or character
+    class constraints). Teaches how to test regular expressions with both valid and
+    invalid inputs.
+
+31. A unit test always passes even when the function is broken; the bug is that the
+    test calls the function but never asserts anything about the result. Teaches that
+    a test with no assertions is not a test and how to write assertions correctly.
+
+32. A test suite that passes in isolation fails when run together; the bug is that one
+    test modifies a module-level variable that another test depends on. Teaches test
+    isolation, teardown, and the risks of shared global state.
+
+33. A function that reads a configuration file behaves differently on different
+    machines; the bug is using a hardcoded absolute path instead of a path relative
+    to the script's location. Teaches the difference between `__file__`-relative and
+    working-directory-relative paths.
+
+34. A program writes JSON output that cannot be parsed back in; the bug is that the
+    data contains `datetime` objects, which are not JSON-serializable. Teaches how
+    to identify serialization errors and write custom JSON encoders.
+
+35. A logging call that should record errors never appears in the log file; the bug is
+    that the log level is set to `WARNING` but the calls use `logger.debug()`. Teaches
+    how Python's logging hierarchy works and how to verify the effective log level.
+
+Examples 36-40: Performance, Concurrency, and System Interaction
+
+36. A function finds the most common word in a text file by calling `text.count(word)`
+    for every unique word it encounters, re-scanning the entire text each time; on a
+    file of 50,000 words it takes several seconds, while a single pass with
+    `collections.Counter` is nearly instant. Teaches how to identify repeated-scan
+    inefficiency with `cProfile` and how choosing the right data structure eliminates
+    the need for multiple passes.
+
+37. A command-line tool that calls a subprocess hangs and never returns; the bug is
+    that the subprocess is waiting for input on stdin that the parent never provides.
+    Teaches how subprocess I/O streams work and how to use `communicate()` safely.
+
+38. A script that spawns several threads to update a shared counter produces wrong
+    totals; the bug is a race condition caused by unsynchronized read-modify-write.
+    Teaches what a race condition is, why it is hard to reproduce, and how to use
+    `threading.Lock` to fix it.
+
+39. A program uses `multiprocessing` but child processes do not see changes made to a
+    shared list; the bug is that each process has its own copy of memory (no shared
+    state). Teaches the difference between threading and multiprocessing memory models.
+
+40. A script that patches a function with `unittest.mock.patch` has no effect because
+    the patch is applied to the wrong module; the bug is patching where the function
+    is defined instead of where it is imported. Teaches how Python's import system
+    works and where mocks must be applied.
+
+Examples 41-45: JavaScript Fundamentals and the Browser
+
+41. A JavaScript function that collects form field values returns `undefined` for some
+    fields; the bug is using `var` inside a loop, whose hoisting causes the variable
+    to be shared across iterations. Teaches `var` hoisting, block scope, and why
+    `let` and `const` are preferable.
+
+42. A button click handler works once but stops working after the page is partially
+    updated; the bug is attaching the event listener to a DOM element that is replaced
+    by the update, so the listener is discarded. Teaches event delegation and the
+    difference between live and dead DOM references.
+
+43. A function that updates a counter when a button is clicked increments by the wrong
+    amount; the bug is that `this` inside the callback refers to the button element,
+    not the object that owns the counter. Teaches `this` binding in JavaScript callbacks
+    and how to use arrow functions or `.bind()` to preserve context.
+
+44. A page that fetches data from an API on load displays stale data; the bug is that
+    the fetch result is used before the Promise resolves (i.e., code runs synchronously
+    after an async call). Teaches the JavaScript event loop, Promises, and `async/await`.
+
+45. A script that reads values from `localStorage` fails silently in private browsing
+    mode; the bug is that `localStorage` throws a `SecurityError` in that context but
+    the code has no try/catch. Teaches browser storage limitations and how to use the
+    browser console and DevTools to observe thrown exceptions.
+
+Examples 46-50: Browser DevTools and Network Debugging
+
+46. A page layout breaks on narrow screens even though the CSS looks correct; the bug
+    is a missing `<meta name="viewport">` tag that prevents mobile scaling. Teaches
+    how to use browser DevTools' device emulation and inspect computed styles.
+
+47. A fetch request to a local API returns a CORS error in the browser but works from
+    the command line; the bug is a missing `Access-Control-Allow-Origin` header on
+    the server response. Teaches what CORS is, how to read network error messages in
+    DevTools, and how to configure server headers.
+
+48. A page shows outdated content after a bug fix is deployed; the bug is that the
+    browser is serving a cached version of the JavaScript file. Teaches cache-control
+    headers, hard refresh vs. normal refresh, and how to use DevTools to disable the
+    cache during development.
+
+49. A JavaScript error is reported on a minified line number that does not correspond
+    to the source; the bug is deploying a minified bundle without a source map.
+    Teaches what source maps are, how to generate them, and how to load them in
+    DevTools to see original source locations.
+
+50. A web application works correctly in development but shows blank content in
+    production; the bug is a Content Security Policy header that blocks an inline
+    script. Teaches how to read CSP violation reports in the browser console, how CSP
+    directives work, and how to move inline scripts to external files to comply.
