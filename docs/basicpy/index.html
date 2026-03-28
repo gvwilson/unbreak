@@ -45,9 +45,9 @@
 <main id="main-content">
 <h1>Basic Python</h1>
 <h2 id="basicpy-sliding">Off-by-One in Sliding Window</h2>
-<div data-inc="sliding.py"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sliding_windows</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+<div data-inc="sliding.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sliding_windows</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Return all sliding windows of size k over data."""</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">k</span><span class="p">)]</span>  <span class="c1"># BUG: should be len(data) - k + 1</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">k</span><span class="p">)]</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
@@ -64,7 +64,7 @@ window than expected; the bug is <code>range(len(data) - k)</code> instead of
 identify off-by-one errors in index arithmetic and how to verify boundary conditions
 with small, hand-checkable examples.</p>
 <h2 id="basicpy-catadd">String Concatenation Instead of Addition</h2>
-<div data-inc="catadd.py"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<div data-inc="catadd.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">average_scores</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
@@ -75,7 +75,7 @@ with small, hand-checkable examples.</p>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">line</span><span class="p">:</span>
-                <span class="n">total</span> <span class="o">=</span> <span class="n">total</span> <span class="o">+</span> <span class="n">line</span>  <span class="c1"># BUG: string concatenation, not numeric addition</span>
+                <span class="n">total</span> <span class="o">=</span> <span class="n">total</span> <span class="o">+</span> <span class="n">line</span>
                 <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">total</span> <span class="o">/</span> <span class="n">count</span>
 
@@ -91,11 +91,11 @@ always reports a nonsensical total because the scores are accumulated with
 line to a number first. Teaches the difference between string <code>+</code> and numeric <code>+</code>,
 and how to check the type of a value at runtime using <code>type()</code> or <code>isinstance()</code>.</p>
 <h2 id="basicpy-andor">Boolean Logic in Validation</h2>
-<div data-inc="andor.py"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">is_valid_password</span><span class="p">(</span><span class="n">password</span><span class="p">):</span>
+<div data-inc="andor.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">is_valid_password</span><span class="p">(</span><span class="n">password</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Return True if password is at least 8 characters and contains a digit."""</span>
     <span class="n">has_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">password</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">8</span>
     <span class="n">has_digit</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">password</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">has_length</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">has_digit</span><span class="p">:</span>  <span class="c1"># BUG: should be 'or'; only rejects if BOTH fail</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">has_length</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">has_digit</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="k">return</span> <span class="kc">True</span>
 
@@ -119,9 +119,9 @@ instead of <code>or</code> (requiring both to fail simultaneously, which almost 
 Teaches how boolean logic errors cause silent misbehavior, and how a small truth
 table reveals which operator is correct.</p>
 <h2 id="basicpy-formula">Misremembered Conversion Formula</h2>
-<div data-inc="formula.py"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">dms_to_decimal</span><span class="p">(</span><span class="n">degrees</span><span class="p">,</span> <span class="n">minutes</span><span class="p">,</span> <span class="n">seconds</span><span class="p">):</span>
+<div data-inc="formula.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">dms_to_decimal</span><span class="p">(</span><span class="n">degrees</span><span class="p">,</span> <span class="n">minutes</span><span class="p">,</span> <span class="n">seconds</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Convert degrees/minutes/seconds to decimal degrees."""</span>
-    <span class="k">return</span> <span class="n">degrees</span> <span class="o">+</span> <span class="n">minutes</span> <span class="o">/</span> <span class="mi">60</span> <span class="o">+</span> <span class="n">seconds</span> <span class="o">/</span> <span class="mi">60</span>  <span class="c1"># BUG: seconds should be divided by 3600</span>
+    <span class="k">return</span> <span class="n">degrees</span> <span class="o">+</span> <span class="n">minutes</span> <span class="o">/</span> <span class="mi">60</span> <span class="o">+</span> <span class="n">seconds</span> <span class="o">/</span> <span class="mi">60</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
@@ -141,10 +141,10 @@ decimal degrees but gives wrong results because it divides seconds by 60 instead
 (e.g., 1°30′0″ = 1.5°) and how to add assertion checks for values that must fall
 within a known range.</p>
 <h2 id="basicpy-sortnone">In-Place Sort Returns None</h2>
-<div data-inc="sortnone.py"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">squared_sorted</span><span class="p">(</span><span class="n">numbers</span><span class="p">):</span>
+<div data-inc="sortnone.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">squared_sorted</span><span class="p">(</span><span class="n">numbers</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Return a sorted list of squares of the input numbers."""</span>
     <span class="n">squared</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">]</span>
-    <span class="n">squared</span> <span class="o">=</span> <span class="n">squared</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>  <span class="c1"># BUG: list.sort() returns None; result is discarded</span>
+    <span class="n">squared</span> <span class="o">=</span> <span class="n">squared</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">squared</span>
 
 
@@ -157,7 +157,7 @@ within a known range.</p>
 is calling <code>list.sort()</code> (which returns <code>None</code>) and assigning the result. Teaches
 that many list methods mutate in place and return <code>None</code>.</p>
 <h2 id="basicpy-indent">Misindented Loop State Update</h2>
-<div data-inc="indent.py"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<div data-inc="indent.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">count_runs</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
@@ -177,7 +177,7 @@ that many list methods mutate in place and return <code>None</code>.</p>
             <span class="n">run_count</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">run_count</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="n">prev</span> <span class="o">=</span> <span class="n">line</span>  <span class="c1"># BUG: should be indented one level to sit inside the while loop body</span>
+    <span class="n">prev</span> <span class="o">=</span> <span class="n">line</span>
 
     <span class="k">if</span> <span class="n">run_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">runs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">prev</span><span class="p">,</span> <span class="n">run_count</span><span class="p">))</span>
@@ -197,13 +197,13 @@ body due to a missing level of indentation. Teaches how indentation governs cont
 flow in Python and how to step through a loop mentally to find where state is
 updated at the wrong time.</p>
 <h2 id="basicpy-noreturn">Missing Return Statement</h2>
-<div data-inc="noreturn.py"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">filter_negatives</span><span class="p">(</span><span class="n">numbers</span><span class="p">):</span>
+<div data-inc="noreturn.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">filter_negatives</span><span class="p">(</span><span class="n">numbers</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Return a new list containing only the non-negative values."""</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-    <span class="c1"># BUG: missing 'return result'</span>
+
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
@@ -218,7 +218,7 @@ missing <code>return</code> statement (the function builds the result but does n
 Teaches that Python functions return <code>None</code> by default and how to spot missing
 <code>return</code> in control flow.</p>
 <h2 id="basicpy-nokey">KeyError in Word Counter</h2>
-<div data-inc="nokey.py"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<div data-inc="nokey.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">count_words</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
@@ -227,7 +227,7 @@ Teaches that Python functions return <code>None</code> by default and how to spo
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
-                <span class="n">counts</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># BUG: KeyError on first occurrence of each word</span>
+                <span class="n">counts</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">counts</span>
 
 
@@ -244,7 +244,7 @@ checking whether the key exists. Teaches defensive dictionary access using
 <code>dict.get(key, 0)</code> or <code>collections.defaultdict</code>, and how to read a <code>KeyError</code>
 traceback to identify the missing key.</p>
 <h2 id="basicpy-streq">JSON Integers vs. String Input</h2>
-<div data-inc="streq.py"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<div data-inc="streq.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
 
@@ -252,7 +252,7 @@ traceback to identify the missing key.</p>
 <span class="w">    </span><span class="sd">"""Return True if user_id appears in the allowed list in allowed_file."""</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">allowed_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">user_id</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">"allowed_ids"</span><span class="p">]</span>  <span class="c1"># BUG: user_id is a str; IDs in JSON are int</span>
+    <span class="k">return</span> <span class="n">user_id</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">"allowed_ids"</span><span class="p">]</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
@@ -268,9 +268,9 @@ The bug is that the JSON file stores IDs as integers but the login ID arrives as
 a string from user input, and <code>"42" != 42</code> in Python. Teaches how JSON types map
 to Python types and why type conversion must happen explicitly at system boundaries.</p>
 <h2 id="basicpy-recurse">Wrong Recursive Base Case</h2>
-<div data-inc="recurse.py"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<div data-inc="recurse.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Return n! for non-negative n."""</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>                        <span class="c1"># BUG: should be &gt;= 0; n=0 falls through with no return</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="n">factorial</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
     <span class="c1"># n == 0 reaches here and returns None implicitly,</span>
     <span class="c1"># so factorial(1) = 1 * factorial(0) = 1 * None → TypeError</span>
@@ -285,7 +285,7 @@ to Python types and why type conversion must happen explicitly at system boundar
 a <code>RecursionError</code> for zero; the bug is a base-case condition that uses <code>&gt;</code> instead
 of <code>&gt;=</code>. Teaches how to identify missing or incorrect base cases in recursion.</p>
 <h2 id="basicpy-mutable">Mutable Default Argument</h2>
-<div data-inc="mutable.py"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">collect_items</span><span class="p">(</span><span class="n">new_items</span><span class="p">,</span> <span class="n">result</span><span class="o">=</span><span class="p">[]):</span>  <span class="c1"># BUG: mutable default argument</span>
+<div data-inc="mutable.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">collect_items</span><span class="p">(</span><span class="n">new_items</span><span class="p">,</span> <span class="n">result</span><span class="o">=</span><span class="p">[]):</span>
 <span class="w">    </span><span class="sd">"""Append new_items to result and return it."""</span>
     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">new_items</span><span class="p">:</span>
         <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
@@ -306,7 +306,7 @@ of <code>&gt;=</code>. Teaches how to identify missing or incorrect base cases i
 from previous calls; the bug is a mutable default argument (<code>def f(result=[])</code>).
 Teaches Python's mutable default argument trap and why <code>None</code> is the correct default.</p>
 <h2 id="basicpy-trailing">Invisible Trailing Whitespace</h2>
-<div data-inc="trailing.py"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<div data-inc="trailing.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">find_value</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
@@ -317,7 +317,7 @@ Teaches Python's mutable default argument trap and why <code>None</code> is the 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="n">region</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">region</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>  <span class="c1"># BUG: region may have trailing space from export</span>
+                <span class="k">if</span> <span class="n">region</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">value</span>
     <span class="k">return</span> <span class="kc">None</span>
 
@@ -338,10 +338,10 @@ applications that pad fields with trailing spaces. Teaches that real-world data
 often contains invisible characters, and how <code>.strip()</code> and <code>repr()</code> help diagnose
 string comparison failures that look correct to the naked eye.</p>
 <h2 id="basicpy-strmeth">String Methods Return Copies</h2>
-<div data-inc="strmeth.py"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">censor</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">banned_words</span><span class="p">):</span>
+<div data-inc="strmeth.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">censor</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">banned_words</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Replace each banned word in message with '***'."""</span>
     <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">banned_words</span><span class="p">:</span>
-        <span class="n">message</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="s2">"***"</span><span class="p">)</span>  <span class="c1"># BUG: return value discarded; strings are immutable</span>
+        <span class="n">message</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="s2">"***"</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">message</span>
 
 
@@ -359,11 +359,11 @@ is that <code>str.replace</code> returns a new string and the return value is ne
 back. Teaches that string methods never mutate their argument, and that every
 string transformation must be captured in a variable.</p>
 <h2 id="basicpy-mutiter">Mutating a List During Iteration</h2>
-<div data-inc="mutiter.py"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">remove_negatives</span><span class="p">(</span><span class="n">numbers</span><span class="p">):</span>
+<div data-inc="mutiter.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">remove_negatives</span><span class="p">(</span><span class="n">numbers</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Remove all negative numbers from the list in place and return it."""</span>
     <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">numbers</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>  <span class="c1"># BUG: modifying the list while iterating over it</span>
+            <span class="n">numbers</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">numbers</span>
 
 

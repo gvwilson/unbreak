@@ -2,7 +2,7 @@
 
 ## Off-by-One in Sliding Window {: #basicpy-sliding}
 
-[% inc sliding.py %]
+[% inc sliding.py scrub="\s*# BUG.*" %]
 
 A function that builds all sliding windows of size k over a list returns one fewer
 window than expected; the bug is `range(len(data) - k)` instead of
@@ -12,7 +12,7 @@ with small, hand-checkable examples.
 
 ## String Concatenation Instead of Addition {: #basicpy-catadd}
 
-[% inc catadd.py %]
+[% inc catadd.py scrub="\s*# BUG.*" %]
 
 A script reads exam scores from a text file and computes the class average, but
 always reports a nonsensical total because the scores are accumulated with
@@ -22,7 +22,7 @@ and how to check the type of a value at runtime using `type()` or `isinstance()`
 
 ## Boolean Logic in Validation {: #basicpy-andor}
 
-[% inc andor.py %]
+[% inc andor.py scrub="\s*# BUG.*" %]
 
 A function that validates whether a password meets length and character requirements
 always rejects valid passwords; the bug is joining the two conditions with `and`
@@ -32,7 +32,7 @@ table reveals which operator is correct.
 
 ## Misremembered Conversion Formula {: #basicpy-formula}
 
-[% inc formula.py %]
+[% inc formula.py scrub="\s*# BUG.*" %]
 
 A function converts a geographic coordinate from degrees, minutes, and seconds to
 decimal degrees but gives wrong results because it divides seconds by 60 instead of
@@ -42,7 +42,7 @@ within a known range.
 
 ## In-Place Sort Returns None {: #basicpy-sortnone}
 
-[% inc sortnone.py %]
+[% inc sortnone.py scrub="\s*# BUG.*" %]
 
 A script builds a list of squared numbers but the list is always empty; the bug
 is calling `list.sort()` (which returns `None`) and assigning the result. Teaches
@@ -50,7 +50,7 @@ that many list methods mutate in place and return `None`.
 
 ## Misindented Loop State Update {: #basicpy-indent}
 
-[% inc indent.py %]
+[% inc indent.py scrub="\s*# BUG.*" %]
 
 A function reads lines from a file and counts how many consecutive identical lines
 appear in each run, but counts every line as starting a new run; the bug is that
@@ -61,7 +61,7 @@ updated at the wrong time.
 
 ## Missing Return Statement {: #basicpy-noreturn}
 
-[% inc noreturn.py %]
+[% inc noreturn.py scrub="\s*# BUG.*" %]
 
 A function filters negative numbers from a list but returns `None`; the bug is a
 missing `return` statement (the function builds the result but does not return it).
@@ -70,7 +70,7 @@ Teaches that Python functions return `None` by default and how to spot missing
 
 ## KeyError in Word Counter {: #basicpy-nokey}
 
-[% inc nokey.py %]
+[% inc nokey.py scrub="\s*# BUG.*" %]
 
 A function tallies word frequencies in a document but crashes with a `KeyError` on
 the first new word it encounters because it increments `counts[word]` without first
@@ -80,7 +80,7 @@ traceback to identify the missing key.
 
 ## JSON Integers vs. String Input {: #basicpy-streq}
 
-[% inc streq.py %]
+[% inc streq.py scrub="\s*# BUG.*" %]
 
 A script reads a list of allowed user IDs from a JSON file and checks whether a
 login ID is permitted, but always reports "access denied" even for valid users.
@@ -90,7 +90,7 @@ to Python types and why type conversion must happen explicitly at system boundar
 
 ## Wrong Recursive Base Case {: #basicpy-recurse}
 
-[% inc recurse.py %]
+[% inc recurse.py scrub="\s*# BUG.*" %]
 
 A recursive function computes factorials correctly for positive numbers but raises
 a `RecursionError` for zero; the bug is a base-case condition that uses `>` instead
@@ -98,7 +98,7 @@ of `>=`. Teaches how to identify missing or incorrect base cases in recursion.
 
 ## Mutable Default Argument {: #basicpy-mutable}
 
-[% inc mutable.py %]
+[% inc mutable.py scrub="\s*# BUG.*" %]
 
 A function appends items to a result list but every call starts with leftover items
 from previous calls; the bug is a mutable default argument (`def f(result=[])`).
@@ -106,7 +106,7 @@ Teaches Python's mutable default argument trap and why `None` is the correct def
 
 ## Invisible Trailing Whitespace {: #basicpy-trailing}
 
-[% inc trailing.py %]
+[% inc trailing.py scrub="\s*# BUG.*" %]
 
 A script reads a pipe-delimited export from a spreadsheet and compares field values
 against expected strings, but matches always fail for rows exported from certain
@@ -116,7 +116,7 @@ string comparison failures that look correct to the naked eye.
 
 ## String Methods Return Copies {: #basicpy-strmeth}
 
-[% inc strmeth.py %]
+[% inc strmeth.py scrub="\s*# BUG.*" %]
 
 A function censors a list of words in a message by calling `message.replace(word,
 '***')` for each word, but the original message is unchanged at the end; the bug
@@ -126,7 +126,7 @@ string transformation must be captured in a variable.
 
 ## Mutating a List During Iteration {: #basicpy-mutiter}
 
-[% inc mutiter.py %]
+[% inc mutiter.py scrub="\s*# BUG.*" %]
 
 A loop processes items from a list while removing some of them, and skips every
 other matching item; the bug is modifying a list while iterating over it. Teaches
