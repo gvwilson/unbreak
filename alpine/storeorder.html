@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Store Not Registered</title>
+  <!-- BUG: Alpine.store('cart', {...}) is never called, so $store.cart is undefined; -->
+  <!-- BUG: reading $store.cart.count throws a TypeError and the count never appears -->
+  <script>
+    document.addEventListener('alpine:init', () => {
+      // Alpine.store('cart', { count: 0 });
+    });
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Display a count from a shared store</h1>
+  <p>Does a number appear next to "Items in cart"?
+     Check the browser console for errors.</p>
+  <div x-data>
+    <p>Items in cart: <span x-text="$store.cart.count"></span></p>
+    <button @click="$store.cart.count++">Add to cart</button>
+  </div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Style a Button with Several Properties</title>
+  <style>
+    .btn {
+      background: steelblue;
+      color: white
+      /* BUG: missing semicolon after "color: white" makes the next line part of the same declaration */
+      /* BUG: "padding: 10px 20px" is parsed as invalid and discarded along with "color: white" */
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Style a button with several properties</h1>
+  <p>The button should have white text and visible padding. Does it?</p>
+  <button class="btn">Click me</button>
+</body>
+</html>

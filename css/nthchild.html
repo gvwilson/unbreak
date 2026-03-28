@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Highlight Every Other Row in a Table</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 300px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 6px 10px;
+      text-align: left;
+    }
+    th {
+      background: steelblue;
+      color: white;
+    }
+    /* BUG: tr:nth-child counts ALL tr elements including the header row inside <thead> */
+    /* BUG: "even" rows become the header + row 2 + row 4, so row 1 and row 3 are shaded instead */
+    tr:nth-child(even) {
+      background: #d0e8f7;
+    }
+  </style>
+</head>
+<body>
+  <h1>Highlight every other row in a table</h1>
+  <p>The shading should appear on rows 2 and 4 of the data (Banana and Date).
+     Which rows are actually shaded?</p>
+  <table>
+    <thead>
+      <tr><th>Fruit</th><th>Color</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Apple</td><td>Red</td></tr>
+      <tr><td>Banana</td><td>Yellow</td></tr>
+      <tr><td>Cherry</td><td>Red</td></tr>
+      <tr><td>Date</td><td>Brown</td></tr>
+    </tbody>
+  </table>
+</body>
+</html>

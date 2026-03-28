@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Put a Border Around an Image and Caption</title>
+  <style>
+    .card {
+      border: 3px solid steelblue;
+      padding: 8px;
+      width: 260px;
+    }
+    /* BUG: floated children are removed from normal flow; the parent .card collapses to zero height */
+    /* BUG: the border wraps only the padding, not the image or caption */
+    img {
+      float: left;
+      width: 80px;
+      height: 80px;
+      background: #aaa;
+    }
+    .caption {
+      float: left;
+      margin-left: 12px;
+      line-height: 80px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Put a border around an image and caption</h1>
+  <p>The blue border should wrap around both the image placeholder and the caption.
+     Does it?</p>
+  <div class="card">
+    <img alt="placeholder">
+    <span class="caption">Photo caption here</span>
+  </div>
+</body>
+</html>

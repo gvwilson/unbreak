@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Set the Width of a Label</title>
+  <style>
+    /* BUG: <span> is an inline element; width and height have no effect on inline elements */
+    /* BUG: the label stays as wide as its text content regardless of the width declaration */
+    .label {
+      width: 200px;
+      background: steelblue;
+      color: white;
+      padding: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Set the width of a label</h1>
+  <p>The blue label should be 200px wide. Is it wider than the text inside it?</p>
+  <p><span class="label">Status: OK</span></p>
+</body>
+</html>

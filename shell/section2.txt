@@ -1,0 +1,5 @@
+Methods
+=======
+Samples were collected using standard protocols.
+Each site was visited on three consecutive days.
+Temperature and salinity were recorded at each visit.

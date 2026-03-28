@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Make a Heading Larger</title>
+  <style>
+    h1 {
+      /* BUG: font-size requires a unit (px, em, rem, etc.); a bare number is invalid */
+      /* BUG: the browser ignores the invalid declaration and keeps the default heading size */
+      font-size: 48;
+    }
+  </style>
+</head>
+<body>
+  <h1>This heading should be 48px</h1>
+  <p>Is it noticeably larger than the paragraph text?</p>
+</body>
+</html>

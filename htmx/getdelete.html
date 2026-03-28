@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GET for Deletion</title>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+<body>
+  <h1>Remove a record with a button click</h1>
+  <p>Start <code>server.py</code> and watch its output while clicking Delete.
+     Which HTTP method does the server log for each click?</p>
+  <ul>
+    <li>
+      Widget #1
+      <!-- BUG: hx-get is used for an operation that changes server state; -->
+      <!-- BUG: GET must be safe and idempotent; use hx-delete="/api/items/1" instead -->
+      <button hx-get="/api/delete?id=1" hx-target="#status">Delete</button>
+    </li>
+    <li>
+      Widget #2
+      <button hx-get="/api/delete?id=2" hx-target="#status">Delete</button>
+    </li>
+  </ul>
+  <div id="status"></div>
+</body>
+</html>

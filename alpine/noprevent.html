@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>No Prevent</title>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Submit a name and show a confirmation</h1>
+  <p>Type a name and click Submit. Does the confirmation message appear?</p>
+  <!-- BUG: @submit without .prevent allows the browser's native form submission to fire; -->
+  <!-- BUG: the page reloads before Alpine can update submitted to true -->
+  <div x-data="{ name: '', submitted: false }">
+    <form @submit="submitted = true">
+      <input x-model="name" type="text" placeholder="Your name">
+      <button type="submit">Submit</button>
+    </form>
+    <p x-show="submitted">Thanks, <span x-text="name"></span>!</p>
+  </div>
+</body>
+</html>

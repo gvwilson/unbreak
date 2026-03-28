@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Loading Indicator</title>
+  <style>
+    .htmx-indicator { display: none; }
+    .htmx-request .htmx-indicator { display: inline; }
+    .htmx-request.htmx-indicator { display: inline; }
+  </style>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+<body>
+  <h1>Display a loading message during a slow fetch</h1>
+  <p>Start <code>server.py</code>, then click Fetch.
+     Does a loading message appear while the two-second request is in progress?</p>
+  <!-- BUG: hx-indicator points to #spinner but no element with that id exists; -->
+  <!-- BUG: the element below has id="loading", so the spinner never shows -->
+  <button hx-get="/api/slow"
+          hx-target="#output"
+          hx-indicator="#spinner">Fetch</button>
+  <span id="loading" class="htmx-indicator">Loading, please wait...</span>
+  <div id="output"></div>
+</body>
+</html>

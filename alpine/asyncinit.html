@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Async Init Scope</title>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Load data from the server on startup</h1>
+  <p>Start <code>server.py</code>, then reload this page.
+     Does a greeting appear in the paragraph?</p>
+  <!-- BUG: loadGreeting() is a named function; inside it, greeting refers to the global scope, -->
+  <!-- BUG: not Alpine's reactive property; the assignment silently creates window.greeting -->
+  <!-- BUG: and Alpine's greeting stays empty -->
+  <div x-data="{ greeting: '' }" x-init="loadGreeting()">
+    <p x-text="greeting || '(no greeting loaded)'"></p>
+  </div>
+  <script>
+    async function loadGreeting() {
+      const resp = await fetch('/api/greeting');
+      const data = await resp.json();
+      greeting = data.message;
+    }
+  </script>
+</body>
+</html>

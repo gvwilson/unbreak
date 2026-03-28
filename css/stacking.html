@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Show a Dropdown Menu on Top of a Card</title>
+  <style>
+    .card {
+      position: relative;
+      background: white;
+      border: 1px solid #ccc;
+      padding: 16px;
+      width: 200px;
+      /* BUG: opacity less than 1 creates a new stacking context for all descendants */
+      /* BUG: the dropdown's z-index: 200 is only compared within this stacking context, */
+      /* BUG: not against the sibling .overlay, so the dropdown stays behind the overlay */
+      opacity: 0.99;
+    }
+    .dropdown {
+      position: absolute;
+      top: 40px;
+      left: 0;
+      background: #333;
+      color: white;
+      padding: 8px 12px;
+      z-index: 200;
+    }
+    .overlay {
+      position: relative;
+      z-index: 10;
+      background: tomato;
+      color: white;
+      padding: 8px;
+      margin-top: -30px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Show a dropdown menu on top of a card</h1>
+  <p>The dark dropdown should appear in front of the red overlay.
+     Does it?</p>
+  <div class="card">
+    Card title
+    <div class="dropdown">Dropdown item</div>
+  </div>
+  <div class="overlay">Overlay (z-index: 10)</div>
+</body>
+</html>

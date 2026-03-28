@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add a Shadow to a Card</title>
+  <style>
+    .container {
+      width: 300px;
+      background: #f0f0f0;
+      padding: 20px;
+      /* BUG: overflow: hidden clips anything that extends beyond the container's edges */
+      /* BUG: the card's box-shadow is painted outside the card's border-box and is clipped away */
+      overflow: hidden;
+    }
+    .card {
+      background: white;
+      padding: 16px;
+      box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <h1>Add a shadow to a card</h1>
+  <p>The white card should have a visible drop shadow. Can you see any shadow?</p>
+  <div class="container">
+    <div class="card">Card content goes here.</div>
+  </div>
+</body>
+</html>

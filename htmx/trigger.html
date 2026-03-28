@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trigger Too Broad</title>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+<body>
+  <h1>Filter a list as the user types</h1>
+  <p>Start <code>server.py</code> and watch its output while you type
+     a five-letter fruit name one key at a time.
+     How many requests does the server receive?</p>
+  <!-- BUG: hx-trigger="input" fires a separate request on every single keystroke; -->
+  <!-- BUG: typing "apple" sends five requests instead of waiting for the user to pause -->
+  <input type="text"
+         name="q"
+         hx-get="/api/suggest"
+         hx-target="#suggestions"
+         hx-trigger="input"
+         placeholder="Type a fruit name">
+  <div id="suggestions"></div>
+</body>
+</html>

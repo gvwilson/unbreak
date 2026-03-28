@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add a Background Image to a Panel</title>
+  <style>
+    .panel {
+      background-color: steelblue;
+      /* BUG: the "background" shorthand resets ALL background sub-properties to their defaults */
+      /* BUG: this overrides background-color above, so the blue color disappears */
+      background: url("nonexistent.png") no-repeat center center;
+      color: white;
+      padding: 24px;
+      width: 300px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Add a background image to a panel</h1>
+  <p>The panel should have a blue background (visible when the image is missing).
+     Is it blue?</p>
+  <div class="panel">Panel content</div>
+</body>
+</html>

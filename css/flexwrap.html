@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wrap a Grid of Cards to a New Row</title>
+  <style>
+    .grid {
+      display: flex;
+      width: 500px;
+      border: 2px dashed #999;
+      /* BUG: flex-wrap defaults to nowrap; cards are squashed into one row and overflow the container */
+      /* BUG: adding flex-wrap: wrap would let cards flow onto a second line */
+    }
+    .card {
+      min-width: 140px;
+      height: 100px;
+      background: steelblue;
+      color: white;
+      margin: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Wrap a grid of cards to a new row</h1>
+  <p>Five cards should wrap onto two rows inside the dashed box.
+     Do they wrap, or do they overflow to the right?</p>
+  <div class="grid">
+    <div class="card">Card 1</div>
+    <div class="card">Card 2</div>
+    <div class="card">Card 3</div>
+    <div class="card">Card 4</div>
+    <div class="card">Card 5</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>x-if on Wrong Element</title>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Show and hide an error message</h1>
+  <p>Click "Trigger Error". Does the error message appear and disappear on each click?</p>
+  <div x-data="{ hasError: false }">
+    <button @click="hasError = !hasError">Trigger Error</button>
+    <!-- BUG: x-if must be placed on a <template> element, not a <div>; -->
+    <!-- BUG: Alpine ignores x-if on non-template elements, so the message is always visible -->
+    <div x-if="hasError">
+      <p style="color: red;">An error occurred!</p>
+    </div>
+  </div>
+</body>
+</html>

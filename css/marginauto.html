@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Center a Card Horizontally</title>
+  <style>
+    /* BUG: margin: 0 auto centers a block element by distributing remaining space equally */
+    /* BUG: but "remaining space" is only defined when the element has an explicit width */
+    /* BUG: without width, the card stretches to full container width and there is no space to distribute */
+    .card {
+      margin: 0 auto;
+      background: steelblue;
+      color: white;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Center a card horizontally</h1>
+  <p>The blue card should be centered with space on both sides. Is it?</p>
+  <div class="card">Centered card</div>
+</body>
+</html>

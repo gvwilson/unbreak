@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Missing Target</title>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+<body>
+  <h1>Show search results on a page</h1>
+  <p>Start <code>server.py</code>, then click Search.
+     Where do the results appear?</p>
+  <!-- BUG: no hx-target is specified; HTMX defaults to swapping the response -->
+  <!-- BUG: into the triggering element itself, replacing the button's label -->
+  <button hx-post="/api/search" hx-swap="innerHTML">Search</button>
+  <div id="results">Results will appear here.</div>
+</body>
+</html>

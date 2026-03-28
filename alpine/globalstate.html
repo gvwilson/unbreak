@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>External State Mutation</title>
+  <script>
+    const config = { count: 0 };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Increment a counter using an external object</h1>
+  <p>Click the button. Does the counter update?</p>
+  <!-- BUG: the button updates config.count on the external plain object, not Alpine's reactive proxy; -->
+  <!-- BUG: Alpine tracks changes through its own proxy of count, so the display never changes -->
+  <!-- BUG: change config.count++ to count++ to update the reactive property instead -->
+  <div x-data="config">
+    <p>Count: <span x-text="count"></span></p>
+    <button @click="config.count++">Increment</button>
+  </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add Space Between Sections</title>
+  <style>
+    .section {
+      background: #b3d9f7;
+      padding: 10px;
+      /* BUG: adjacent vertical margins collapse; the gap between sections is 40px (the larger value), */
+      /* BUG: not 80px (20px + 60px), so the spacing looks uneven despite the rules differing */
+      margin-bottom: 20px;
+    }
+    .section.large-gap {
+      margin-top: 60px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Add space between sections</h1>
+  <p>The second section has <code>margin-top: 60px</code> and the first has
+     <code>margin-bottom: 20px</code>. How much space actually appears between them?</p>
+  <div class="section">Section One</div>
+  <div class="section large-gap">Section Two (margin-top: 60px)</div>
+  <div class="section">Section Three</div>
+</body>
+</html>

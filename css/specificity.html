@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Override a Color in a Stylesheet</title>
+  <style>
+    /* BUG: this selector (element + class) has specificity (0,1,1), higher than the class-only rule below */
+    /* BUG: the later .highlight rule (0,1,0) loses to this earlier rule even though it appears first */
+    nav.highlight {
+      color: gray;
+    }
+
+    .highlight {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Override a color in a stylesheet</h1>
+  <p>The navigation bar below should be red. Is it?</p>
+  <nav class="highlight">Site Navigation</nav>
+  <p class="highlight">This paragraph uses the same class and should also be red.</p>
+</body>
+</html>

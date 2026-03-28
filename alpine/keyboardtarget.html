@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Keyboard Event Target</title>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Close a panel by pressing Escape</h1>
+  <p>Click anywhere inside the panel, then press Escape. Does it close?</p>
+  <div x-data="{ open: true }">
+    <!-- BUG: @keydown.escape is on a <div> that has no tabindex attribute; -->
+    <!-- BUG: <div> elements are not focusable by default, so they never receive keyboard events; -->
+    <!-- BUG: add tabindex="0" to make the div focusable, or use @keydown.window.escape instead -->
+    <div x-show="open"
+         @keydown.escape="open = false"
+         style="padding: 1em; border: 1px solid black;">
+      <p>This panel is open. Press Escape to close it.</p>
+    </div>
+    <button x-show="!open" @click="open = true">Reopen</button>
+  </div>
+</body>
+</html>

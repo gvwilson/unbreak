@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Invalid JSON in hx-vals</title>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+<body>
+  <h1>Send additional parameters with a request</h1>
+  <p>Start <code>server.py</code>, click Subscribe, and read the server output.
+     Did the server receive a <code>plan</code> field?</p>
+  <!-- BUG: hx-vals uses single quotes, which is not valid JSON; -->
+  <!-- BUG: HTMX silently ignores the unparseable attribute and omits the extra fields -->
+  <button hx-post="/api/vals"
+          hx-target="#output"
+          hx-vals="{'plan': 'premium', 'version': 2}">Subscribe</button>
+  <div id="output"></div>
+</body>
+</html>

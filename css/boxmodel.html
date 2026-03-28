@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fit a Panel Inside a Container</title>
+  <style>
+    .container {
+      width: 300px;
+      background: #ddd;
+      padding: 0;
+    }
+    /* BUG: box-sizing defaults to content-box, so padding is added on top of width: 100%; */
+    /* BUG: the panel ends up 340px wide (300px + 20px left + 20px right), overflowing the container */
+    .panel {
+      width: 100%;
+      padding: 20px;
+      background: steelblue;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Fit a panel inside a container</h1>
+  <p>The blue panel should sit entirely within the grey container.
+     Does it fit, or does it stick out to the right?</p>
+  <div class="container">
+    <div class="panel">Panel content</div>
+  </div>
+</body>
+</html>

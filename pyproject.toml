@@ -1,0 +1,102 @@
+[project]
+name = "unbreak"
+version = "0.1.0"
+description = "unbreaking software"
+authors = [{name = "Greg Wilson", email = "gvwilson@third-bit.com"}]
+license = {file = "LICENSE.md"}
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "altair>=6.0.0",
+    "faker>=40.11.1",
+    "fastapi>=0.136.1",
+    "uvicorn>=0.35.0",
+    "httpx>=0.27.0",
+    "mccole>=3.1.0",
+    "polars>=1.0.0",
+    "pytest>=9.0.2",
+    "ruff>=0.15.0",
+    "vl-convert-python>=1.9.0.post1",
+    "taskipy>=1.14.1",
+]
+
+[project.urls]
+Homepage = "https://gvwilson.github.io/unbreak"
+Repository = "https://github.com/gvwilson/unbreak"
+
+[tool.ruff.lint.per-file-ignores]
+"diot/noassert.py" = ["F841"]
+"oopy/isinstance_check.py" = ["E721"]
+"oopy/no_return.py" = ["F841"]
+"oopy/no_self.py" = ["F821"]
+"oopy/static_class.py" = ["F821"]
+"testing/test_vacuous.py" = ["F841"]
+"testing/test_tupleassert.py" = ["F631"]
+
+[tool.taskipy.tasks.bib]
+help = "Check bibliography entries"
+cmd = "mccole bib"
+
+[tool.taskipy.tasks.clean]
+help = "Clean up generated and cache files"
+cmd = """
+    find . -type f -name '*~' -exec rm {} \\;
+    find . -type d -name __pycache__ | xargs rm -rf
+    find . -type d -name .ruff_cache | xargs rm -rf
+    rm -f sql/*.db
+"""
+
+[tool.taskipy.tasks.check]
+help = "Check code and project"
+cmd = """
+    mccole check --src . --dst docs
+    typos *.md */*.md
+    ruff check .
+"""
+
+[tool.taskipy.tasks.db]
+help = "Rebuild databases"
+cmd = """
+    rm -f sql/lab.db
+    sqlite3 sql/lab.db < bin/create_sql_lab.sql
+    rm -f sql/penguins.db
+    python bin/create_sql_penguins.py sql/penguins.db _extras/penguins.csv _extras/geography.csv
+    rm -f sql/survey.db
+    python bin/create_sql_survey.py sql/survey.db 192837
+"""
+
+[tool.taskipy.tasks.serve]
+help = "Serve generated HTML"
+cmd = "python -m http.server -d docs"
+
+[tool.taskipy.tasks.site]
+help = "Build HTML"
+cmd = """
+    mccole build --src . --dst docs
+    touch docs/.nojekyll
+    zip -q -j -r docs/sql/databases.zip sql/*.db
+"""
+
+[tool.mccole]
+title = "Unbreaking Software"
+brand = "Unbreak"
+repo = "https://github.com/gvwilson/unbreak"
+skips = [
+    "*.csv",
+    "*.db",
+    "*.html",
+    "*.js",
+    "*.json",
+    "*.py",
+    "*.sh",
+    "*.sql",
+    "*.txt",
+    "*~",
+    ".ruff_cache",
+    "Makefile",
+    "__pycache__",
+    "bin",
+    "docs",
+    "typos.toml",
+    "uv.lock",
+]

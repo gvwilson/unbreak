@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Show a Tooltip Above an Icon</title>
+  <style>
+    .icon {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      background: steelblue;
+      color: white;
+      text-align: center;
+      line-height: 40px;
+      font-size: 20px;
+    }
+    /* BUG: z-index has no effect when position is static (the default) */
+    /* BUG: the tooltip appears behind the banner even though z-index: 100 is set */
+    .tooltip {
+      background: #333;
+      color: white;
+      padding: 4px 8px;
+      z-index: 100;
+    }
+    .banner {
+      position: relative;
+      z-index: 10;
+      background: tomato;
+      color: white;
+      padding: 8px;
+      margin-top: -10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Show a tooltip above an icon</h1>
+  <p>The dark tooltip should appear in front of the red banner. Does it?</p>
+  <div class="icon">?</div>
+  <div class="tooltip">Helpful tooltip text</div>
+  <div class="banner">I am the banner (position: relative, z-index: 10)</div>
+</body>
+</html>

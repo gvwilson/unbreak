@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>x-for Without Key</title>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Remove items from a list</h1>
+  <p>Type something in the second input field, then click Delete next to the first item.
+     Which row's input value disappears?</p>
+  <div x-data="{ items: ['Alpha', 'Beta', 'Gamma'] }">
+    <ul style="list-style: none; padding: 0;">
+      <!-- BUG: x-for has no :key binding; -->
+      <!-- BUG: Alpine reuses DOM nodes by position rather than by identity; -->
+      <!-- BUG: deleting the first item shifts DOM nodes up, so typed input values land on the wrong row -->
+      <template x-for="item in items">
+        <li>
+          <span x-text="item"></span>
+          <input type="text" :placeholder="'notes for ' + item">
+          <button @click="items.splice(items.indexOf(item), 1)">Delete</button>
+        </li>
+      </template>
+    </ul>
+  </div>
+</body>
+</html>

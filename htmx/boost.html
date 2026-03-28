@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>hx-boost and Downloads</title>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+<body>
+  <h1>Add HTMX to a page with existing links</h1>
+  <p>Start <code>server.py</code>, open <code>http://localhost:8000/boost</code>,
+     then click "Download CSV".
+     Does the file download, or does something else happen?</p>
+  <!-- BUG: hx-boost="true" causes HTMX to intercept all link clicks in this nav via XHR; -->
+  <!-- BUG: the download link is fetched as an AJAX request and the CSV text is swapped into <body> -->
+  <!-- BUG: instead of being offered to the browser as a file download -->
+  <nav hx-boost="true">
+    <a href="/wrongswap">Example page</a>
+    &bull;
+    <a href="/download">Download CSV</a>
+  </nav>
+  <p>Main page content.</p>
+</body>
+</html>

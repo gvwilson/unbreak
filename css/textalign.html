@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Center a Button on the Page</title>
+  <style>
+    /* BUG: text-align: center on the button aligns the text inside it, not the button on the page */
+    /* BUG: to center a block-level element, apply text-align: center to the parent instead */
+    .btn {
+      display: block;
+      padding: 10px 24px;
+      background: steelblue;
+      color: white;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Center a button on the page</h1>
+  <p>The button below should be centered horizontally. Is it?</p>
+  <button class="btn">Submit</button>
+</body>
+</html>

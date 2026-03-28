@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Missing x-cloak CSS</title>
+  <!-- BUG: the CSS rule [x-cloak] { display: none } is absent from this page; -->
+  <!-- BUG: the counter panel is briefly visible before Alpine initializes, showing blank values -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Show content only after Alpine loads</h1>
+  <p>Reload the page with network throttling enabled in DevTools.
+     Does the counter appear with a value of 0, or is it briefly blank?</p>
+  <div x-data="{ count: 0 }">
+    <div x-cloak>
+      <p>Count: <span x-text="count"></span></p>
+      <button @click="count++">Increment</button>
+    </div>
+  </div>
+</body>
+</html>

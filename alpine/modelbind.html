@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>One-Way Binding</title>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Mirror text input in real time</h1>
+  <p>Type in the input field. Does the paragraph below update?</p>
+  <!-- BUG: x-bind:value sets the input's displayed value from state but does not listen for changes; -->
+  <!-- BUG: the binding runs only one way (state to input); typing does not update state -->
+  <!-- BUG: replace x-bind:value with x-model to get two-way binding -->
+  <div x-data="{ message: '' }">
+    <input type="text" x-bind:value="message" placeholder="Type here">
+    <p>You typed: <span x-text="message"></span></p>
+  </div>
+</body>
+</html>

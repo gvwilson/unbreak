@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>hx-include Too Broad</title>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+<body>
+  <h1>Search using fields from a form</h1>
+  <p>Start <code>server.py</code>, type a category and click Search.
+     Read the server output. Which fields did it receive?</p>
+  <form id="search-form">
+    <label>Category: <input type="text" name="category" value="books"></label>
+  </form>
+  <!-- BUG: hx-include="input" matches every <input> element on the page, not just the search form; -->
+  <!-- BUG: the hidden admin_token field below is collected and sent to the server -->
+  <button hx-post="/api/search-fields"
+          hx-target="#output"
+          hx-include="input">Search</button>
+  <div id="output"></div>
+  <form id="admin-form" style="display:none">
+    <input type="hidden" name="admin_token" value="secret-abc123">
+  </form>
+</body>
+</html>

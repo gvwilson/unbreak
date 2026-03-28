@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add a Decorative Bullet to Each List Item</title>
+  <style>
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    /* BUG: ::before generates a pseudo-element but does not display without a content property */
+    /* BUG: the star bullet never appears because content is absent */
+    li::before {
+      color: gold;
+      font-size: 1.2em;
+      margin-right: 6px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Add a decorative bullet to each list item</h1>
+  <p>Each item below should have a gold star to its left. Do any stars appear?</p>
+  <ul>
+    <li>Apples</li>
+    <li>Bananas</li>
+    <li>Cherries</li>
+  </ul>
+</body>
+</html>

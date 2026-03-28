@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Submit Key</title>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+<body>
+  <h1>Search using a text input and a button</h1>
+  <p>Start <code>server.py</code>. Type a word and press Enter.
+     Then type the same word and click Search.
+     Do both produce the same result?</p>
+  <!-- BUG: hx-get is on the button, not on the form element; -->
+  <!-- BUG: pressing Enter in the input fires the form's native GET action and reloads the page -->
+  <form action="/submit" method="get">
+    <input type="text" name="query" placeholder="Enter a search term">
+    <button hx-get="/api/results"
+            hx-target="#output"
+            hx-include="closest form">Search</button>
+  </form>
+  <div id="output">Results appear here.</div>
+</body>
+</html>

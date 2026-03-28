@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>String Data</title>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Display a greeting from component state</h1>
+  <p>Does a greeting appear in the paragraph?</p>
+  <!-- BUG: x-data receives a plain string literal instead of an object; -->
+  <!-- BUG: accessing .message on a string returns undefined, so nothing is displayed -->
+  <div x-data="'hello'">
+    <p x-text="message"></p>
+  </div>
+</body>
+</html>

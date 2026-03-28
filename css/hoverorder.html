@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Color a Link Differently on Hover</title>
+  <style>
+    /* BUG: :hover appears before :visited in source order; both have the same specificity */
+    /* BUG: for a visited link, :visited matches and appears later, so it always wins over :hover */
+    /* BUG: correct order is :link, :visited, :hover, :active (LVHA) */
+    a:hover {
+      color: tomato;
+    }
+    a:visited {
+      color: purple;
+    }
+    a:link {
+      color: steelblue;
+    }
+  </style>
+</head>
+<body>
+  <h1>Color a link differently on hover</h1>
+  <p>Click the link below to visit it, then come back.
+     Hover over it. Does it turn red on hover, or does it stay purple?</p>
+  <p><a href="https://example.com" target="_blank">Visit example.com</a></p>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wrong Scope</title>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Toggle a message with a button</h1>
+  <p>Click the button. Does the message appear?</p>
+  <!-- BUG: x-data is on the inner <span>, but x-show and the button are on the outer <div>; -->
+  <!-- BUG: Alpine directives can only access x-data on the same element or an ancestor, not a descendant -->
+  <div>
+    <span x-data="{ visible: false }"></span>
+    <p x-show="visible">Hello, Alpine!</p>
+    <button @click="visible = !visible">Toggle</button>
+  </div>
+</body>
+</html>

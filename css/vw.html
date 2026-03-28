@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Make a Full-Width Header</title>
+  <style>
+    body {
+      margin: 0;
+    }
+    /* BUG: 100vw measures the full viewport width including the scrollbar gutter */
+    /* BUG: when a vertical scrollbar appears, 100vw exceeds the available width and a horizontal scrollbar appears */
+    .header {
+      width: 100vw;
+      background: steelblue;
+      color: white;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+    .content {
+      height: 200vh; /* tall enough to force a vertical scrollbar */
+      padding: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">Full-width header</div>
+  <div class="content">
+    <h1>Make a full-width header</h1>
+    <p>Scroll down so the vertical scrollbar appears.
+       Does a horizontal scrollbar also appear at the bottom of the page?</p>
+  </div>
+</body>
+</html>

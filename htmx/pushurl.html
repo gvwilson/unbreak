@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Push URL</title>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+<body>
+  <h1>Keep the URL bar in sync with displayed content</h1>
+  <p>Start <code>server.py</code>, click View Items, then reload the page.
+     What does the browser show after the reload?</p>
+  <!-- BUG: hx-push-url="true" pushes the API endpoint URL (/api/items) into the browser history; -->
+  <!-- BUG: reloading the page sends a request to /api/items, which returns a bare fragment, not a full page -->
+  <button hx-get="/api/items"
+          hx-target="#content"
+          hx-push-url="true">View Items</button>
+  <div id="content">Click the button to load items.</div>
+</body>
+</html>

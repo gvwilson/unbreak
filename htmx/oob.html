@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OOB ID Mismatch</title>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+<body>
+  <h1>Update two page areas from a single request</h1>
+  <p>Start <code>server.py</code>, click the button.
+     Does the notification area update?</p>
+  <button hx-post="/api/action" hx-target="#main-area">Do action</button>
+  <div id="main-area">Action result appears here.</div>
+  <!-- BUG: the server returns an OOB fragment with id="notification" (singular); -->
+  <!-- BUG: this element has id="notifications" (plural), so the swap is silently ignored -->
+  <div id="notifications">Notifications: (none)</div>
+</body>
+</html>

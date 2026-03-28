@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Focus Without nextTick</title>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Show an input and move focus to it</h1>
+  <p>Click "Edit". Does the cursor appear in the input field?</p>
+  <div x-data="{ editing: false }">
+    <!-- BUG: $refs.field.focus() runs in the same tick as the x-show update; -->
+    <!-- BUG: the browser ignores focus() on an element that is still hidden; -->
+    <!-- BUG: wrap the focus call in $nextTick(() => $refs.field.focus()) to wait for the DOM update -->
+    <button @click="editing = true; $refs.field.focus()">Edit</button>
+    <input x-show="editing" x-ref="field" type="text" placeholder="Edit here">
+  </div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hide a Notice Without Moving Other Content</title>
+  <style>
+    .notice {
+      background: gold;
+      padding: 10px;
+      margin-bottom: 12px;
+      /* BUG: display: none removes the element from layout entirely */
+      /* BUG: the paragraph below jumps up; visibility: hidden would hide but preserve the space */
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Hide a notice without moving other content</h1>
+  <div class="notice">Important notice: please read before continuing.</div>
+  <p>This paragraph should stay in the same position whether the notice is visible or not.
+     Does it move when the notice is hidden?</p>
+</body>
+</html>

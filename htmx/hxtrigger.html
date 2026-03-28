@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Missing HX-Trigger Header</title>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+<body>
+  <h1>Refresh a list when a new item is added</h1>
+  <p>Start <code>server.py</code>, add a few items using the form.
+     Does the list below update automatically after each addition?</p>
+  <form hx-post="/api/add-item" hx-target="#add-status" hx-swap="innerHTML">
+    <input type="text" name="name" placeholder="Item name">
+    <button type="submit">Add Item</button>
+  </form>
+  <div id="add-status"></div>
+  <h2>Current items</h2>
+  <!-- BUG: this list waits for an "itemAdded" custom event fired from the body; -->
+  <!-- BUG: but POST /api/add-item never returns an HX-Trigger response header, -->
+  <!-- BUG: so the event never fires and the list never refreshes automatically -->
+  <ul id="item-list"
+      hx-get="/api/items-list"
+      hx-trigger="load, itemAdded from:body">
+  </ul>
+</body>
+</html>

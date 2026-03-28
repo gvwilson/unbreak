@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fill Half a Page with a Colored Banner</title>
+  <style>
+    .wrapper {
+      /* BUG: wrapper has no explicit height, so the browser cannot resolve 50% for its child */
+      /* BUG: the child's height: 50% computes to "50% of auto", which is treated as 0 */
+      background: #eee;
+    }
+    .banner {
+      height: 50%;
+      background: steelblue;
+    }
+  </style>
+</head>
+<body>
+  <h1>Fill half a page with a colored banner</h1>
+  <p>The blue banner should fill half the grey wrapper. Is the wrapper visible at all?</p>
+  <div class="wrapper">
+    <div class="banner"></div>
+  </div>
+  <p>Text below the wrapper.</p>
+</body>
+</html>

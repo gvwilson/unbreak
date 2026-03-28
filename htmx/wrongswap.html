@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wrong Swap Mode</title>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+<body>
+  <h1>Load data into a display panel</h1>
+  <p>Start <code>server.py</code>, then click Load twice.
+     Does it keep working after the first click?</p>
+  <!-- BUG: hx-swap="outerHTML" replaces the entire #panel element, not just its contents; -->
+  <!-- BUG: after the first click #panel no longer exists, so the second click silently does nothing -->
+  <button hx-get="/api/data"
+          hx-target="#panel"
+          hx-swap="outerHTML">Load</button>
+  <div id="panel">Waiting for data...</div>
+</body>
+</html>

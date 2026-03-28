@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Style an Error Message</title>
+  <style>
+    /* BUG: the selector targets class "warning" but the element uses class "error" */
+    /* BUG: no element in the document matches .warning, so no style is applied */
+    .warning {
+      color: white;
+      background: tomato;
+      padding: 8px 12px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Style an error message</h1>
+  <p class="error">Something went wrong. Please try again.</p>
+  <p>The message above should have a red background and white text. Does it?</p>
+</body>
+</html>

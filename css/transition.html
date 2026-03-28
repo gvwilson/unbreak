@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Animate a Button Color on Hover</title>
+  <style>
+    .btn {
+      padding: 10px 20px;
+      background: steelblue;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      /* BUG: transition targets "color" (the text color), but the hover rule changes background-color */
+      /* BUG: the background snaps instantly; only a text-color change would animate */
+      transition: color 0.4s ease;
+    }
+    .btn:hover {
+      background-color: tomato;
+    }
+  </style>
+</head>
+<body>
+  <h1>Animate a button color on hover</h1>
+  <p>Hover over the button. Does the background color fade smoothly to red,
+     or does it snap?</p>
+  <button class="btn">Hover me</button>
+</body>
+</html>

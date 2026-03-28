@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Change the Color of a Heading</title>
+  <style>
+    h1 {
+      /* BUG: font-color is not a valid CSS property; the correct property is color */
+      /* BUG: the browser silently ignores unknown properties, so the heading stays black */
+      font-color: tomato;
+    }
+  </style>
+</head>
+<body>
+  <h1>This heading should be red</h1>
+  <p>Is it?</p>
+</body>
+</html>
