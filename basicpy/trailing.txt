@@ -1,0 +1,4 @@
+North |142
+South|98
+East |201
+West|77

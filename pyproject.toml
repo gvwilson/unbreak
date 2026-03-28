@@ -28,6 +28,9 @@ title = "Unbreaking Software"
 repo = "https://github.com/gvwilson/unbreak"
 skips = [
     "*~",
+    "*.json",
+    "*.py",
+    "*.txt",
     ".ruff_cache/**",
     "__pycache__/**",
     "log/**",
