@@ -15,8 +15,8 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
 ]
 dependencies = [
-    "mccole>=2.0.0",
-    "ruff>=0.1.0",
+    "mccole>=2.2.0",
+    "ruff>=0.15.0",
 ]
 
 [project.urls]
