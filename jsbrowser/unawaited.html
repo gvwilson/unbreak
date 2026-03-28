@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Promise Not Awaited</title>
+</head>
+<body>
+  <h1>Latest prices</h1>
+  <ul id="items"></ul>
+  <p id="status"></p>
+  <script>
+    function fetchPrices() {
+      return new Promise(function (resolve) {
+        setTimeout(function () {
+          resolve([
+            { name: "Widget",    price: 9.99  },
+            { name: "Gadget",    price: 24.99 },
+            { name: "Doohickey", price: 4.99  }
+          ]);
+        }, 500);
+      });
+    }
+
+    // BUG: fetchPrices() returns a Promise, not the data;
+    //      forEach runs immediately on the Promise object, which has no forEach method
+    var prices = fetchPrices();
+    prices.forEach(function (item) { // TypeError: prices.forEach is not a function
+      var li = document.createElement("li");
+      li.textContent = item.name + ": $" + item.price;
+      document.getElementById("items").appendChild(li);
+    });
+    document.getElementById("status").textContent = "Done.";
+  </script>
+</body>
+</html>

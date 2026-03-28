@@ -15,7 +15,7 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
 ]
 dependencies = [
-    "mccole>=2.2.0",
+    "mccole>=2.3.0",
     "ruff>=0.15.0",
 ]
 

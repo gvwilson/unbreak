@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>var Hoisting in Loops</title>
+</head>
+<body>
+  <h1>Collected field values</h1>
+  <ul id="output"></ul>
+  <script>
+    var fields = ["name", "email", "phone"];
+    var handlers = [];
+
+    for (var i = 0; i < fields.length; i++) { // BUG: var is function-scoped and hoisted;
+      handlers.push(function () {              //      all closures share the same i,
+        return fields[i];                      //      which equals fields.length after the loop
+      });
+    }
+
+    var list = document.getElementById("output");
+    handlers.forEach(function (handler, idx) {
+      var li = document.createElement("li");
+      li.textContent = fields[idx] + ": " + handler(); // always "undefined"
+      list.appendChild(li);
+    });
+  </script>
+</body>
+</html>

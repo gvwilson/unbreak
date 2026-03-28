@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>localStorage in Private Mode</title>
+</head>
+<body>
+  <p id="output"></p>
+  <script>
+    // BUG: no try/catch around localStorage access;
+    //      private/incognito browsing throws SecurityError on some browsers,
+    //      and the error is silent — the page shows nothing instead of a fallback
+    var visits = parseInt(localStorage.getItem("visits") || "0") + 1;
+    localStorage.setItem("visits", String(visits));
+    document.getElementById("output").textContent = "Visit count: " + visits;
+  </script>
+</body>
+</html>

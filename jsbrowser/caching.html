@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Browser Caching</title>
+  <!-- BUG: caching.js is loaded with no cache-busting query string or
+       cache-control header; after a fix is deployed to the server,
+       visitors whose browsers cached the old file continue to run it -->
+  <script src="caching.js"></script>
+</head>
+<body>
+  <h1>Price display</h1>
+  <p id="version"></p>
+  <p id="price"></p>
+  <script>
+    document.getElementById("version").textContent = "App version: " + APP_VERSION;
+    document.getElementById("price").textContent = "Item price: " + formatPrice(999);
+  </script>
+</body>
+</html>

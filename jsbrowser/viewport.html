@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Missing Viewport Meta Tag</title>
+  <!-- BUG: no <meta name="viewport"> tag; mobile browsers render the page
+       at desktop width and scale it down, making text tiny and layout wrong -->
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 1em; }
+    .card { border: 1px solid #ccc; border-radius: 4px; padding: 1em; margin: 1em 0; }
+    h2 { margin: 0 0 0.5em; }
+    .price { font-size: 1.5em; color: #080; }
+  </style>
+</head>
+<body>
+  <h1>Product Listing</h1>
+  <div class="card">
+    <h2>Widget</h2>
+    <p class="price">$9.99</p>
+    <p>Small, round, and useful.</p>
+  </div>
+  <div class="card">
+    <h2>Gadget</h2>
+    <p class="price">$24.99</p>
+    <p>Larger and more complicated.</p>
+  </div>
+</body>
+</html>

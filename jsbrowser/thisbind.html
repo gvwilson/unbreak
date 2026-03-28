@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>this Binding in Callbacks</title>
+</head>
+<body>
+  <button id="btn">Increment</button>
+  <p id="output">Count: 0</p>
+  <script>
+    var counter = {
+      value: 0,
+      increment: function () {
+        this.value += 1; // BUG: when passed as an event handler, 'this' is the
+                         //      button element, not the counter object;
+                         //      this.value is undefined, so undefined + 1 = NaN
+        document.getElementById("output").textContent = "Count: " + this.value;
+      }
+    };
+
+    document.getElementById("btn").addEventListener("click", counter.increment);
+  </script>
+</body>
+</html>

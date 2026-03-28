@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CORS Header Missing</title>
+</head>
+<body>
+  <h1>CORS demo</h1>
+  <p>Start <code>cors_server.py</code>, then click Fetch.</p>
+  <button id="fetch-btn">Fetch</button>
+  <pre id="output">—</pre>
+  <script>
+    document.getElementById("fetch-btn").addEventListener("click", function () {
+      // BUG: the server at localhost:8000 does not return Access-Control-Allow-Origin;
+      //      the browser blocks the response; curl and Python requests succeed because
+      //      they do not enforce the same-origin policy
+      fetch("http://localhost:8000/api/data")
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          document.getElementById("output").textContent = JSON.stringify(data, null, 2);
+        })
+        .catch(function (err) {
+          document.getElementById("output").textContent = "Error: " + err.message;
+        });
+    });
+  </script>
+</body>
+</html>

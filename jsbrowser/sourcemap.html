@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Missing Source Map</title>
+</head>
+<body>
+  <h1>Source map demo</h1>
+  <button id="run-btn">Run</button>
+  <p id="output"></p>
+  <!-- BUG: loading the minified bundle with no corresponding .map file;
+       when processItems throws, DevTools shows a column offset inside
+       sourcemap.min.js rather than the line in sourcemap_original.js -->
+  <script src="sourcemap.min.js"></script>
+</body>
+</html>

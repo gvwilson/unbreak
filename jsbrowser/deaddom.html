@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Dead DOM Event Listener</title>
+</head>
+<body>
+  <div id="container">
+    <button id="btn">Click me</button>
+  </div>
+  <p id="output">Clicks: 0</p>
+  <p><em>Button refreshes in 3 seconds. Click it before and after.</em></p>
+  <script>
+    var count = 0;
+    var btn = document.getElementById("btn");
+
+    // BUG: listener is attached to this specific element reference;
+    //      when innerHTML replaces the element, the new button is a
+    //      different object and carries no listener
+    btn.addEventListener("click", function () {
+      count += 1;
+      document.getElementById("output").textContent = "Clicks: " + count;
+    });
+
+    setTimeout(function () {
+      document.getElementById("container").innerHTML =
+        '<button id="btn">Click me (refreshed)</button>';
+      // new button has no click listener — clicks do nothing
+    }, 3000);
+  </script>
+</body>
+</html>
