@@ -10,9 +10,9 @@ of fields? Pay particular attention to rows that contain commas.
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A CSV-parsing function misreads rows that contain commas inside quoted fields;
-the bug is using `line.split(',')` instead of the `csv` module. Teaches why
-hand-rolled parsers fail on real-world data and when to use standard library tools.
+The bug is using `line.split(',')` instead of the `csv` module, so rows that contain
+commas inside quoted fields are split incorrectly. Teaches why hand-rolled parsers
+fail on real-world data and when to use standard library tools.
 
 </details>
 
@@ -25,10 +25,9 @@ Do any of them look unusual?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A function that measures elapsed time reports negative durations when the clock
-wraps; the bug is using `time.time()` without accounting for system clock
-adjustments. Teaches the difference between wall time and monotonic time and when
-to use `time.monotonic`.
+The bug is using `time.time()` without accounting for system clock adjustments, so
+the function reports negative durations when the clock is set back. Teaches the
+difference between wall time and monotonic time and when to use `time.monotonic`.
 
 </details>
 
@@ -42,9 +41,9 @@ timezone-aware path.
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A date-arithmetic function produces results that are off by one day around daylight
-saving time transitions; the bug is adding a `timedelta` to a naive datetime.
-Teaches the difference between naive and timezone-aware datetimes.
+The bug is adding a `timedelta` to a naive datetime, so the function produces results
+that are off by one day around daylight saving time transitions. Teaches the
+difference between naive and timezone-aware datetimes.
 
 </details>
 
@@ -58,10 +57,9 @@ expected elements. What happens when an element is not found?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A script that downloads a web page and parses it for prices fails silently on some
-pages; the bug is that the HTML structure varies and the selector matches zero
-elements without raising an error. Teaches how to handle missing data in HTML
-parsing and use assertions to catch unexpected input.
+The bug is that the HTML structure varies and the selector matches zero elements
+without raising an error, so the script fails silently on some pages. Teaches how to
+handle missing data in HTML parsing and use assertions to catch unexpected input.
 
 </details>
 
@@ -74,10 +72,9 @@ that look like email addresses but are not. Does it reject the invalid ones?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A regular expression meant to extract email addresses also matches invalid strings;
-the bug is a pattern that is too permissive (e.g., missing anchors or character
-class constraints). Teaches how to test regular expressions with both valid and
-invalid inputs.
+The bug is a pattern that is too permissive (e.g., missing anchors or character
+class constraints), so the regular expression also matches invalid strings. Teaches
+how to test regular expressions with both valid and invalid inputs.
 
 </details>
 
@@ -90,9 +87,9 @@ testing. Does the test still pass?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A unit test always passes even when the function is broken; the bug is that the
-test calls the function but never asserts anything about the result. Teaches that
-a test with no assertions is not a test and how to write assertions correctly.
+The bug is that the test calls the function but never asserts anything about the
+result, so it always passes even when the function is broken. Teaches that a test
+with no assertions is not a test and how to write assertions correctly.
 
 </details>
 
@@ -105,8 +102,8 @@ ways?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A test suite that passes in isolation fails when run together; the bug is that one
-test modifies a module-level variable that another test depends on. Teaches test
+The bug is that one test modifies a module-level variable that another test depends
+on, so the suite passes in isolation but fails when run together. Teaches test
 isolation, teardown, and the risks of shared global state.
 
 </details>
@@ -121,10 +118,9 @@ file is saved. Does it find its configuration file?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A function that reads a configuration file behaves differently on different
-machines; the bug is using a hardcoded absolute path instead of a path relative
-to the script's location. Teaches the difference between `__file__`-relative and
-working-directory-relative paths.
+The bug is using a hardcoded absolute path instead of a path relative to the
+script's location, so the function behaves differently on different machines. Teaches
+the difference between `__file__`-relative and working-directory-relative paths.
 
 </details>
 
@@ -137,8 +133,8 @@ be serialized?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A program writes JSON output that cannot be parsed back in; the bug is that the
-data contains `datetime` objects, which are not JSON-serializable. Teaches how
+The bug is that the data contains `datetime` objects, which are not
+JSON-serializable, so the program raises an error when writing output. Teaches how
 to identify serialization errors and write custom JSON encoders.
 
 </details>
@@ -152,8 +148,8 @@ present?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A logging call that should record errors never appears in the log file; the bug is
-that the log level is set to `WARNING` but the calls use `logger.debug()`. Teaches
-how Python's logging hierarchy works and how to verify the effective log level.
+The bug is that the log level is set to `WARNING` but the calls use
+`logger.debug()`, so the messages never appear in the log file. Teaches how
+Python's logging hierarchy works and how to verify the effective log level.
 
 </details>

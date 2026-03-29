@@ -42,6 +42,43 @@
 -   Do *not* use **bold** or *italics*.
 -   Do *not* attempt to be funny or offer generic positive feedback to readers.
 -   Use `[text][key]` format for external links, and define `key` in `_extras/links.md`.
+-   Do not over-use semi-colons or em-dashes.
+-   Each example has:
+    -   An H2-level Markdown heading
+    -   That heading must have an ID `{: #section-slug}` where `section` is the
+        name of the lesson directory and `slug` identifies the particular example.
+    -   A short prose description for learners.
+    -   Code samples.
+    -   An explanation of the bug formatted as shown below.
+
+```
+<details class="explanation" markdown="1"><summary>Show explanation</summary>
+
+...text of explanation goes here...
+
+</details>
+```
+
+## BUG Comments in Source Files
+
+-   When adding `BUG` comments to source files, every comment line in the block
+    must include `BUG` immediately after the comment marker (e.g., `# BUG` or
+    `// BUG`).
+-   `mccole`'s `scrub` parameter strips lines one at a time using the pattern
+    `\s*# BUG.*`. A continuation line that starts with a comment marker without
+    `BUG will not be stripped and will appear in the rendered output.
+-   Correct:
+    ```python
+    # BUG: this is wrong because
+    # BUG: of this reason
+    bad_code()
+    ```
+-   Incorrect (second line will leak into rendered output):
+    ```python
+    # BUG: this is wrong because
+    # of this reason
+    bad_code()
+    ```
 
 ## Interaction
 

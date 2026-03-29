@@ -10,10 +10,9 @@ number first? What order would you expect?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A script that sorts a list of numbers produces them in the wrong order; the bug is
-calling `sort` without the `-n` flag, which causes lexicographic (alphabetical)
-ordering so `10` appears before `2`. Teaches the difference between alphabetical
-and numeric sort and when to use `sort -n`.
+The bug is calling `sort` without the `-n` flag, which causes lexicographic
+(alphabetical) ordering so `10` appears before `2`. Teaches the difference between
+alphabetical and numeric sort and when to use `sort -n`.
 
 </details>
 
@@ -26,10 +25,9 @@ How many did you expect?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A loop that is supposed to collect the first line of each data file into a single
-summary produces a file with only one entry; the bug is using `>` inside the loop,
-which overwrites the file on every iteration instead of appending to it. Teaches
-the difference between `>` (overwrite) and `>>` (append).
+The bug is using `>` inside the loop, which overwrites the file on every iteration
+instead of appending to it, so the summary contains only one entry. Teaches the
+difference between `>` (overwrite) and `>>` (append).
 
 </details>
 
@@ -42,11 +40,11 @@ Are all of them files you want to copy?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A script copies the monthly notes files to an archive directory but also copies the
-running archive file itself because `*.txt` matches every `.txt` file in the
-directory. Teaches how to check what a wildcard matches before using it in a
-destructive command, and how to narrow a pattern (e.g., `notes_???.txt`) to match
-only the intended files.
+The bug is that `*.txt` matches every `.txt` file in the directory, including the
+running archive file itself, so the script copies more than the monthly notes files.
+Teaches how to check what a wildcard matches before using it in a destructive
+command, and how to narrow a pattern (e.g., `notes_???.txt`) to match only the
+intended files.
 
 </details>
 
@@ -60,11 +58,11 @@ Run this script and check the count it reports. Then look at the species column 
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A pipeline that counts the number of distinct species in a CSV file gives a number
-that is too high; the bug is piping directly to `uniq` without sorting first, so
-only adjacent identical lines are collapsed and non-adjacent occurrences of the
-same species are counted separately. Teaches that `uniq` only removes adjacent
-duplicates and that `sort | uniq` is the correct pattern for counting distinct values.
+The bug is piping directly to `uniq` without sorting first. Only adjacent identical
+lines are collapsed, so non-adjacent occurrences of the same species are counted
+separately and the reported count is too high. Teaches that `uniq` only removes
+adjacent duplicates and that `sort | uniq` is the correct pattern for counting
+distinct values.
 
 </details>
 
@@ -77,11 +75,11 @@ Does it process the file correctly?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A loop that counts lines in files fails when any filename contains a space; the
-bug is using `$f` without quotes, so the shell splits the filename on the space
-and passes the two halves as separate arguments to `wc`. Teaches why loop
-variables should always be quoted as `"$f"` and how spaces in filenames require
-consistent quoting throughout a script.
+The bug is using `$f` without quotes, so the shell splits the filename on the space
+and passes the two halves as separate arguments to `wc`, causing the loop to fail
+for any filename that contains a space. Teaches why loop variables should always be
+quoted as `"$f"` and how spaces in filenames require consistent quoting throughout a
+script.
 
 </details>
 
@@ -94,11 +92,10 @@ which file was created and which file was modified.
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A script that copies the first 20 lines of an input file to an output file reads
-from the output path and writes to the input path instead; the bug is that the
-arguments `$1` and `$2` are swapped. Teaches how to verify which argument is
-which by reading the usage comment, and how to use `echo` to print argument values
-before acting on them.
+The bug is that the arguments `$1` and `$2` are swapped, so the script reads from
+the output path and writes to the input path instead. Teaches how to verify which
+argument is which by reading the usage comment, and how to use `echo` to print
+argument values before acting on them.
 
 </details>
 
@@ -112,11 +109,11 @@ end of the file?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A script intended to show the most recent entries in a data file shows the oldest
-entries instead; the bug is using `head` (which prints the first N lines) instead
-of `tail` (which prints the last N lines). Teaches the difference between `head`
-and `tail` and how to combine them — for example `tail -n 5` for the last 5, or
-`head -n 10 | tail -n 5` for lines 6–10.
+The bug is using `head` (which prints the first N lines) instead of `tail` (which
+prints the last N lines), so the script shows the oldest entries instead of the most
+recent ones. Teaches the difference between `head` and `tail` and how to combine
+them — for example `tail -n 5` for the last 5, or `head -n 10 | tail -n 5` for
+lines 6–10.
 
 </details>
 
@@ -130,10 +127,10 @@ on paper. How many levels up does `../..` go? Is that where `shared/` lives?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A script that saves output to a sibling directory goes two levels up instead of
-one; the bug is writing `../..` when the target is only one level up (`..`).
-Teaches how to trace relative paths by counting directory levels, and how to
-use `pwd` and `ls ..` to verify the directory structure before running a script.
+The bug is writing `../..` when the target is only one level up (`..`), so the
+script saves output two levels up instead of one. Teaches how to trace relative
+paths by counting directory levels, and how to use `pwd` and `ls ..` to verify the
+directory structure before running a script.
 
 </details>
 
@@ -147,10 +144,10 @@ lines (records) in the file?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A script that should count the number of records in a file prints a much larger
-number; the bug is using `wc -w` (count words) instead of `wc -l` (count lines).
-Teaches the difference between `wc` flags and how to use `wc --help` to check
-which flag produces which count.
+The bug is using `wc -w` (count words) instead of `wc -l` (count lines), so the
+script prints a much larger number than the number of records. Teaches the
+difference between `wc` flags and how to use `wc --help` to check which flag
+produces which count.
 
 </details>
 
@@ -163,11 +160,11 @@ arguments does `find` actually receive? Use `echo` in place of `find` to check.
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A `find` command that should search a subdirectory for CSV files instead searches
-for files whose names match already-expanded filenames from the current directory;
-the bug is passing `*.csv` without quotes, so the shell expands the glob before
-`find` runs. Teaches that the shell expands unquoted wildcards before passing
-them to any command, and that patterns given to `find -name` must be quoted.
+The bug is passing `*.csv` without quotes, so the shell expands the glob before
+`find` runs and the command searches for files whose names match already-expanded
+filenames from the current directory. Teaches that the shell expands unquoted
+wildcards before passing them to any command, and that patterns given to
+`find -name` must be quoted.
 
 </details>
 
@@ -181,11 +178,10 @@ family name, or does it contain the whole row?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A script that extracts one column from a tab-delimited file prints the entire line
-unchanged; the bug is specifying `-d,` (comma delimiter) when the file uses tabs.
-Since there are no commas, `cut` treats each line as a single field and returns it
-whole. Teaches how to identify the actual delimiter in a file (using `cat -A` to
-show invisible characters) and how to specify a tab with `-d$'\t'`.
+The bug is specifying `-d,` (comma delimiter) when the file uses tabs. Since there
+are no commas, `cut` treats each line as a single field and returns it whole. Teaches
+how to identify the actual delimiter in a file (using `cat -A` to show invisible
+characters) and how to specify a tab with `-d$'\t'`.
 
 </details>
 
@@ -199,11 +195,10 @@ were searching for?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A script that should print error lines from a log file prints everything except the
-error lines; the bug is the `-v` flag, which inverts the match so `grep` shows
-lines that do not contain the pattern. Teaches what `-v` does and how to check
-the result of a `grep` command against a small known file to confirm it is
-filtering in the right direction.
+The bug is the `-v` flag, which inverts the match so `grep` shows lines that do not
+contain the pattern. The script prints everything except the error lines instead of
+just the error lines. Teaches what `-v` does and how to check the result of a `grep`
+command against a small known file to confirm it is filtering in the right direction.
 
 </details>
 
@@ -216,11 +211,10 @@ or do something else? Use `Ctrl-C` to stop it if it appears to hang.
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A script that expects a filename as its first argument hangs when run with no
-arguments because `$1` expands to nothing and `wc -l` with no filename reads from
-standard input, waiting indefinitely for keystrokes. Teaches how positional
-parameters expand to empty strings when omitted, and how to check for missing
-arguments with `echo "Usage: ..."` before using them.
+The bug is that `$1` expands to nothing when no argument is given and `wc -l` with
+no filename reads from standard input, so the script hangs waiting indefinitely for
+keystrokes. Teaches how positional parameters expand to empty strings when omitted,
+and how to check for missing arguments with `echo "Usage: ..."` before using them.
 
 </details>
 
@@ -236,10 +230,10 @@ the introduction, or with a different section?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A script that assembles a report from three section files produces them in the
-wrong order because the filenames are listed in the wrong sequence on the `cat`
-command line. Teaches that `cat` concatenates files in the order they are given,
-and how to verify the result with `head` before treating the output as correct.
+The bug is that the filenames are listed in the wrong sequence on the `cat` command
+line, so the sections appear in the wrong order. Teaches that `cat` concatenates
+files in the order they are given, and how to verify the result with `head` before
+treating the output as correct.
 
 </details>
 
@@ -252,11 +246,11 @@ after the first run? After the second run?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A script that collects statistics into a summary file produces a file with double
-the expected entries when run a second time; the bug is using `>>` inside the loop
-without clearing the file first, so each run appends to whatever the previous run
-left. Teaches how to decide between `>` and `>>`, and the pattern of redirecting
-the first write with `>` or removing the output file before the loop begins.
+The bug is using `>>` inside the loop without clearing the file first, so each run
+appends to whatever the previous run left and the file contains double the expected
+entries after a second run. Teaches how to decide between `>` and `>>`, and the
+pattern of redirecting the first write with `>` or removing the output file before
+the loop begins.
 
 </details>
 
@@ -269,11 +263,11 @@ output to `ls -s | sort -rn | head -n 3`. Are the results the same?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A pipeline intended to show the three largest files lists them in the wrong order
-because `sort -r` reverses alphabetical order rather than numeric order; a file of
-size 100 blocks sorts as a smaller number than 8 because `"8"` comes after `"1"` in
-alphabetical order. Teaches that `-r` alone reverses the current sort order and
-that `-rn` is needed to sort numbers in descending order.
+The bug is using `sort -r`, which reverses alphabetical order rather than numeric
+order. A file of size 100 blocks sorts as smaller than 8 because `"8"` comes after
+`"1"` in alphabetical order, so the three largest files are listed in the wrong
+order. Teaches that `-r` alone reverses the current sort order and that `-rn` is
+needed to sort numbers in descending order.
 
 </details>
 
@@ -287,10 +281,10 @@ in the original file. Are they the same?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A script that should extract a header and ten data rows produces only nine data
-rows; the bug is `head -n 10` when the header itself is one of the ten lines, so
-only nine data rows remain. Teaches how to account for header lines when counting
-with `head` and how to use `wc -l` to verify the actual line count of the output.
+The bug is `head -n 10` when the header itself is one of the ten lines, so only nine
+data rows remain instead of ten. Teaches how to account for header lines when
+counting with `head` and how to use `wc -l` to verify the actual line count of the
+output.
 
 </details>
 
@@ -303,11 +297,10 @@ or does it report an error about a non-existent file?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A script that loops over all its arguments fails when any argument contains a
-space; the bug is using `$@` without quotes, which causes word-splitting so each
-space-separated token is treated as a separate argument. Teaches the difference
-between `$@` and `"$@"`: the quoted form preserves each argument as a single
-token, even if it contains spaces.
+The bug is using `$@` without quotes, which causes word-splitting so each
+space-separated token is treated as a separate argument and the script fails for any
+argument that contains a space. Teaches the difference between `$@` and `"$@"`: the
+quoted form preserves each argument as a single token, even if it contains spaces.
 
 </details>
 
@@ -320,10 +313,10 @@ this script. Does the count include the directory?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A script that counts log files includes directories whose names end in `.log` in
-the count; the bug is that `-name "*.log"` matches any filesystem entry, not just
-regular files. Teaches the use of `-type f` to restrict `find` results to regular
-files and `-type d` to restrict to directories.
+The bug is that `-name "*.log"` matches any filesystem entry, not just regular
+files, so directories whose names end in `.log` are included in the count. Teaches
+the use of `-type f` to restrict `find` results to regular files and `-type d` to
+restrict to directories.
 
 </details>
 
@@ -336,9 +329,9 @@ What does the error message say?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A script that backs up a directory fails with the message "omitting directory";
-the bug is calling `cp` without the `-r` flag, which is required to copy a
-directory and its contents recursively. Teaches the difference between copying a
-file and copying a directory, and how to read `cp --help` to find the right flag.
+The bug is calling `cp` without the `-r` flag, which is required to copy a directory
+and its contents recursively, so the script fails with the message "omitting
+directory". Teaches the difference between copying a file and copying a directory,
+and how to read `cp --help` to find the right flag.
 
 </details>
