@@ -13,8 +13,8 @@
   <script>
     document.getElementById("fetch-btn").addEventListener("click", function () {
       // BUG: the server at localhost:8000 does not return Access-Control-Allow-Origin;
-      //      the browser blocks the response; curl and Python requests succeed because
-      //      they do not enforce the same-origin policy
+      // BUG: the browser blocks the response; curl and Python requests succeed because
+      // BUG: they do not enforce the same-origin policy
       fetch("http://localhost:8000/api/data")
         .then(function (r) { return r.json(); })
         .then(function (data) {

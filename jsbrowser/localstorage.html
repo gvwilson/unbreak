@@ -8,8 +8,8 @@
   <p id="output"></p>
   <script>
     // BUG: no try/catch around localStorage access;
-    //      private/incognito browsing throws SecurityError on some browsers,
-    //      and the error is silent — the page shows nothing instead of a fallback
+    // BUG: private/incognito browsing throws SecurityError on some browsers,
+    // BUG: and the error is silent — the page shows nothing instead of a fallback
     var visits = parseInt(localStorage.getItem("visits") || "0") + 1;
     localStorage.setItem("visits", String(visits));
     document.getElementById("output").textContent = "Visit count: " + visits;

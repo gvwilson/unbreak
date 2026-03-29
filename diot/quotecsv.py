@@ -10,7 +10,7 @@ def parse_scores(filename):
             parts = line.strip().split(",")
             name = parts[0]
             city = parts[1]        # BUG: when city contains a comma and is quoted,
-            score = int(parts[2])  #      parts[1] is only the first half of the city
+            score = int(parts[2])  # BUG: parts[1] is only the first half of the city
             records.append((name, city, score))
     return records
 

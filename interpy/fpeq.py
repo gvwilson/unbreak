@@ -12,8 +12,8 @@ def direct_total(amounts):
 
 
 if __name__ == "__main__":
-    # 0.1 cannot be represented exactly in binary floating point;
-    # accumulating it in different orders produces different rounding errors.
+    # BUG: 0.1 cannot be represented exactly in binary floating point;
+    # BUG: accumulating it in different orders produces different rounding errors.
     amounts = [0.1] * 10   # mathematically equals 1.0
 
     t1 = running_total(amounts)

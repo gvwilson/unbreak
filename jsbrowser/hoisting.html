@@ -11,16 +11,16 @@
     var fields = ["name", "email", "phone"];
     var handlers = [];
 
-    for (var i = 0; i < fields.length; i++) { // BUG: var is function-scoped and hoisted;
-      handlers.push(function () {              //      all closures share the same i,
-        return fields[i];                      //      which equals fields.length after the loop
+    for (var i = 0; i < fields.length; i++) {  // BUG: var is function-scoped and hoisted;
+      handlers.push(function () {              // BUG: all closures share the same i,
+        return fields[i];                      // BUG: which equals fields.length after the loop
       });
     }
 
     var list = document.getElementById("output");
     handlers.forEach(function (handler, idx) {
       var li = document.createElement("li");
-      li.textContent = fields[idx] + ": " + handler(); // always "undefined"
+      li.textContent = fields[idx] + ": " + handler(); // BUG: always "undefined"
       list.appendChild(li);
     });
   </script>

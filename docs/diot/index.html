@@ -57,7 +57,7 @@
             <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">city</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">score</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>  <span class="c1">#      parts[1] is only the first half of the city</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
             <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="n">city</span><span class="p">,</span> <span class="n">score</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">records</span>
 
@@ -90,19 +90,17 @@ hand-rolled parsers fail on real-world data and when to use standard library too
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
-    <span class="c1"># Normal case: elapsed time is positive.</span>
     <span class="n">elapsed</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">measure</span><span class="p">(</span><span class="n">work</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Normal:           </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">s  result=</span><span class="si">{</span><span class="n">result</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
 
-    <span class="c1"># Simulated NTP step: the system clock is adjusted backward mid-measurement.</span>
     <span class="n">call_count</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">stepped_back</span><span class="p">():</span>
         <span class="n">call_count</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="mf">1000.0</span> <span class="k">if</span> <span class="n">call_count</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="mf">999.7</span>   <span class="c1"># end &lt; start</span>
+        <span class="k">return</span> <span class="mf">1000.0</span> <span class="k">if</span> <span class="n">call_count</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="mf">999.7</span>
 
     <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s2">"time.time"</span><span class="p">,</span> <span class="n">stepped_back</span><span class="p">):</span>
         <span class="n">elapsed</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">measure</span><span class="p">(</span><span class="n">work</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"After clock step: </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">s  result=</span><span class="si">{</span><span class="n">result</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>  <span class="c1"># negative duration</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"After clock step: </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">s  result=</span><span class="si">{</span><span class="n">result</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"(time.monotonic() would never produce a negative duration)"</span><span class="p">)</span>
 </code></pre></div>
 </div>
@@ -117,14 +115,10 @@ to use <code>time.monotonic</code>.</p>
 <span class="k">def</span><span class="w"> </span><span class="nf">add_days</span><span class="p">(</span><span class="n">start_str</span><span class="p">,</span> <span class="n">days</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Return the wall-clock time `days` days after start_str (YYYY-MM-DD HH:MM)."""</span>
     <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">start_str</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">dt</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">days</span><span class="p">)</span>        <span class="c1">#      timedelta always adds exactly 86400s</span>
-                                            <span class="c1">#      per day, ignoring DST transitions</span>
+    <span class="k">return</span> <span class="n">dt</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">days</span><span class="p">)</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
-    <span class="c1"># 2024-03-10: US Eastern clocks spring forward at 02:00 (a 23-hour day).</span>
-    <span class="c1"># A job that was run at 2024-03-09 08:00 and should repeat "one day later"</span>
-    <span class="c1"># should fire at 08:00 EDT on 2024-03-10 — but that is only 23 hours away.</span>
 
     <span class="n">start</span> <span class="o">=</span> <span class="s2">"2024-03-09 08:00"</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">add_days</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -166,8 +160,6 @@ Teaches the difference between naive and timezone-aware datetimes.</p>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">extract_prices</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Return all prices found in the HTML as a list of floats."""</span>
-
-    <span class="c1">#      re.findall returns [] with no error, so the caller never knows it failed</span>
     <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'&lt;span class="price"&gt;\$([\d.]+)&lt;/span&gt;'</span>
     <span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">]</span>
@@ -182,7 +174,7 @@ Teaches the difference between naive and timezone-aware datetimes.</p>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Prices: </span><span class="si">{</span><span class="n">prices</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total:  $</span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">"No prices found."</span><span class="p">)</span>   <span class="c1"># silently wrong; three prices are in the file</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"No prices found."</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <p>A script that downloads a web page and parses it for prices fails silently on some
@@ -192,8 +184,6 @@ parsing and use assertions to catch unexpected input.</p>
 <h2 id="diot-overexp">Overly Permissive Regular Expression</h2>
 <div data-inc="overexp.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 
-
-<span class="c1">#      no requirement for a valid TLD, matches things like "foo@bar" or "x@y"</span>
 <span class="n">EMAIL_PATTERN</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"\w+@\w+"</span>
 
 
@@ -231,15 +221,11 @@ invalid inputs.</p>
 <span class="k">def</span><span class="w"> </span><span class="nf">test_average_single</span><span class="p">():</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">average</span><span class="p">([</span><span class="mi">10</span><span class="p">])</span>
 
-
 <span class="k">def</span><span class="w"> </span><span class="nf">test_average_simple</span><span class="p">():</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">average</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 
-    <span class="c1">#      (sum=6, len-1=2, 6/2=3 — actually 3.0, not 2.0; still not caught)</span>
-
 <span class="k">def</span><span class="w"> </span><span class="nf">test_average_known</span><span class="p">():</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">average</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
-
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
@@ -277,14 +263,12 @@ a test with no assertions is not a test and how to write assertions correctly.</
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">test_lookup_absent</span><span class="p">():</span>
-
     <span class="k">assert</span> <span class="n">lookup</span><span class="p">(</span><span class="s2">"absent"</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">REGISTRY</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>  <span class="c1"># fails when run after test_register()</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">REGISTRY</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">test_overwrite</span><span class="p">():</span>
     <span class="n">register</span><span class="p">(</span><span class="s2">"alpha"</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
-
     <span class="k">assert</span> <span class="n">lookup</span><span class="p">(</span><span class="s2">"alpha"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">99</span>
 
 
@@ -306,7 +290,6 @@ isolation, teardown, and the risks of shared global state.</p>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">load_config</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">"""Load configuration from the project config file."""</span>
-
     <span class="n">config_path</span> <span class="o">=</span> <span class="s2">"/Users/gvwilson/unbreak/diot/abspath.json"</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -341,7 +324,7 @@ working-directory-relative paths.</p>
     <span class="n">report</span> <span class="o">=</span> <span class="n">make_report</span><span class="p">(</span><span class="s2">"monthly_sales"</span><span class="p">,</span> <span class="mf">48291.75</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Report dict: </span><span class="si">{</span><span class="n">report</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"Serializing to JSON..."</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">report</span><span class="p">))</span>  <span class="c1"># TypeError: Object of type datetime is not JSON serializable</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">report</span><span class="p">))</span>
 </code></pre></div>
 </div>
 <p>A program writes JSON output that cannot be parsed back in; the bug is that the
@@ -359,12 +342,12 @@ to identify serialization errors and write custom JSON encoders.</p>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Double each item, logging progress at DEBUG level."""</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Starting process() with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span><span class="si">}</span><span class="s2"> items"</span><span class="p">)</span>  <span class="c1"># never appears</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Starting process() with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span><span class="si">}</span><span class="s2"> items"</span><span class="p">)</span>
     <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  processing item </span><span class="si">{</span><span class="n">item</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>               <span class="c1"># never appears</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  processing item </span><span class="si">{</span><span class="n">item</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
         <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Finished: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s2"> results"</span><span class="p">)</span>             <span class="c1"># never appears</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Finished: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s2"> results"</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">results</span>
 
 

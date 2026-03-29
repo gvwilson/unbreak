@@ -24,4 +24,4 @@ if __name__ == "__main__":
     dog.learn_trick("sit")
     dog.learn_trick("shake")
     print(f"Tricks: {dog.tricks}")
-    print(dog.speak())       # AttributeError: 'Dog' object has no attribute 'name'
+    print(dog.speak())       # BUG: AttributeError: 'Dog' object has no attribute 'name'

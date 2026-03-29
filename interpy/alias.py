@@ -8,4 +8,4 @@ if __name__ == "__main__":
     original = [1, 2, 3, 4, 5]
     result = reversed_copy(original)
     print(f"Result:   {result}")
-    print(f"Original: {original}")  # also reversed — same object, not a copy
+    print(f"Original: {original}")  # BUG: also reversed — same object, not a copy

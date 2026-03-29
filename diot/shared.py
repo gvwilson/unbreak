@@ -20,7 +20,7 @@ def test_register():
 def test_lookup_absent():
     # BUG: assumes REGISTRY is empty, but test_register() already added "alpha"
     assert lookup("absent") is None
-    assert len(REGISTRY) == 0  # fails when run after test_register()
+    assert len(REGISTRY) == 0  # BUG: fails when run after test_register()
 
 
 def test_overwrite():

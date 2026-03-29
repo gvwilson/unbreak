@@ -5,7 +5,7 @@ results = []
 
 def collect(value):
     results.append(value)  # BUG: modifies the child process's own copy of 'results';
-                            #      the parent's 'results' list is never touched
+                           # BUG: the parent's 'results' list is never touched
 
 
 if __name__ == "__main__":
@@ -18,7 +18,7 @@ if __name__ == "__main__":
     for p in processes:
         p.join()
 
-    print(f"results: {results}")          # always [] — parent's list is unchanged
+    print(f"results: {results}")  # BUG: always [] — parent's list is unchanged
     print(f"expected: [0, 1, 2, 3, 4] in some order")
     print()
     print("Each child process gets its own copy of memory.")

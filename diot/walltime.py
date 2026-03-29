@@ -16,17 +16,17 @@ def work():
 
 
 if __name__ == "__main__":
-    # Normal case: elapsed time is positive.
+    # BUG: Normal case: elapsed time is positive.
     elapsed, result = measure(work)
     print(f"Normal:           {elapsed:.4f}s  result={result!r}")
 
-    # Simulated NTP step: the system clock is adjusted backward mid-measurement.
+    # BUG: Simulated NTP step: the system clock is adjusted backward mid-measurement.
     call_count = [0]
     def stepped_back():
         call_count[0] += 1
-        return 1000.0 if call_count[0] == 1 else 999.7   # end < start
+        return 1000.0 if call_count[0] == 1 else 999.7   # BUG: end < start
 
     with patch("time.time", stepped_back):
         elapsed, result = measure(work)
-    print(f"After clock step: {elapsed:.4f}s  result={result!r}")  # negative duration
+    print(f"After clock step: {elapsed:.4f}s  result={result!r}")  # BUG: negative duration
     print("(time.monotonic() would never produce a negative duration)")

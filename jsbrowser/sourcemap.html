@@ -9,9 +9,9 @@
   <h1>Source map demo</h1>
   <button id="run-btn">Run</button>
   <p id="output"></p>
-  <!-- BUG: loading the minified bundle with no corresponding .map file;
-       when processItems throws, DevTools shows a column offset inside
-       sourcemap.min.js rather than the line in sourcemap_original.js -->
+  <!-- BUG: loading the minified bundle with no corresponding .map file; -->
+  <!-- BUG: when processItems throws, DevTools shows a column offset inside -->
+  <!-- BUG: sourcemap.min.js rather than the line in sourcemap_original.js -->
   <script src="sourcemap.min.js"></script>
 </body>
 </html>

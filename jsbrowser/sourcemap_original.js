@@ -4,7 +4,7 @@
 
 function processItems(items) {
   return items.map(function (item) {
-    return item.toUpperCase(); // TypeError at runtime: numbers have no toUpperCase
+    return item.toUpperCase(); // BUG: TypeError at runtime: numbers have no toUpperCase
   });
 }
 

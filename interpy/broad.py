@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 URLS = [
     "https://example.com/page1",
     "https://example.com/page2",
-    "not-a-valid-url",            # malformed: no scheme
+    "not-a-valid-url",            # BUG: malformed: no scheme
     "https://example.com/page4",
     "https://example.com/page5",
 ]
@@ -23,8 +23,8 @@ def scrape_all(urls):
     titles = []
     try:
         for url in urls:                   # BUG: try/except wraps the entire loop;
-            title = fetch_title(url)       #      first ValueError exits the loop
-            titles.append(title)           #      and silently discards remaining URLs
+            title = fetch_title(url)       # BUG: first ValueError exits the loop
+            titles.append(title)           # BUG: and silently discards remaining URLs
     except Exception:
         pass
     return titles

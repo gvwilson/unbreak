@@ -150,7 +150,7 @@ within a known range.</p>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">squared_sorted</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Result: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>  <span class="c1"># prints None</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Result: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <p>A script builds a list of squared numbers but the list is always empty; the bug
@@ -205,11 +205,10 @@ updated at the wrong time.</p>
             <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 
 
-
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">]</span>
     <span class="n">filtered</span> <span class="o">=</span> <span class="n">filter_negatives</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Result:   </span><span class="si">{</span><span class="n">filtered</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>   <span class="c1"># prints None</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Result:   </span><span class="si">{</span><span class="n">filtered</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Expected: [1, 4, 5, 2]"</span><span class="p">)</span>
 </code></pre></div>
 </div>
@@ -257,7 +256,6 @@ traceback to identify the missing key.</p>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
     <span class="n">user_id</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">"42"</span>
-    <span class="c1"># user_id is a string (from the command line); JSON IDs are integers</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">is_allowed</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="s2">"streq.json"</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"Access granted."</span> <span class="k">if</span> <span class="n">result</span> <span class="k">else</span> <span class="s2">"Access denied."</span><span class="p">)</span>
 </code></pre></div>
@@ -272,8 +270,6 @@ to Python types and why type conversion must happen explicitly at system boundar
 <span class="w">    </span><span class="sd">"""Return n! for non-negative n."""</span>
     <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="n">factorial</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="c1"># n == 0 reaches here and returns None implicitly,</span>
-    <span class="c1"># so factorial(1) = 1 * factorial(0) = 1 * None → TypeError</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
@@ -297,9 +293,9 @@ of <code>&gt;=</code>. Teaches how to identify missing or incorrect base cases i
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"First call:  </span><span class="si">{</span><span class="n">first</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>    <span class="c1"># ['a', 'b']</span>
 
     <span class="n">second</span> <span class="o">=</span> <span class="n">collect_items</span><span class="p">([</span><span class="s2">"c"</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Second call: </span><span class="si">{</span><span class="n">second</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>   <span class="c1"># expected ['c'], got ['a', 'b', 'c']</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Second call: </span><span class="si">{</span><span class="n">second</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"First again: </span><span class="si">{</span><span class="n">first</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>    <span class="c1"># also now ['a', 'b', 'c'] — same object</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"First again: </span><span class="si">{</span><span class="n">first</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <p>A function appends items to a result list but every call starts with leftover items

@@ -4,8 +4,8 @@ def memoize(func):
 
     def wrapper(*args, **kwargs):
         key = args                      # BUG: kwargs not included in key;
-        if key not in cache:            #      different keyword args return the
-            cache[key] = func(*args, **kwargs)  # same cached value
+        if key not in cache:            # BUG: different keyword args return the
+            cache[key] = func(*args, **kwargs)  # BUG: same cached value
         return cache[key]
 
     return wrapper
@@ -18,6 +18,6 @@ def power(base, exponent=2):
 
 
 if __name__ == "__main__":
-    print(f"power(3)            = {power(3)}")           # computes 3^2 = 9
+    print(f"power(3)            = {power(3)}")              # BUG: computes 3^2 = 9
     print(f"power(3, exponent=3)= {power(3, exponent=3)}")  # BUG: returns 9 not 27
-    print(f"power(3, 3)         = {power(3, 3)}")        # BUG: also returns 9
+    print(f"power(3, 3)         = {power(3, 3)}")           # BUG: also returns 9

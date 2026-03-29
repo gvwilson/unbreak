@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Content Security Policy Block</title>
-  <!-- BUG: this header (or the equivalent HTTP header sent by the production server)
-       blocks all inline scripts; the page renders blank in production while
-       working fine in development where no CSP header is set -->
+  <!-- BUG: this header (or the equivalent HTTP header sent by the production server) -->
+  <!-- BUG: blocks all inline scripts; the page renders blank in production while -->
+  <!-- BUG: working fine in development where no CSP header is set -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
 </head>
 <body>
@@ -14,8 +14,8 @@
   <p id="greeting"></p>
   <p id="timestamp"></p>
   <script>
-    /* BUG: this inline script is blocked by the CSP above;
-       the browser refuses to execute it and logs a CSP violation to the console */
+    // BUG: this inline script is blocked by the CSP above;
+    // BUG: the browser refuses to execute it and logs a CSP violation to the console
     document.getElementById("greeting").textContent = "Welcome back!";
     document.getElementById("timestamp").textContent =
       "Loaded at " + new Date().toLocaleTimeString();

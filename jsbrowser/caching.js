@@ -1,6 +1,6 @@
 // BUG: this file is served without cache-control headers, so browsers
-//      cache it aggressively; after a bug fix is deployed, users may
-//      continue to receive and run this stale version until the cache expires
+// BUG: cache it aggressively; after a bug fix is deployed, users may
+// BUG: continue to receive and run this stale version until the cache expires
 
 var APP_VERSION = "1.0.0";
 

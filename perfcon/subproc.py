@@ -8,8 +8,8 @@ def count_words(text):
         [sys.executable, "-c", "import sys; print(len(sys.stdin.read().split()))"],
         stdout=subprocess.PIPE,
         # BUG: stdin not set to subprocess.PIPE, so the child inherits the
-        # parent's terminal stdin and waits for keyboard input instead of
-        # reading 'text'; communicate() never sends the text to the child
+        # BUG: parent's terminal stdin and waits for keyboard input instead of
+        # BUG: reading 'text'; communicate() never sends the text to the child
     )
     try:
         stdout, _ = proc.communicate(timeout=3)

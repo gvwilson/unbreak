@@ -12,8 +12,8 @@
       value: 0,
       increment: function () {
         this.value += 1; // BUG: when passed as an event handler, 'this' is the
-                         //      button element, not the counter object;
-                         //      this.value is undefined, so undefined + 1 = NaN
+                         // BUG: button element, not the counter object;
+                         // BUG: this.value is undefined, so undefined + 1 = NaN
         document.getElementById("output").textContent = "Count: " + this.value;
       }
     };

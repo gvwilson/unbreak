@@ -5,9 +5,9 @@ import mockpatch_user
 
 def test_process():
     # BUG: patching fetch_data in mockpatch_source, but mockpatch_user already
-    # holds its own reference to the real function from the 'import' statement;
-    # the patch replaces the name in the source module but mockpatch_user.process()
-    # calls its own reference and never sees the mock
+    # BUG: holds its own reference to the real function from the 'import' statement;
+    # BUG: the patch replaces the name in the source module but mockpatch_user.process()
+    # BUG: calls its own reference and never sees the mock
     with patch("mockpatch_source.fetch_data", return_value=["mock", "data"]):
         result = mockpatch_user.process()
 

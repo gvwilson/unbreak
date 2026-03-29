@@ -5,15 +5,15 @@ import sys
 def summarize(input_file, output_file):
     """Write uppercased non-blank lines from input_file to output_file."""
     out = open(output_file, "w")       # BUG: not using 'with'; if an exception occurs,
-                                        #      out.close() is never called and the write
-                                        #      buffer may not be flushed to disk
+                                       # BUG: out.close() is never called and the write
+                                       # BUG: buffer may not be flushed to disk
     with open(input_file) as f:
         for line in f:
             line = line.rstrip("\n")
             if not line:
                 raise ValueError(f"Unexpected blank line in {input_file!r}")
             out.write(line.upper() + "\n")
-    out.close()                         # never reached when exception is raised above
+    out.close() # BUG: never reached when exception is raised above
 
 
 if __name__ == "__main__":

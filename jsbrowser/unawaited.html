@@ -22,7 +22,7 @@
     }
 
     // BUG: fetchPrices() returns a Promise, not the data;
-    //      forEach runs immediately on the Promise object, which has no forEach method
+    // BUG: forEach runs immediately on the Promise object, which has no forEach method
     var prices = fetchPrices();
     prices.forEach(function (item) { // TypeError: prices.forEach is not a function
       var li = document.createElement("li");

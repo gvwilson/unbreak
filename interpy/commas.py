@@ -10,8 +10,8 @@ def top_scorer(filename):
         for line in f:
             parts = line.strip().split(",")
             name = parts[0]
-            score = int(parts[1])  # BUG: ValueError when name contains a comma,
-            if score > best_score:  #      because parts[1] is then part of the name
+            score = int(parts[1])   # BUG: ValueError when name contains a comma,
+            if score > best_score:  # BUG: because parts[1] is then part of the name
                 best_score = score
                 best_name = name
     return best_name, best_score

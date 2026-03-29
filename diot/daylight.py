@@ -4,14 +4,14 @@ from datetime import datetime, timedelta
 def add_days(start_str, days):
     """Return the wall-clock time `days` days after start_str (YYYY-MM-DD HH:MM)."""
     dt = datetime.fromisoformat(start_str)  # BUG: naive datetime strips timezone info;
-    return dt + timedelta(days=days)        #      timedelta always adds exactly 86400s
-                                            #      per day, ignoring DST transitions
+    return dt + timedelta(days=days)        # BUG: timedelta always adds exactly 86400s
+                                            # BUG: per day, ignoring DST transitions
 
 
 if __name__ == "__main__":
-    # 2024-03-10: US Eastern clocks spring forward at 02:00 (a 23-hour day).
-    # A job that was run at 2024-03-09 08:00 and should repeat "one day later"
-    # should fire at 08:00 EDT on 2024-03-10 — but that is only 23 hours away.
+    # BUG: 2024-03-10: US Eastern clocks spring forward at 02:00 (a 23-hour day).
+    # BUG: A job that was run at 2024-03-09 08:00 and should repeat "one day later"
+    # BUG: should fire at 08:00 EDT on 2024-03-10 — but that is only 23 hours away.
 
     start = "2024-03-09 08:00"
     result = add_days(start, days=1)

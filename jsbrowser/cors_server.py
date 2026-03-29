@@ -17,7 +17,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             # BUG: missing Access-Control-Allow-Origin header;
-            #      browsers block the response; curl and Python requests do not
+            # BUG: browsers block the response; curl and Python requests do not
             self.end_headers()
             self.wfile.write(body)
         else:

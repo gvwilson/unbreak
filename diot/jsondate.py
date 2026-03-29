@@ -15,4 +15,4 @@ if __name__ == "__main__":
     report = make_report("monthly_sales", 48291.75)
     print(f"Report dict: {report}")
     print("Serializing to JSON...")
-    print(json.dumps(report))  # TypeError: Object of type datetime is not JSON serializable
+    print(json.dumps(report))  # BUG: TypeError: Object of type datetime is not JSON serializable

@@ -10,8 +10,8 @@ def increment():
     global counter
     for _ in range(INCREMENTS):
         counter = counter + 1  # BUG: read-modify-write is not atomic;
-                                #      another thread may read the same value
-                                #      between the read and the write
+                               # BUG: another thread may read the same value
+                               # BUG: between the read and the write
 
 
 if __name__ == "__main__":

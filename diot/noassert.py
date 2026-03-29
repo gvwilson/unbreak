@@ -10,7 +10,7 @@ def test_average_single():
 def test_average_simple():
     result = average([1, 2, 3])
     # BUG: no assertion; result is 2.0 but the correct answer is 2.0 here by coincidence
-    #      (sum=6, len-1=2, 6/2=3 — actually 3.0, not 2.0; still not caught)
+    # BUG: (sum=6, len-1=2, 6/2=3 — actually 3.0, not 2.0; still not caught)
 
 def test_average_known():
     result = average([2, 4, 6, 8])

@@ -1,7 +1,7 @@
 import re
 
 # BUG: pattern is too permissive — no anchors, allows any word chars on both sides,
-#      no requirement for a valid TLD, matches things like "foo@bar" or "x@y"
+# BUG: no requirement for a valid TLD, matches things like "foo@bar" or "x@y"
 EMAIL_PATTERN = r"\w+@\w+"
 
 

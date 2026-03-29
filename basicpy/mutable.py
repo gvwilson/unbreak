@@ -10,6 +10,6 @@ if __name__ == "__main__":
     print(f"First call:  {first}")    # ['a', 'b']
 
     second = collect_items(["c"])
-    print(f"Second call: {second}")   # expected ['c'], got ['a', 'b', 'c']
+    print(f"Second call: {second}")   # BUG: expected ['c'], got ['a', 'b', 'c']
 
-    print(f"First again: {first}")    # also now ['a', 'b', 'c'] — same object
+    print(f"First again: {first}")    # BUG: also now ['a', 'b', 'c'] — same object

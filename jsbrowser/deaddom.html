@@ -15,8 +15,8 @@
     var btn = document.getElementById("btn");
 
     // BUG: listener is attached to this specific element reference;
-    //      when innerHTML replaces the element, the new button is a
-    //      different object and carries no listener
+    // BUG: when innerHTML replaces the element, the new button is a
+    // BUG: different object and carries no listener
     btn.addEventListener("click", function () {
       count += 1;
       document.getElementById("output").textContent = "Clicks: " + count;
@@ -25,7 +25,7 @@
     setTimeout(function () {
       document.getElementById("container").innerHTML =
         '<button id="btn">Click me (refreshed)</button>';
-      // new button has no click listener — clicks do nothing
+	// BUG: new button has no click listener - clicks do nothing
     }, 3000);
   </script>
 </body>

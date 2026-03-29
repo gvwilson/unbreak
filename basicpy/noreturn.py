@@ -10,5 +10,5 @@ def filter_negatives(numbers):
 if __name__ == "__main__":
     data = [-3, 1, -1, 4, -1, 5, -9, 2, -6]
     filtered = filter_negatives(data)
-    print(f"Result:   {filtered}")   # prints None
+    print(f"Result:   {filtered}")   # BUG: prints None
     print(f"Expected: [1, 4, 5, 2]")

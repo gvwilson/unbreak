@@ -20,4 +20,4 @@ if __name__ == "__main__":
     alice.withdraw(30)
 
     print(f"Alice's history: {alice.history}")
-    print(f"Bob's history:   {bob.history}")  # shows Alice's transactions too
+    print(f"Bob's history:   {bob.history}")  # BUG: shows Alice's transactions too

@@ -104,9 +104,6 @@ the need for multiple passes.</p>
     <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
         <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">"-c"</span><span class="p">,</span> <span class="s2">"import sys; print(len(sys.stdin.read().split()))"</span><span class="p">],</span>
         <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
-
-        <span class="c1"># parent's terminal stdin and waits for keyboard input instead of</span>
-        <span class="c1"># reading 'text'; communicate() never sends the text to the child</span>
     <span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">stdout</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
@@ -145,8 +142,6 @@ Teaches how subprocess I/O streams work and how to use <code>communicate()</code
     <span class="k">global</span> <span class="n">counter</span>
     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">INCREMENTS</span><span class="p">):</span>
         <span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span>
-                                <span class="c1">#      another thread may read the same value</span>
-                                <span class="c1">#      between the read and the write</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
@@ -177,7 +172,6 @@ Teaches what a race condition is, why it is hard to reproduce, and how to use
 
 <span class="k">def</span><span class="w"> </span><span class="nf">collect</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
     <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-                            <span class="c1">#      the parent's 'results' list is never touched</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
@@ -190,7 +184,7 @@ Teaches what a race condition is, why it is hard to reproduce, and how to use
     <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">processes</span><span class="p">:</span>
         <span class="n">p</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"results: </span><span class="si">{</span><span class="n">results</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>          <span class="c1"># always [] — parent's list is unchanged</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"results: </span><span class="si">{</span><span class="n">results</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"expected: [0, 1, 2, 3, 4] in some order"</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">()</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"Each child process gets its own copy of memory."</span><span class="p">)</span>
@@ -220,10 +214,6 @@ state). Teaches the difference between threading and multiprocessing memory mode
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">test_process</span><span class="p">():</span>
-
-    <span class="c1"># holds its own reference to the real function from the 'import' statement;</span>
-    <span class="c1"># the patch replaces the name in the source module but mockpatch_user.process()</span>
-    <span class="c1"># calls its own reference and never sees the mock</span>
     <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s2">"mockpatch_source.fetch_data"</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="p">[</span><span class="s2">"mock"</span><span class="p">,</span> <span class="s2">"data"</span><span class="p">]):</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">mockpatch_user</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
 
