@@ -27,6 +27,7 @@
 <li><a href="../perfcon/">Performance and Concurrency</a></li>
 <li><a href="../jsbrowser/">JavaScript Fundamentals</a></li>
 <li><a href="../datasci/">Data Science</a></li>
+<li><a href="../sql/">SQL</a></li>
 <li><a href="../finale/">Conclusion</a></li>
 </ul>
 </span>
@@ -45,6 +46,8 @@
 <main id="main-content">
 <h1>Data, I/O, and Testing</h1>
 <h2 id="diot-quotecsv">Quoted Fields in CSV Parsing</h2>
+<p>Run the parser with the provided CSV file. Do all rows produce the correct number
+of fields? Pay particular attention to rows that contain commas.</p>
 <div data-inc="quotecsv.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
 
@@ -68,10 +71,22 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">city</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">score</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<div data-inc="quotecsv.csv"><div class="codehilite"><pre class="" tabindex="0"><span></span><code>name,city,score
+Alice,New York,95
+Bob,"Los Angeles, CA",87
+Carol,Chicago,92
+Dave,"Austin, TX",88
+</code></pre></div>
+</div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A CSV-parsing function misreads rows that contain commas inside quoted fields;
 the bug is using <code>line.split(',')</code> instead of the <code>csv</code> module. Teaches why
 hand-rolled parsers fail on real-world data and when to use standard library tools.</p>
+</details>
 <h2 id="diot-walltime">Wall Time vs. Monotonic Time</h2>
+<p>Run the benchmarking function several times and examine the elapsed time values.
+Do any of them look unusual?</p>
 <div data-inc="walltime.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">unittest.mock</span><span class="w"> </span><span class="kn">import</span> <span class="n">patch</span>
 
@@ -104,11 +119,17 @@ hand-rolled parsers fail on real-world data and when to use standard library too
     <span class="nb">print</span><span class="p">(</span><span class="s2">"(time.monotonic() would never produce a negative duration)"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A function that measures elapsed time reports negative durations when the clock
 wraps; the bug is using <code>time.time()</code> without accounting for system clock
 adjustments. Teaches the difference between wall time and monotonic time and when
 to use <code>time.monotonic</code>.</p>
+</details>
 <h2 id="diot-daylight">Naive Datetime and Daylight Saving</h2>
+<p>Call the date arithmetic function with a date near a daylight saving transition.
+Compare the result from the naive datetime path with the result from the
+timezone-aware path.</p>
 <div data-inc="daylight.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 
 
@@ -150,10 +171,15 @@ to use <code>time.monotonic</code>.</p>
         <span class="nb">print</span><span class="p">(</span><span class="s2">"Install Python 3.9+ for zoneinfo demonstration"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A date-arithmetic function produces results that are off by one day around daylight
 saving time transitions; the bug is adding a <code>timedelta</code> to a naive datetime.
 Teaches the difference between naive and timezone-aware datetimes.</p>
+</details>
 <h2 id="diot-missparse">Missing Elements in HTML Parsing</h2>
+<p>Run the script with the provided HTML file and check whether it finds all the
+expected elements. What happens when an element is not found?</p>
 <div data-inc="missparse.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
@@ -177,11 +203,35 @@ Teaches the difference between naive and timezone-aware datetimes.</p>
         <span class="nb">print</span><span class="p">(</span><span class="s2">"No prices found."</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<div data-inc="missparse.html"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"product"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Widget<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"product-price"</span><span class="p">&gt;</span>$9.99<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"product"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Gadget<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"product-price"</span><span class="p">&gt;</span>$24.99<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"product"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Doohickey<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"product-price"</span><span class="p">&gt;</span>$4.99<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+</div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A script that downloads a web page and parses it for prices fails silently on some
 pages; the bug is that the HTML structure varies and the selector matches zero
 elements without raising an error. Teaches how to handle missing data in HTML
 parsing and use assertions to catch unexpected input.</p>
+</details>
 <h2 id="diot-overexp">Overly Permissive Regular Expression</h2>
+<p>Test the regular expression against a few valid email addresses and a few strings
+that look like email addresses but are not. Does it reject the invalid ones?</p>
 <div data-inc="overexp.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 
 <span class="n">EMAIL_PATTERN</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"\w+@\w+"</span>
@@ -208,11 +258,16 @@ parsing and use assertions to catch unexpected input.</p>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">text</span><span class="si">!r:</span><span class="s2">35s</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">found</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A regular expression meant to extract email addresses also matches invalid strings;
 the bug is a pattern that is too permissive (e.g., missing anchors or character
 class constraints). Teaches how to test regular expressions with both valid and
 invalid inputs.</p>
+</details>
 <h2 id="diot-noassert">Test with No Assertions</h2>
+<p>Run the test suite. Does it pass? Now deliberately break the function the test is
+testing. Does the test still pass?</p>
 <div data-inc="noassert.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">average</span><span class="p">(</span><span class="n">numbers</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Return the mean of a non-empty list of numbers."""</span>
     <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
@@ -239,10 +294,15 @@ invalid inputs.</p>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"average([2, 4, 6, 8]) = </span><span class="si">{</span><span class="n">average</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">])</span><span class="si">}</span><span class="s2">  (expected 5.0)"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A unit test always passes even when the function is broken; the bug is that the
 test calls the function but never asserts anything about the result. Teaches that
 a test with no assertions is not a test and how to write assertions correctly.</p>
+</details>
 <h2 id="diot-shared">Shared State Between Tests</h2>
+<p>Run each test on its own. Then run both together. Do you get the same results both
+ways?</p>
 <div data-inc="shared.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1"># Module-level registry — shared state that persists between tests</span>
 <span class="n">REGISTRY</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -281,10 +341,15 @@ a test with no assertions is not a test and how to write assertions correctly.</
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"FAIL </span><span class="si">{</span><span class="n">test</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A test suite that passes in isolation fails when run together; the bug is that one
 test modifies a module-level variable that another test depends on. Teaches test
 isolation, teardown, and the risks of shared global state.</p>
+</details>
 <h2 id="diot-abspath">Hardcoded Absolute Path</h2>
+<p>Run the script from a different working directory than the one where the script
+file is saved. Does it find its configuration file?</p>
 <div data-inc="abspath.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
 
@@ -302,11 +367,23 @@ isolation, teardown, and the risks of shared global state.</p>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"output_dir:  </span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">'output_dir'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<div data-inc="abspath.json"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">"threshold"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"max_retries"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"output_dir"</span><span class="p">:</span><span class="w"> </span><span class="s2">"results"</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A function that reads a configuration file behaves differently on different
 machines; the bug is using a hardcoded absolute path instead of a path relative
 to the script's location. Teaches the difference between <code>__file__</code>-relative and
 working-directory-relative paths.</p>
+</details>
 <h2 id="diot-jsondate">Unserializable Datetime in JSON</h2>
+<p>Run the script and read the error message. Which value in the data structure cannot
+be serialized?</p>
 <div data-inc="jsondate.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
 
@@ -327,10 +404,15 @@ working-directory-relative paths.</p>
     <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">report</span><span class="p">))</span>
 </code></pre></div>
 </div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A program writes JSON output that cannot be parsed back in; the bug is that the
 data contains <code>datetime</code> objects, which are not JSON-serializable. Teaches how
 to identify serialization errors and write custom JSON encoders.</p>
+</details>
 <h2 id="diot-loglevel">Wrong Logging Level</h2>
+<p>Run the script and then look at the log file. Are the messages you expected to see
+present?</p>
 <div data-inc="loglevel.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
 <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
@@ -359,9 +441,12 @@ to identify serialization errors and write custom JSON encoders.</p>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Effective log level: </span><span class="si">{</span><span class="n">logging</span><span class="o">.</span><span class="n">getLevelName</span><span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">getEffectiveLevel</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A logging call that should record errors never appears in the log file; the bug is
 that the log level is set to <code>WARNING</code> but the calls use <code>logger.debug()</code>. Teaches
 how Python's logging hierarchy works and how to verify the effective log level.</p>
+</details>
 </main>
 <footer aria-label="Page navigation">
 <div class="row">

@@ -27,6 +27,7 @@
 <li><a class="active" href="../perfcon/">Performance and Concurrency</a></li>
 <li><a href="../jsbrowser/">JavaScript Fundamentals</a></li>
 <li><a href="../datasci/">Data Science</a></li>
+<li><a href="../sql/">SQL</a></li>
 <li><a href="../finale/">Conclusion</a></li>
 </ul>
 </span>
@@ -45,6 +46,8 @@
 <main id="main-content">
 <h1>Performance, Concurrency, and System Interaction</h1>
 <h2 id="perfcon-repscans">Repeated Scans</h2>
+<p>Run the word-frequency function on the provided text file and time how long it
+takes. Then run <code>cProfile</code> on it to see which lines consume the most time.</p>
 <div data-inc="repscans.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
@@ -88,13 +91,24 @@
     <span class="nb">print</span><span class="p">(</span><span class="s2">"Fix: replace the loop with collections.Counter(text.split()).most_common(1)"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<div data-inc="repscans.txt"><div class="codehilite"><pre class="" tabindex="0"><span></span><code>the quick brown fox jumps over the lazy dog the fox was very quick
+and the dog was very lazy the brown fox leaped high over the sleeping dog
+a quick brown fox is quicker than a lazy brown dog or so they say
+the dog slept under the tree while the fox ran quickly through the field
+over and over the fox jumped and the dog slept on and on
+</code></pre></div>
+</div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A function finds the most common word in a text file by calling <code>text.count(word)</code>
 for every unique word it encounters, re-scanning the entire text each time; on a
 file of 50,000 words it takes several seconds, while a single pass with
 <code>collections.Counter</code> is nearly instant. Teaches how to identify repeated-scan
 inefficiency with <code>cProfile</code> and how choosing the right data structure eliminates
 the need for multiple passes.</p>
+</details>
 <h2 id="perfcon-subproc">Subprocess Waiting for Input</h2>
+<p>Run this script. Does it return promptly, or does it hang?</p>
 <div data-inc="subproc.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
@@ -126,10 +140,15 @@ the need for multiple passes.</p>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Word count: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A command-line tool that calls a subprocess hangs and never returns; the bug is
 that the subprocess is waiting for input on stdin that the parent never provides.
 Teaches how subprocess I/O streams work and how to use <code>communicate()</code> safely.</p>
+</details>
 <h2 id="perfcon-race">Race Condition in Shared Counter</h2>
+<p>Run this script several times and record the final counter value each time. Is the
+value always the same? Is it always the value you expect?</p>
 <div data-inc="race.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
 
 <span class="n">THREADS</span> <span class="o">=</span> <span class="mi">5</span>
@@ -160,11 +179,16 @@ Teaches how subprocess I/O streams work and how to use <code>communicate()</code
         <span class="nb">print</span><span class="p">(</span><span class="s2">"(got lucky this run — try again or increase INCREMENTS)"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A script that spawns several threads to update a shared counter produces wrong
 totals; the bug is a race condition caused by unsynchronized read-modify-write.
 Teaches what a race condition is, why it is hard to reproduce, and how to use
 <code>threading.Lock</code> to fix it.</p>
+</details>
 <h2 id="perfcon-multiproc">Multiprocessing Memory Model</h2>
+<p>Run this script and compare the contents of the shared list before and after the
+worker processes run. Did the workers modify the list you passed in?</p>
 <div data-inc="multiproc.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span>
 
 <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
@@ -191,10 +215,16 @@ Teaches what a race condition is, why it is hard to reproduce, and how to use
     <span class="nb">print</span><span class="p">(</span><span class="s2">"Fix: use multiprocessing.Manager().list() or return values via a Queue."</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A program uses <code>multiprocessing</code> but child processes do not see changes made to a
 shared list; the bug is that each process has its own copy of memory (no shared
 state). Teaches the difference between threading and multiprocessing memory models.</p>
+</details>
 <h2 id="perfcon-mockpatch">Mock Patched at Wrong Location</h2>
+<p>Run the test. Does it pass? Add a print statement inside the mock to check whether
+the mock is actually being called. Then look at the return value of the function
+under test.</p>
 <div data-inc="mockpatch_source.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">fetch_data</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">"""Return records from the data store."""</span>
     <span class="k">return</span> <span class="p">[</span><span class="s2">"alpha"</span><span class="p">,</span> <span class="s2">"beta"</span><span class="p">,</span> <span class="s2">"gamma"</span><span class="p">]</span>
@@ -234,10 +264,13 @@ state). Teaches the difference between threading and multiprocessing memory mode
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"FAIL: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A script that patches a function with <code>unittest.mock.patch</code> has no effect because
 the patch is applied to the wrong module; the bug is patching where the function
 is defined instead of where it is imported. Teaches how Python's import system
 works and where mocks must be applied.</p>
+</details>
 </main>
 <footer aria-label="Page navigation">
 <div class="row">

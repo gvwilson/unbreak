@@ -27,6 +27,7 @@
 <li><a href="../perfcon/">Performance and Concurrency</a></li>
 <li><a href="../jsbrowser/">JavaScript Fundamentals</a></li>
 <li><a href="../datasci/">Data Science</a></li>
+<li><a href="../sql/">SQL</a></li>
 <li><a href="../finale/">Conclusion</a></li>
 </ul>
 </span>
@@ -45,6 +46,8 @@
 <main id="main-content">
 <h1>Intermediate Python</h1>
 <h2 id="interpy-alias">Aliasing and In-Place Reversal</h2>
+<p>Call the function and then print both the original list and the returned value.
+Has the original list changed?</p>
 <div data-inc="alias.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">reversed_copy</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Return a reversed copy of data, leaving the original unchanged."""</span>
     <span class="n">data</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
@@ -58,11 +61,16 @@
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Original: </span><span class="si">{</span><span class="n">original</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A function is supposed to reverse a list and return the reversed copy, but the
 original list is also reversed after the call; the bug is using <code>list.reverse()</code>
 (mutates in place) instead of <code>reversed()</code> or slicing. Teaches aliasing and the
 difference between in-place and copy operations.</p>
+</details>
 <h2 id="interpy-sharemut">Shared Mutable Class Attribute</h2>
+<p>Create two account objects, add different transactions to each, and then print the
+transaction history of each. Does each account show only its own transactions?</p>
 <div data-inc="sharemut.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BankAccount</span><span class="p">:</span>
     <span class="n">history</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -88,12 +96,17 @@ difference between in-place and copy operations.</p>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Bob's history:   </span><span class="si">{</span><span class="n">bob</span><span class="o">.</span><span class="n">history</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A class that records the transaction history of a bank account shows every account's
 transactions in every other account; the bug is that <code>history = []</code> is defined at
 class level, so all instances share the same list object instead of each having
 their own. Teaches the difference between shared mutable class attributes and
 per-instance attributes initialized in <code>__init__</code>.</p>
+</details>
 <h2 id="interpy-fpeq">Floating-Point Equality</h2>
+<p>Run this script and examine the two computed values. Are they exactly equal? Try
+printing each value with many decimal places.</p>
 <div data-inc="fpeq.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">running_total</span><span class="p">(</span><span class="n">amounts</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Return the total by accumulating amounts one at a time."""</span>
     <span class="n">result</span> <span class="o">=</span> <span class="mf">0.0</span>
@@ -127,10 +140,15 @@ per-instance attributes initialized in <code>__init__</code>.</p>
         <span class="nb">print</span><span class="p">(</span><span class="s2">"Totals differ!"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A program compares two floating-point results that should be equal but the
 comparison returns <code>False</code>; the bug is using <code>==</code> on floats computed by different
 routes. Teaches floating-point representation errors and how to use <code>math.isclose</code>.</p>
+</details>
 <h2 id="interpy-broad">Overly Broad Exception Handler</h2>
+<p>Run the scraper with the provided URL list, which includes one malformed URL. Does
+it process all the valid URLs? Check whether anything is silently discarded.</p>
 <div data-inc="broad.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlparse</span>
 
 
@@ -171,12 +189,17 @@ routes. Teaches floating-point representation errors and how to use <code>math.i
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A web scraper wraps its fetch-and-parse loop in <code>try/except Exception: pass</code> to
 tolerate network timeouts, but silently stops processing after the first malformed
 URL because the <code>ValueError</code> raised by the URL parser is also caught and discarded.
 Teaches how overly broad exception handlers swallow unrelated bugs, and how to use
 <code>logging.exception</code> to record errors instead of ignoring them.</p>
+</details>
 <h2 id="interpy-commas">Commas Inside CSV Fields</h2>
+<p>Run the script with the provided CSV file and read the traceback. Which line in the
+file triggers the error? Examine that line carefully.</p>
 <div data-inc="commas.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
 
@@ -202,12 +225,25 @@ Teaches how overly broad exception handlers swallow unrelated bugs, and how to u
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Top scorer: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">score</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<div data-inc="commas.csv"><div class="codehilite"><pre class="" tabindex="0"><span></span><code>name,score
+Alice Johnson,95
+Bob Smith,87
+Martinez, Carlos,92
+Wong, Jennifer,88
+Diana Prince,79
+</code></pre></div>
+</div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A script reads a two-column CSV file of names and scores and reports the top scorer,
 but crashes with an <code>IndexError</code> on some rows; the bug is that names containing a
 comma (e.g., "Smith, John") cause <code>line.split(',')</code> to produce three fields instead
 of two, so the index used for the score points at the wrong element. Teaches why
 hand-rolled CSV parsing fails on real data and when to use the <code>csv</code> module.</p>
+</details>
 <h2 id="interpy-lexisort">Lexicographic vs. Numeric Sort</h2>
+<p>Run the sort function and examine the output order. Where does <code>file10</code> appear
+relative to <code>file2</code>?</p>
 <div data-inc="lexisort.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sorted_logs</span><span class="p">(</span><span class="n">filenames</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Return filenames sorted by their embedded sequence number."""</span>
     <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">filenames</span><span class="p">)</span>
@@ -223,12 +259,17 @@ hand-rolled CSV parsing fails on real data and when to use the <code>csv</code> 
     <span class="nb">print</span><span class="p">(</span><span class="s2">"Expected numeric order: file1, file2, file3, file10, file20"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A function sorts filenames that contain embedded numbers (e.g., <code>file2.txt</code>,
 <code>file10.txt</code>, <code>file1.txt</code>) expecting numeric order, but the default <code>sort()</code> gives
 lexicographic order, placing <code>file10</code> before <code>file2</code>. Teaches the difference between
 lexicographic and numeric sort order and how to write a <code>key</code> function that extracts
 the embedded integer so the files sort as <code>file1</code>, <code>file2</code>, <code>file10</code>.</p>
+</details>
 <h2 id="interpy-exhaust">Exhausted Generator</h2>
+<p>Run the script and look at both outputs. Does each one produce the values you
+expected?</p>
 <div data-inc="exhaust.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">positive_numbers</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Yield each positive number from data."""</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
@@ -250,10 +291,15 @@ the embedded integer so the files sort as <code>file1</code>, <code>file2</code>
         <span class="nb">print</span><span class="p">(</span><span class="s2">"Cannot compute mean: generator was exhausted before count was taken"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A generator function is used twice in the same expression, but the second use
 produces no results; the bug is that generators are exhausted after one pass.
 Teaches that generators are single-use iterators and when to use lists instead.</p>
+</details>
 <h2 id="interpy-cachekey">Incomplete Cache Key</h2>
+<p>Call the cached function twice with the same positional argument but a different
+keyword argument each time. Do both calls return the correct result?</p>
 <div data-inc="cachekey.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">memoize</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Cache the results of func calls."""</span>
     <span class="n">cache</span> <span class="o">=</span> <span class="p">{}</span>
@@ -279,10 +325,15 @@ Teaches that generators are single-use iterators and when to use lists instead.<
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"power(3, 3)         = </span><span class="si">{</span><span class="n">power</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A caching decorator returns the same result for different inputs; the bug is that
 the cache key does not include all function arguments (e.g., ignores keyword
 arguments). Teaches how to construct correct cache keys and test with varied inputs.</p>
+</details>
 <h2 id="interpy-super">Forgetting <code>super().__init__()</code></h2>
+<p>Create an instance of the subclass and try to access an attribute that is set in
+the parent's <code>__init__</code>. Does it exist?</p>
 <div data-inc="super.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Animal</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">sound</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
@@ -311,11 +362,16 @@ arguments). Teaches how to construct correct cache keys and test with varied inp
     <span class="nb">print</span><span class="p">(</span><span class="n">dog</span><span class="o">.</span><span class="n">speak</span><span class="p">())</span>
 </code></pre></div>
 </div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A subclass calls a method that exists in the parent, but the parent's <code>__init__</code>
 is never called, leaving required attributes missing; the bug is forgetting
 <code>super().__init__()</code>. Teaches Python's method resolution order and how to
 use <code>super()</code> correctly.</p>
+</details>
 <h2 id="interpy-unclosed">File Not Closed on Exception</h2>
+<p>Run the script so that it raises an exception part-way through writing. Then open
+the output file. Does it contain complete data?</p>
 <div data-inc="unclosed.py" data-scrub="\s*# BUG.*"><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
@@ -349,11 +405,21 @@ use <code>super()</code> correctly.</p>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">line</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<div data-inc="unclosed.txt"><div class="codehilite"><pre class="" tabindex="0"><span></span><code>first line
+second line
+
+fourth line after blank
+fifth line
+</code></pre></div>
+</div>
+<details class="explanation">
+<summary>Show explanation</summary>
 <p>A function writes a processed summary to a file using <code>open()</code> without a <code>with</code>
 statement; when an unhandled exception occurs midway through, the output file is
 left partially written because the write buffer is never flushed and <code>close()</code> is
 never called. Teaches why context managers guarantee file cleanup even when
 exceptions occur, and how to use <code>with open(...) as f</code> to prevent data loss.</p>
+</details>
 </main>
 <footer aria-label="Page navigation">
 <div class="row">

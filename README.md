@@ -16,6 +16,7 @@ FIXME
 1.  [Performance and Concurrency](@/perfcon/)
 1.  [JavaScript Fundamentals](@/jsbrowser/)
 1.  [Data Science](@/datasci/)
+1.  [SQL](@/sql/)
 1.  [Conclusion](@/finale/)
 </div>
 
