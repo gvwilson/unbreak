@@ -6,6 +6,9 @@
 
 FIXME
 
+<div class="row" markdown="1">
+<div class="col-6" markdown="1">
+
 ## Chapters
 
 <div id="lessons" markdown="1">
@@ -20,6 +23,9 @@ FIXME
 1.  [Conclusion](@/finale/)
 </div>
 
+</div>
+<div class="col-6" markdown="1">
+
 ## Appendices
 
 <div id="appendices" markdown="1">
@@ -28,6 +34,9 @@ FIXME
 1.  [Contributing](@/contributing/)
 1.  [Bibliography](@/bibliography/)
 1.  [Glossary](@/glossary/)
+</div>
+
+</div>
 </div>
 
 ## Acknowledgments {: #acknowledgments}
