@@ -1,0 +1,7 @@
+sparrow observed at grid B4
+robin observed at grid A2
+crow observed at grid C1
+sparrow observed at grid D3
+robin observed at grid B1
+crow observed at grid A4
+sparrow observed at grid C3

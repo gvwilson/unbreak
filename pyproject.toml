@@ -35,6 +35,7 @@ skips = [
     "*.js",
     "*.json",
     "*.py",
+    "*.sh",
     "*.sql",
     "*.txt",
     ".ruff_cache/**",

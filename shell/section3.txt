@@ -1,0 +1,5 @@
+Results
+=======
+Site A showed elevated salinity compared to baseline.
+Site B was within normal range on all measures.
+Site C had anomalously low temperatures on day 2.
