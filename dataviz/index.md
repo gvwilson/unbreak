@@ -14,6 +14,9 @@ three times taller. Any bar chart where the Y-axis does not start at zero
 exaggerates relative differences. The effect is proportional to how far the
 baseline is raised: the higher the floor, the more dramatic the distortion.
 
+Now open `truncated_axis_fixed.html` to see the same data with the Y-axis
+starting at 0.
+
 </details>
 
 ## Cherry-Picked Time Window {: #dataviz-cherry}
@@ -30,6 +33,8 @@ bottom of a trough guarantees an upward slope. This pattern is common in financi
 and performance reporting: selecting the window that flatters the story while
 omitting the longer context that contradicts it.
 
+Now open `cherry_pick_fixed.html` to see the full 60-month history.
+
 </details>
 
 ## Dual Y-Axis With Independent Scales {: #dataviz-dualaxis}
@@ -45,6 +50,9 @@ the two Y-axes were independently scaled so that both lines fit neatly in the sa
 chart area. Any two time series can be made to look correlated this way by adjusting
 the scales. A reader who does not notice the dual axes and different units will
 conclude the variables are related when they are not.
+
+Now open `dual_axis_fixed.html` to see the two metrics displayed in separate panels
+with independent Y-axes that do not invite false comparison.
 
 </details>
 
@@ -64,6 +72,9 @@ and the scores. Adding a color encoding for difficulty would reveal three upward
 slopes instead of one downward one. This is Simpson's Paradox: an aggregate trend
 that disappears or reverses when a confounding variable is introduced.
 
+Now open `simpsons_paradox_fixed.html` to see the same data colored by difficulty
+group, with a separate regression line for each group.
+
 </details>
 
 ## Mean Conceals a Bimodal Distribution {: #dataviz-meanconceals}
@@ -80,6 +91,9 @@ their situations are completely different — Group B has two distinct subpopula
 that the mean obscures entirely. A strip plot, histogram, or violin chart would make
 the bimodal structure immediately visible. Reporting only the mean discards the
 information most relevant to understanding Group B.
+
+Now open `mean_hides_distribution_fixed.html` to see a strip plot of the individual
+scores for each group.
 
 </details>
 
@@ -102,6 +116,8 @@ five times higher. Absolute counts favor larger populations and are only meaning
 when comparing groups of similar size. Any comparison that involves groups of
 different sizes requires a denominator: rate, proportion, or per-capita figure.
 
+Now open `absolute_vs_rate_fixed.html` to see the per-capita rate for each city.
+
 </details>
 
 ## Cumulative Chart Hides a Slowdown {: #dataviz-cumulative}
@@ -118,6 +134,9 @@ new additions stop entirely. Weeks 1–26 add 400–600 users each; weeks 27–5
 like a healthy upward trend throughout. Plotting the weekly rate instead reveals the
 collapse in new signups. Cumulative charts are useful for showing totals but
 systematically hide any information about acceleration, deceleration, or stagnation.
+
+Now open `cumulative_hides_slowdown_fixed.html` to see the weekly new signups for
+the same period.
 
 </details>
 
@@ -137,6 +156,9 @@ misleading impression of uniform coverage. Reducing opacity to around 0.05, usin
 Overplotting is common whenever a scatter plot contains more than a few hundred
 observations.
 
+Now open `overplotting_fixed.html` to see the same data with marker opacity reduced
+to 0.05.
+
 </details>
 
 ## Pie Chart Obscures Ranking {: #dataviz-pie}
@@ -153,6 +175,8 @@ but most readers cannot reliably rank the middle five categories without reading
 labels. A horizontal bar chart sorted by value requires only length perception, which
 humans perform much more accurately. Pie charts are defensible only when there are
 two or three slices with clearly different sizes.
+
+Now open `pie_chart_fixed.html` to see the same data as a sorted horizontal bar chart.
 
 </details>
 
@@ -171,5 +195,8 @@ the individuals within the group is the ecological fallacy. The individual-level
 used to construct this chart has no correlation between income and vote choice; the
 regional pattern emerges from geographic sorting and other confounders. Confirming
 any claim about individual behavior requires individual-level data.
+
+Now open `ecological_fallacy_fixed.html` to see the individual-level data underlying
+the regional aggregates. The trend line is flat.
 
 </details>

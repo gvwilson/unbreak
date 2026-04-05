@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-3ea397e68ffd710f2edb68333407b2ba"}, "mark": {"type": "bar"}, "encoding": {"color": {"field": "city", "legend": null, "type": "nominal"}, "x": {"field": "city", "sort": "-y", "title": "City", "type": "nominal"}, "y": {"field": "rate", "title": "Accidents per 100,000 Residents", "type": "quantitative"}}, "height": 300, "title": "Traffic Accidents per 100,000 Residents", "width": 350, "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json", "datasets": {"data-3ea397e68ffd710f2edb68333407b2ba": [{"city": "Metro City", "accidents": 820, "population": 2100000, "rate": 39.04761904761905}, {"city": "River Town", "accidents": 210, "population": 180000, "rate": 116.66666666666667}, {"city": "Oak Valley", "accidents": 95, "population": 52000, "rate": 182.69230769230768}, {"city": "Pine Bluff", "accidents": 430, "population": 640000, "rate": 67.1875}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

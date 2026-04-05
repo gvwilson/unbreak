@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-74a86f2f2035999eea57d8240b273ab4"}, "mark": {"type": "bar"}, "encoding": {"color": {"field": "group", "legend": null, "type": "nominal"}, "x": {"field": "group", "title": "Group", "type": "nominal"}, "y": {"aggregate": "mean", "field": "score", "scale": {"domain": [0, 100]}, "title": "Mean Score", "type": "quantitative"}}, "height": 300, "title": "Average Score by Group", "width": 250, "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json", "datasets": {"data-74a86f2f2035999eea57d8240b273ab4": [{"group": "A", "score": 68.3}, {"group": "A", "score": 82.5}, {"group": "A", "score": 72.7}, {"group": "A", "score": 60.1}, {"group": "A", "score": 53.2}, {"group": "A", "score": 55.5}, {"group": "A", "score": 63.4}, {"group": "A", "score": 59.6}, {"group": "A", "score": 58.7}, {"group": "A", "score": 75.4}, {"group": "A", "score": 58.9}, {"group": "A", "score": 55.2}, {"group": "A", "score": 44.8}, {"group": "A", "score": 60.9}, {"group": "A", "score": 63.3}, {"group": "A", "score": 61.1}, {"group": "A", "score": 49.5}, {"group": "A", "score": 64.7}, {"group": "A", "score": 48.4}, {"group": "A", "score": 79.8}, {"group": "A", "score": 65.8}, {"group": "A", "score": 64.9}, {"group": "A", "score": 68.9}, {"group": "A", "score": 72.2}, {"group": "A", "score": 63.3}, {"group": "A", "score": 68.8}, {"group": "A", "score": 56.9}, {"group": "A", "score": 57.4}, {"group": "A", "score": 58.9}, {"group": "A", "score": 58.2}, {"group": "A", "score": 69.9}, {"group": "A", "score": 68.9}, {"group": "A", "score": 50.6}, {"group": "A", "score": 57.3}, {"group": "A", "score": 61.4}, {"group": "A", "score": 72.7}, {"group": "A", "score": 50.9}, {"group": "A", "score": 47.2}, {"group": "A", "score": 65.6}, {"group": "A", "score": 56.0}, {"group": "A", "score": 57.7}, {"group": "A", "score": 56.5}, {"group": "A", "score": 60.5}, {"group": "A", "score": 71.7}, {"group": "A", "score": 70.7}, {"group": "A", "score": 58.2}, {"group": "A", "score": 62.2}, {"group": "A", "score": 69.8}, {"group": "A", "score": 63.3}, {"group": "A", "score": 69.1}, {"group": "A", "score": 51.7}, {"group": "A", "score": 69.5}, {"group": "A", "score": 72.6}, {"group": "A", "score": 58.9}, {"group": "A", "score": 64.3}, {"group": "A", "score": 63.7}, {"group": "A", "score": 65.9}, {"group": "A", "score": 62.5}, {"group": "A", "score": 59.6}, {"group": "A", "score": 67.0}, {"group": "A", "score": 58.4}, {"group": "A", "score": 37.8}, {"group": "A", "score": 51.6}, {"group": "A", "score": 38.1}, {"group": "A", "score": 70.1}, {"group": "A", "score": 65.0}, {"group": "A", "score": 66.8}, {"group": "A", "score": 63.0}, {"group": "A", "score": 55.2}, {"group": "A", "score": 49.4}, {"group": "A", "score": 76.6}, {"group": "A", "score": 60.8}, {"group": "A", "score": 54.8}, {"group": "A", "score": 70.7}, {"group": "A", "score": 63.9}, {"group": "A", "score": 50.6}, {"group": "A", "score": 58.8}, {"group": "A", "score": 56.5}, {"group": "A", "score": 63.5}, {"group": "A", "score": 52.2}, {"group": "B", "score": 25.5}, {"group": "B", "score": 22.1}, {"group": "B", "score": 9.8}, {"group": "B", "score": 21.5}, {"group": "B", "score": 19.5}, {"group": "B", "score": 20.6}, {"group": "B", "score": 28.6}, {"group": "B", "score": 24.6}, {"group": "B", "score": 10.9}, {"group": "B", "score": 33.6}, {"group": "B", "score": 23.3}, {"group": "B", "score": 10.9}, {"group": "B", "score": 23.3}, {"group": "B", "score": 21.2}, {"group": "B", "score": 35.4}, {"group": "B", "score": 19.1}, {"group": "B", "score": 31.6}, {"group": "B", "score": 24.7}, {"group": "B", "score": 44.3}, {"group": "B", "score": 30.3}, {"group": "B", "score": 31.0}, {"group": "B", "score": 30.3}, {"group": "B", "score": 34.7}, {"group": "B", "score": 21.6}, {"group": "B", "score": 32.6}, {"group": "B", "score": 26.6}, {"group": "B", "score": 25.4}, {"group": "B", "score": 22.2}, {"group": "B", "score": 25.4}, {"group": "B", "score": 21.7}, {"group": "B", "score": 15.5}, {"group": "B", "score": 18.2}, {"group": "B", "score": 23.1}, {"group": "B", "score": 28.9}, {"group": "B", "score": 14.7}, {"group": "B", "score": 26.8}, {"group": "B", "score": 25.8}, {"group": "B", "score": 26.0}, {"group": "B", "score": 14.1}, {"group": "B", "score": 24.9}, {"group": "B", "score": 98.2}, {"group": "B", "score": 83.0}, {"group": "B", "score": 80.8}, {"group": "B", "score": 95.1}, {"group": "B", "score": 82.6}, {"group": "B", "score": 100.0}, {"group": "B", "score": 87.8}, {"group": "B", "score": 93.1}, {"group": "B", "score": 95.9}, {"group": "B", "score": 86.5}, {"group": "B", "score": 90.5}, {"group": "B", "score": 94.1}, {"group": "B", "score": 78.1}, {"group": "B", "score": 86.0}, {"group": "B", "score": 92.1}, {"group": "B", "score": 96.9}, {"group": "B", "score": 93.4}, {"group": "B", "score": 79.1}, {"group": "B", "score": 81.2}, {"group": "B", "score": 81.3}, {"group": "B", "score": 76.6}, {"group": "B", "score": 89.9}, {"group": "B", "score": 87.8}, {"group": "B", "score": 97.7}, {"group": "B", "score": 92.5}, {"group": "B", "score": 94.2}, {"group": "B", "score": 100.0}, {"group": "B", "score": 96.1}, {"group": "B", "score": 93.0}, {"group": "B", "score": 88.6}, {"group": "B", "score": 86.7}, {"group": "B", "score": 80.9}, {"group": "B", "score": 94.1}, {"group": "B", "score": 85.6}, {"group": "B", "score": 100.0}, {"group": "B", "score": 81.1}, {"group": "B", "score": 87.9}, {"group": "B", "score": 92.3}, {"group": "B", "score": 84.6}, {"group": "B", "score": 87.2}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

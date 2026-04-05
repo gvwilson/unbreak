@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-b13079460a7ca6ad517e31bfeb72e703"}, "mark": {"type": "line"}, "encoding": {"x": {"field": "week", "title": "Week", "type": "quantitative"}, "y": {"field": "total_users", "title": "Total Signups (cumulative)", "type": "quantitative"}}, "height": 300, "title": "User Growth \u2014 Cumulative Signups", "width": 400, "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json", "datasets": {"data-b13079460a7ca6ad517e31bfeb72e703": [{"week": 1, "total_users": 451}, {"week": 2, "total_users": 967}, {"week": 3, "total_users": 1469}, {"week": 4, "total_users": 1967}, {"week": 5, "total_users": 2520}, {"week": 6, "total_users": 3063}, {"week": 7, "total_users": 3616}, {"week": 8, "total_users": 4093}, {"week": 9, "total_users": 4648}, {"week": 10, "total_users": 5082}, {"week": 11, "total_users": 5545}, {"week": 12, "total_users": 5960}, {"week": 13, "total_users": 6444}, {"week": 14, "total_users": 6917}, {"week": 15, "total_users": 7460}, {"week": 16, "total_users": 8058}, {"week": 17, "total_users": 8610}, {"week": 18, "total_users": 9184}, {"week": 19, "total_users": 9674}, {"week": 20, "total_users": 10206}, {"week": 21, "total_users": 10736}, {"week": 22, "total_users": 11177}, {"week": 23, "total_users": 11746}, {"week": 24, "total_users": 12153}, {"week": 25, "total_users": 12557}, {"week": 26, "total_users": 13055}, {"week": 27, "total_users": 13079}, {"week": 28, "total_users": 13096}, {"week": 29, "total_users": 13117}, {"week": 30, "total_users": 13145}, {"week": 31, "total_users": 13160}, {"week": 32, "total_users": 13173}, {"week": 33, "total_users": 13186}, {"week": 34, "total_users": 13201}, {"week": 35, "total_users": 13215}, {"week": 36, "total_users": 13237}, {"week": 37, "total_users": 13254}, {"week": 38, "total_users": 13273}, {"week": 39, "total_users": 13288}, {"week": 40, "total_users": 13317}, {"week": 41, "total_users": 13336}, {"week": 42, "total_users": 13356}, {"week": 43, "total_users": 13386}, {"week": 44, "total_users": 13401}, {"week": 45, "total_users": 13411}, {"week": 46, "total_users": 13424}, {"week": 47, "total_users": 13445}, {"week": 48, "total_users": 13473}, {"week": 49, "total_users": 13488}, {"week": 50, "total_users": 13515}, {"week": 51, "total_users": 13533}, {"week": 52, "total_users": 13561}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

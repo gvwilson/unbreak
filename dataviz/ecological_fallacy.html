@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "layer": [{"mark": {"type": "circle", "opacity": 0.8, "size": 80}, "encoding": {"x": {"field": "avg_income", "title": "Region Average Income ($k)", "type": "quantitative"}, "y": {"field": "party_a_pct", "scale": {"domain": [0, 100]}, "title": "Party A Vote Share (%)", "type": "quantitative"}}}, {"mark": {"type": "line", "color": "red", "strokeWidth": 2}, "encoding": {"x": {"field": "avg_income", "type": "quantitative"}, "y": {"field": "party_a_pct", "type": "quantitative"}}, "transform": [{"on": "avg_income", "regression": "party_a_pct"}]}], "data": {"name": "data-8cb61ed36a422ec91d50a170b86df8e0"}, "height": 300, "title": "Income vs Party A Support (by Region)", "width": 400, "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json", "datasets": {"data-8cb61ed36a422ec91d50a170b86df8e0": [{"region": "R01", "avg_income": 51.6, "party_a_pct": 56.8}, {"region": "R02", "avg_income": 49.3, "party_a_pct": 52.3}, {"region": "R03", "avg_income": 47.6, "party_a_pct": 52.1}, {"region": "R04", "avg_income": 46.0, "party_a_pct": 52.1}, {"region": "R05", "avg_income": 47.9, "party_a_pct": 48.9}, {"region": "R06", "avg_income": 50.3, "party_a_pct": 59.3}, {"region": "R07", "avg_income": 50.9, "party_a_pct": 54.8}, {"region": "R08", "avg_income": 49.5, "party_a_pct": 55.0}, {"region": "R09", "avg_income": 49.7, "party_a_pct": 61.9}, {"region": "R10", "avg_income": 51.5, "party_a_pct": 59.3}, {"region": "R11", "avg_income": 48.7, "party_a_pct": 51.2}, {"region": "R12", "avg_income": 51.4, "party_a_pct": 53.7}, {"region": "R13", "avg_income": 53.7, "party_a_pct": 54.8}, {"region": "R14", "avg_income": 52.6, "party_a_pct": 63.5}, {"region": "R15", "avg_income": 51.2, "party_a_pct": 58.3}, {"region": "R16", "avg_income": 42.9, "party_a_pct": 56.5}, {"region": "R17", "avg_income": 45.7, "party_a_pct": 51.2}, {"region": "R18", "avg_income": 52.0, "party_a_pct": 63.4}, {"region": "R19", "avg_income": 54.8, "party_a_pct": 62.0}, {"region": "R20", "avg_income": 54.0, "party_a_pct": 58.5}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

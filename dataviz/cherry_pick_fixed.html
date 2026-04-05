@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-0bf7380c716cc40e2c17c380e74e4c37"}, "mark": {"type": "line", "point": true}, "encoding": {"x": {"field": "month", "title": "Month", "type": "quantitative"}, "y": {"field": "value", "scale": {"zero": false}, "title": "Performance Index", "type": "quantitative"}}, "height": 300, "title": "Performance Trend \u2014 Full 60-Month History", "width": 400, "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json", "datasets": {"data-0bf7380c716cc40e2c17c380e74e4c37": [{"month": 1, "value": 101.6}, {"month": 2, "value": 104.3}, {"month": 3, "value": 101.1}, {"month": 4, "value": 97.1}, {"month": 5, "value": 94.6}, {"month": 6, "value": 94.4}, {"month": 7, "value": 95.5}, {"month": 8, "value": 93.8}, {"month": 9, "value": 92.8}, {"month": 10, "value": 96.2}, {"month": 11, "value": 91.2}, {"month": 12, "value": 89.5}, {"month": 13, "value": 86.1}, {"month": 14, "value": 89.3}, {"month": 15, "value": 89.1}, {"month": 16, "value": 87.8}, {"month": 17, "value": 84.1}, {"month": 18, "value": 87.1}, {"month": 19, "value": 82.2}, {"month": 20, "value": 89.3}, {"month": 21, "value": 84.9}, {"month": 22, "value": 83.9}, {"month": 23, "value": 84.1}, {"month": 24, "value": 84.1}, {"month": 25, "value": 81.1}, {"month": 26, "value": 81.7}, {"month": 27, "value": 77.9}, {"month": 28, "value": 77.3}, {"month": 29, "value": 76.8}, {"month": 30, "value": 75.9}, {"month": 31, "value": 78.0}, {"month": 32, "value": 76.9}, {"month": 33, "value": 71.5}, {"month": 34, "value": 72.4}, {"month": 35, "value": 72.6}, {"month": 36, "value": 74.7}, {"month": 37, "value": 68.4}, {"month": 38, "value": 66.7}, {"month": 39, "value": 70.5}, {"month": 40, "value": 67.3}, {"month": 41, "value": 66.9}, {"month": 42, "value": 65.8}, {"month": 43, "value": 66.0}, {"month": 44, "value": 68.0}, {"month": 45, "value": 67.0}, {"month": 46, "value": 63.0}, {"month": 47, "value": 63.2}, {"month": 48, "value": 64.3}, {"month": 49, "value": 61.9}, {"month": 50, "value": 62.6}, {"month": 51, "value": 57.4}, {"month": 52, "value": 61.1}, {"month": 53, "value": 60.8}, {"month": 54, "value": 61.4}, {"month": 55, "value": 64.0}, {"month": 56, "value": 65.0}, {"month": 57, "value": 68.8}, {"month": 58, "value": 70.3}, {"month": 59, "value": 72.2}, {"month": 60, "value": 73.7}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

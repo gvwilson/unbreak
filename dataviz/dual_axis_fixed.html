@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "vconcat": [{"mark": {"type": "line", "color": "steelblue", "strokeWidth": 2}, "encoding": {"x": {"field": "month", "sort": null, "title": "Month", "type": "ordinal"}, "y": {"field": "rainfall", "title": "Rainfall (mm)", "type": "quantitative"}}, "height": 150, "title": "Monthly Rainfall", "width": 450}, {"mark": {"type": "line", "color": "orange", "strokeWidth": 2}, "encoding": {"x": {"field": "month", "sort": null, "title": "Month", "type": "ordinal"}, "y": {"field": "bugs", "title": "Bug Reports", "type": "quantitative"}}, "height": 150, "title": "Monthly Bug Reports", "width": 450}], "data": {"name": "data-15b24a4b01d885004439b74fa036e17f"}, "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json", "datasets": {"data-15b24a4b01d885004439b74fa036e17f": [{"month": "Jan", "rainfall": 52, "bugs": 124}, {"month": "Feb", "rainfall": 41, "bugs": 93}, {"month": "Mar", "rainfall": 63, "bugs": 201}, {"month": "Apr", "rainfall": 78, "bugs": 185}, {"month": "May", "rainfall": 95, "bugs": 88}, {"month": "Jun", "rainfall": 88, "bugs": 162}, {"month": "Jul", "rainfall": 72, "bugs": 215}, {"month": "Aug", "rainfall": 61, "bugs": 97}, {"month": "Sep", "rainfall": 83, "bugs": 178}, {"month": "Oct", "rainfall": 54, "bugs": 133}, {"month": "Nov", "rainfall": 44, "bugs": 104}, {"month": "Dec", "rainfall": 58, "bugs": 142}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

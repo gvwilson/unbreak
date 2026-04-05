@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-89905336b9501b9898c22f93dea5cbd9"}, "mark": {"type": "line"}, "encoding": {"x": {"field": "week", "title": "Week", "type": "quantitative"}, "y": {"field": "new_users", "title": "New Signups per Week", "type": "quantitative"}}, "height": 300, "title": "User Growth \u2014 Weekly New Signups", "width": 400, "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json", "datasets": {"data-89905336b9501b9898c22f93dea5cbd9": [{"week": 1, "new_users": 451}, {"week": 2, "new_users": 516}, {"week": 3, "new_users": 502}, {"week": 4, "new_users": 498}, {"week": 5, "new_users": 553}, {"week": 6, "new_users": 543}, {"week": 7, "new_users": 553}, {"week": 8, "new_users": 477}, {"week": 9, "new_users": 555}, {"week": 10, "new_users": 434}, {"week": 11, "new_users": 463}, {"week": 12, "new_users": 415}, {"week": 13, "new_users": 484}, {"week": 14, "new_users": 473}, {"week": 15, "new_users": 543}, {"week": 16, "new_users": 598}, {"week": 17, "new_users": 552}, {"week": 18, "new_users": 574}, {"week": 19, "new_users": 490}, {"week": 20, "new_users": 532}, {"week": 21, "new_users": 530}, {"week": 22, "new_users": 441}, {"week": 23, "new_users": 569}, {"week": 24, "new_users": 407}, {"week": 25, "new_users": 404}, {"week": 26, "new_users": 498}, {"week": 27, "new_users": 24}, {"week": 28, "new_users": 17}, {"week": 29, "new_users": 21}, {"week": 30, "new_users": 28}, {"week": 31, "new_users": 15}, {"week": 32, "new_users": 13}, {"week": 33, "new_users": 13}, {"week": 34, "new_users": 15}, {"week": 35, "new_users": 14}, {"week": 36, "new_users": 22}, {"week": 37, "new_users": 17}, {"week": 38, "new_users": 19}, {"week": 39, "new_users": 15}, {"week": 40, "new_users": 29}, {"week": 41, "new_users": 19}, {"week": 42, "new_users": 20}, {"week": 43, "new_users": 30}, {"week": 44, "new_users": 15}, {"week": 45, "new_users": 10}, {"week": 46, "new_users": 13}, {"week": 47, "new_users": 21}, {"week": 48, "new_users": 28}, {"week": 49, "new_users": 15}, {"week": 50, "new_users": 27}, {"week": 51, "new_users": 18}, {"week": 52, "new_users": 28}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>
