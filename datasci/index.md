@@ -11,7 +11,7 @@ CSV should satisfy the condition. Do the two counts agree?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is using `>=` instead of `>` (or vice versa) in the filter expression, so
-the script keeps rows it should drop. Teaches how to verify filter logic by checking
+the script keeps rows it should drop. Shows how to verify filter logic by checking
 boundary values and using `.filter()` with explicit comparison operators.
 
 </details>
@@ -27,7 +27,7 @@ Do they match the data you expected to load?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is not passing `skip_rows` to skip the extra header lines, so Polars reads
-the multi-line header as data and reports the wrong number of rows. Teaches how to
+the multi-line header as data and reports the wrong number of rows. Shows how to
 inspect the first few rows of a DataFrame with `.head()` and how to use `skip_rows`
 and `has_header` to handle non-standard file layouts.
 
@@ -44,7 +44,7 @@ null values where you did not expect them?
 
 The bug is joining on a column whose name differs by case (`"Region"` vs.
 `"region"`), which Polars treats as different columns, so every row in the joined
-output has a null for the group mean. Teaches that Polars column names are
+output has a null for the group mean. Shows that Polars column names are
 case-sensitive and how to diagnose null-filled join results.
 
 </details>
@@ -61,7 +61,7 @@ to the `date` column? How many rows does the filter return?
 
 The bug is that Polars read the date column as strings, so the comparison is
 lexicographic rather than chronological and the filter returns no rows even though
-matching rows exist. Teaches how to inspect inferred column types with `.schema`, and
+matching rows exist. Shows how to inspect inferred column types with `.schema`, and
 how to cast a column to `pl.Date` before filtering.
 
 </details>
@@ -77,7 +77,7 @@ per-region totals make sense?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is calling `.sum()` before `.group_by()`, which sums the entire column first
-and then groups a single-row DataFrame, producing unexpectedly large totals. Teaches
+and then groups a single-row DataFrame, producing unexpectedly large totals. Shows
 the importance of operation order in lazy and eager pipelines and how to verify
 intermediate results.
 
@@ -94,7 +94,7 @@ does the error appear to come from? Is that where the mistake actually is?
 
 The bug is referencing a column that was renamed in an earlier step, so a
 `ColumnNotFoundError` is raised at `.collect()` time rather than when the
-transformation is written. Teaches how Polars lazy evaluation defers errors and how
+transformation is written. Shows how Polars lazy evaluation defers errors and how
 to use `.collect()` on intermediate steps to locate the failing transformation.
 
 </details>
@@ -113,7 +113,7 @@ Are the columns what you expected?
 The bug is that the second file uses semicolons as delimiters, so Polars reads the
 entire row as a single column. When `concat` is called with `how="diagonal"`, missing
 columns are filled with nulls and the result has twice as many columns as expected.
-Teaches how to check column names and counts before concatenating DataFrames.
+Shows how to check column names and counts before concatenating DataFrames.
 
 </details>
 
@@ -129,7 +129,7 @@ values in the column that seem unusually large?
 
 The bug is that the dataset uses `999` as a sentinel for missing data rather than a
 true null, so `.fill_null()` has no effect on them and the mean is skewed by what
-appear to be valid large numbers. Teaches how to identify domain-specific sentinel
+appear to be valid large numbers. Shows how to identify domain-specific sentinel
 values and replace them with `pl.Null` before analysis.
 
 </details>
@@ -146,7 +146,7 @@ expected? Call `.unique()` on the grouping column and examine what you see.
 
 The bug is that a string column has inconsistent whitespace (e.g., `"North "` and
 `"North"` are treated as different groups), so `group_by` followed by `agg` produces
-more groups than expected. Teaches how to inspect unique values with `.unique()`,
+more groups than expected. Shows how to inspect unique values with `.unique()`,
 use `.str.strip_chars()` to normalize strings before grouping, and verify group
 counts.
 
@@ -164,7 +164,7 @@ number of null rows what you expected for a 7-day window?
 
 The bug is passing `window_size=7` without setting `min_periods=1`, so any window
 that cannot be fully filled returns null and the result has far more nulls than
-expected. Teaches how rolling aggregations handle incomplete windows and how to
+expected. Shows how rolling aggregations handle incomplete windows and how to
 choose between strict and lenient behavior with `min_periods`.
 
 </details>
@@ -180,7 +180,7 @@ that reflect the `value` column?
 
 The bug is encoding the y-axis with `alt.Y("value")` without specifying
 `type="quantitative"`, so Altair treats the column as nominal and counts categories
-instead of summing values, giving all bars the same height. Teaches how Altair
+instead of summing values, giving all bars the same height. Shows how Altair
 infers encoding types and why specifying `type` explicitly avoids silent
 misinterpretation.
 
@@ -197,7 +197,7 @@ continuous gradient, or as a discrete set of colors?
 
 The bug is that the color column was read as a string (e.g., `"3.5"`) rather than a
 float, so Altair applies a nominal color scale and the scatter plot shows a discrete
-legend with arbitrary colors instead of a continuous gradient. Teaches how data types
+legend with arbitrary colors instead of a continuous gradient. Shows how data types
 in the source DataFrame determine Altair's default encoding choices.
 
 </details>
@@ -213,7 +213,7 @@ along the x-axis, or in a different order?
 
 The bug is encoding the x-axis date column as `type="nominal"` instead of
 `type="temporal"`, so Altair does not order the points chronologically and the line
-chart draws disconnected segments instead of a continuous line. Teaches the
+chart draws disconnected segments instead of a continuous line. Shows the
 difference between nominal and temporal encoding in Altair and how to verify axis
 ordering.
 
@@ -230,7 +230,7 @@ is 100 or more, or does it show all of them?
 
 The bug is a field name in `alt.Filter` that does not match any column. Altair
 silently ignores the filter rather than raising an error, so all categories are
-shown instead of just the top 10. Teaches how to debug Altair transforms by
+shown instead of just the top 10. Shows how to debug Altair transforms by
 inspecting the chart's JSON specification and checking field names match the data
 source.
 
@@ -247,9 +247,9 @@ field in the tooltip show a value?
 
 The bug is that the tooltip field name has a space in it (e.g., `"Sales Region"`)
 but is referenced without quoting in the Altair shorthand string, so the tooltip
-shows `null` for that field even though the data contains values. Teaches how Altair
+shows `null` for that field even though the data contains values. Shows how Altair
 shorthand handles special characters and when to use
-`alt.Tooltip(field=..., title=...)` instead.
+`alt.Tooltip(field=…, title=…)` instead.
 
 </details>
 
@@ -264,7 +264,7 @@ points?
 
 The bug is passing the Polars DataFrame directly to `alt.Chart()` instead of
 converting it to a pandas DataFrame or using `alt.Data`, so the chart is blank.
-Teaches which data formats Altair accepts natively and how to convert between Polars
+Shows which data formats Altair accepts natively and how to convert between Polars
 and the formats Altair supports.
 
 </details>
@@ -280,7 +280,7 @@ Run the script and note the correlation value. Then examine how `metric_a` and
 
 The bug is that both columns were derived from the same source column in the same
 pipeline step (a copy rather than an independent transformation), so the correlation
-is exactly 1.0 for columns that should not be perfectly correlated. Teaches how to
+is exactly 1.0 for columns that should not be perfectly correlated. Shows how to
 audit column provenance in a pipeline and use scatter plots to sanity-check
 correlation claims.
 
@@ -298,7 +298,7 @@ runs. Does memory stay roughly constant, or does it grow?
 
 The bug is accumulating all chunks in memory before concatenating rather than
 processing each chunk and writing results incrementally, so the pipeline runs out of
-memory on large files. Teaches streaming versus batch processing patterns and how to
+memory on large files. Shows streaming versus batch processing patterns and how to
 use Polars' `scan_csv` with lazy evaluation to avoid loading the full file.
 
 </details>
@@ -315,7 +315,7 @@ type of the `year` column in the DataFrame.
 The bug is that the year column contains floats (e.g., `2021.0`) because Polars
 inferred it as `Float64`. Altair's facet treats each unique float as a separate
 nominal value but the layout collapses to one panel due to the unexpected type.
-Teaches how to cast integer-like columns to `pl.Int32` before charting and how to
+Shows how to cast integer-like columns to `pl.Int32` before charting and how to
 verify facet behavior with a small sample.
 
 </details>
@@ -332,7 +332,7 @@ error?
 The bug is that the notebook had cells executed out of order, leaving a modified
 DataFrame in memory that masked an error in the cleaning step. The script produces
 correct results when run step by step in a notebook but wrong results when run as a
-script. Teaches why notebooks must be tested by restarting the kernel and running
+script. Shows why notebooks must be tested by restarting the kernel and running
 all cells in order, and how to structure pipelines so each step depends only on its
 explicit inputs.
 

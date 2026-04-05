@@ -1,15 +1,15 @@
 import polars as pl
 
 df = pl.DataFrame({
-    "event": ["launch", "review", "close"],
-    "date_str": ["2024-03-15", "2024-04-01", "2024-05-20"],
+    "event": ["conference", "deadline", "review"],
+    "date_str": ["03/04/2024", "07/08/2024", "11/12/2024"],
 })
 
-# BUG: the format string uses %d/%m/%Y (day/month/year with slashes) but the
-# BUG: dates are formatted as YYYY-MM-DD; strict=False hides the mismatch by
-# BUG: silently producing all nulls; use "%Y-%m-%d" to match the actual format
+# BUG: the dates use day/month/year order but the format string specifies
+# BUG: month/day/year (%m/%d/%Y), so "03/04/2024" parses as March 4 instead
+# BUG: of April 3; no error is raised because all values are valid under either
+# BUG: interpretation; use "%d/%m/%Y" to match the actual day/month/year format
 result = df.with_columns(
-    pl.col("date_str").str.to_date(format="%d/%m/%Y", strict=False).alias("date")
+    pl.col("date_str").str.to_date(format="%m/%d/%Y").alias("date")
 )
 print(result)
-print(f"null dates: {result['date'].null_count()}")

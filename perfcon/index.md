@@ -12,7 +12,7 @@ takes. Then run `cProfile` on it to see which lines consume the most time.
 
 The bug is calling `text.count(word)` for every unique word, re-scanning the entire
 text each time. On a file of 50,000 words it takes several seconds, while a single
-pass with `collections.Counter` is nearly instant. Teaches how to identify
+pass with `collections.Counter` is nearly instant. Shows how to identify
 repeated-scan inefficiency with `cProfile` and how choosing the right data structure
 eliminates the need for multiple passes.
 
@@ -27,7 +27,7 @@ Run this script. Does it return promptly, or does it hang?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is that the subprocess is waiting for input on stdin that the parent never
-provides, so the script hangs and never returns. Teaches how subprocess I/O streams
+provides, so the script hangs and never returns. Shows how subprocess I/O streams
 work and how to use `communicate()` safely.
 
 </details>
@@ -42,7 +42,7 @@ value always the same? Is it always the value you expect?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is a race condition caused by unsynchronized read-modify-write, so multiple
-threads updating a shared counter produce wrong totals. Teaches what a race condition
+threads updating a shared counter produce wrong totals. Shows what a race condition
 is, why it is hard to reproduce, and how to use `threading.Lock` to fix it.
 
 </details>
@@ -57,7 +57,7 @@ worker processes run. Did the workers modify the list you passed in?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is that each process has its own copy of memory, so changes made inside
-child processes are not visible in the parent's shared list. Teaches the difference
+child processes are not visible in the parent's shared list. Shows the difference
 between threading and multiprocessing memory models.
 
 </details>
@@ -75,7 +75,7 @@ under test.
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is patching where the function is defined instead of where it is imported,
-so `unittest.mock.patch` has no effect on the code under test. Teaches how Python's
+so `unittest.mock.patch` has no effect on the code under test. Shows how Python's
 import system works and where mocks must be applied.
 
 </details>

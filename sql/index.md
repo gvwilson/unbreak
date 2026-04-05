@@ -13,7 +13,7 @@ first, or by species first?
 
 A query meant to sort penguins by island and then by species within each island
 produces species-first ordering instead; the bug is listing the columns in the
-wrong order in the `order by` clause. Teaches how `order by` applies columns from
+wrong order in the `order by` clause. Shows how `order by` applies columns from
 left to right and why column order in that clause matters.
 
 </details>
@@ -29,7 +29,7 @@ full table to check whether rows 11–15 are actually what you got.
 
 A query meant to retrieve the third page of five rows returns rows 12–16 instead
 of rows 11–15; the bug is using `offset 11` (which skips 11 rows) instead of
-`offset 10`. Teaches how `limit` and `offset` interact and how to calculate the
+`offset 10`. Shows how `limit` and `offset` interact and how to calculate the
 correct offset for a given page number.
 
 </details>
@@ -45,7 +45,7 @@ Do the kilogram values look right for a penguin that weighs, say, 3750 g?
 
 A query that converts body mass from grams to kilograms silently truncates the
 result because SQLite performs integer division when both operands are integers;
-the bug is dividing by `1000` instead of `1000.0`. Teaches how to force
+the bug is dividing by `1000` instead of `1000.0`. Shows how to force
 floating-point arithmetic in SQL and why checking computed columns against known
 values catches this class of error.
 
@@ -63,7 +63,7 @@ dataset? Does the row count match that number?
 A query intended to list the distinct species in the dataset returns seven rows
 instead of three because `distinct` is applied to both `species` and `sex`,
 producing one row per unique (species, sex) combination; the bug is including `sex`
-in the `select` clause. Teaches that `distinct` operates on the entire set of
+in the `select` clause. Shows that `distinct` operates on the entire set of
 selected columns, not on individual ones.
 
 </details>
@@ -80,7 +80,7 @@ sex was not recorded?
 A query that tries to find penguins with no recorded sex returns zero rows because
 comparing any value to `null` with `=` produces `null` (not `true`) in SQL's
 ternary logic, so the `where` clause never passes; the bug is using `= null` instead
-of `is null`. Teaches SQL's three-valued logic and the two special tests `is null`
+of `is null`. Shows SQL's three-valued logic and the two special tests `is null`
 and `is not null`.
 
 </details>
@@ -97,7 +97,7 @@ Biscoe island from a previous query and check whether it appears here.
 A query that should return penguins from either Biscoe or Dream island returns
 zero rows because `and` requires both conditions to be true at the same time, but
 a penguin can only be on one island; the bug is using `and` where `or` is needed.
-Teaches the difference between `and` and `or` and how to spot conditions that can
+Shows the difference between `and` and `or` and how to spot conditions that can
 never simultaneously be true.
 
 </details>
@@ -115,7 +115,7 @@ values stored in the `sex` column. Do any of them match the literal used in the
 A query that should return all female penguins returns zero rows because the `sex`
 column stores the value `'FEMALE'` in uppercase but the query filters on
 `'female'` in lowercase; SQLite string comparisons are case-sensitive for non-ASCII
-characters. Teaches how to inspect the actual stored values before writing a filter
+characters. Shows how to inspect the actual stored values before writing a filter
 and how to use functions like `upper()` or `lower()` to normalise comparisons.
 
 </details>
@@ -133,7 +133,7 @@ clause and compare the two queries' output.
 A query that tries to filter using a column alias defined in the `select` clause
 fails with a "no such column" error because SQL evaluates `where` before `select`,
 so the alias does not yet exist at that point; the bug is referencing `mass_kg` in
-`where` instead of repeating the full expression `body_mass_g / 1000.0`. Teaches
+`where` instead of repeating the full expression `body_mass_g / 1000.0`. Shows
 the order of SQL clause evaluation.
 
 </details>
@@ -150,7 +150,7 @@ you expected based on the comment describing the intent?
 A query intended to find Adelie or Chinstrap penguins that are on Biscoe island
 instead returns all Adelie penguins from any island plus Chinstraps on Biscoe,
 because `and` binds more tightly than `or`; the bug is missing parentheses around
-the `or` sub-expression. Teaches SQL operator precedence and why parentheses are
+the `or` sub-expression. Shows SQL operator precedence and why parentheses are
 needed to make complex `where` conditions unambiguous.
 
 </details>
@@ -168,7 +168,7 @@ for that species group?
 A query that groups by species but also selects `sex` without aggregating it
 produces an arbitrary, unpredictable sex value for each species group because `sex`
 is not in the `group by` clause; the bug is selecting a column that is neither
-aggregated nor part of the grouping. Teaches why every column in `select` must
+aggregated nor part of the grouping. Shows why every column in `select` must
 either appear in `group by` or be wrapped in an aggregation function.
 
 </details>
@@ -186,7 +186,7 @@ A query that tries to filter groups by their average value using `where` raises 
 error because aggregate functions like `avg()` cannot appear in `where`; `where`
 filters individual rows before grouping, while `having` filters groups after
 aggregation; the bug is placing the condition in `where` instead of `having`.
-Teaches the difference in timing between `where` and `having` in SQL's execution
+Shows the difference in timing between `where` and `having` in SQL's execution
 order.
 
 </details>
@@ -203,7 +203,7 @@ show the same island? Check a few values against the original table.
 A query that counts penguins per species per island produces unreliable island
 values because `island` appears in `select` but not in `group by`, so the database
 picks an arbitrary island for each species group; the bug is omitting `island` from
-the `group by` clause. Teaches that every non-aggregated column in `select` must
+the `group by` clause. Shows that every non-aggregated column in `select` must
 also appear in `group by`.
 
 </details>
@@ -220,7 +220,7 @@ results. If the numbers differ, find the rows that account for the difference.
 A query meant to count all penguins in the dataset underreports the total because
 `count(sex)` only counts rows where `sex` is not null, omitting the 11 penguins
 whose sex was not recorded; the bug is using `count(sex)` instead of `count(*)`.
-Teaches the difference between `count(column)` (excludes nulls) and `count(*)`
+Shows the difference between `count(column)` (excludes nulls) and `count(*)`
 (counts every row).
 
 </details>
@@ -238,7 +238,7 @@ A manual average calculation divides the sum of body masses by the total row cou
 but `sum()` skips the two rows where `body_mass_g` is null while `count(*)` still
 counts them, making the denominator too large and the result too small; the bug is
 dividing by `count(*)` instead of `count(body_mass_g)` or using `avg()` directly.
-Teaches how aggregation functions treat null values and why the built-in `avg()`
+Shows how aggregation functions treat null values and why the built-in `avg()`
 should be preferred over hand-rolled sum/count averages.
 
 </details>
@@ -255,7 +255,7 @@ and compare the row counts.
 A query that should return only penguins with a recorded sex returns zero rows
 because comparing any value to null with `!=` produces null (not true) in SQL's
 ternary logic, so the `where` clause never passes any row; the bug is using
-`!= null` instead of `is not null`. Teaches that null comparisons with `=` or `!=`
+`!= null` instead of `is not null`. Shows that null comparisons with `=` or `!=`
 always yield null, and that `is null` / `is not null` are the only reliable null
 tests.
 
@@ -273,7 +273,7 @@ query output?
 
 A query that should list total credits for every person silently omits people whose
 jobs do not appear in the `job` table (because their work has no matching credit
-value to join to); the bug is using `inner join` instead of `left join`. Teaches
+value to join to); the bug is using `inner join` instead of `left join`. Shows
 the difference between inner and left joins and when each is appropriate.
 
 </details>
@@ -292,7 +292,7 @@ A query that should pair each job with its matching work records instead returns
 every possible combination of rows from both tables because the `on` clause is
 missing; a join without an `on` condition (or equivalent `where` condition) is
 a Cartesian product, producing rows equal to the product of the two table sizes.
-Teaches that a join without a matching condition is almost never correct and how to
+Shows that a join without a matching condition is almost never correct and how to
 recognise a Cartesian product by its unexpectedly large row count.
 
 </details>
@@ -308,7 +308,7 @@ null total? What jobs did that person do, according to the `work` table?
 
 A query that uses a left join to include all people shows null instead of 0 for
 a person whose jobs produce no credit values, because `sum()` of an all-null group
-returns null; the bug is not wrapping the sum in `coalesce(..., 0)`. Teaches how
+returns null; the bug is not wrapping the sum in `coalesce(…, 0)`. Shows how
 `coalesce` provides a fallback value for null results and why left joins often
 require it.
 
@@ -327,7 +327,7 @@ A query that should join people to their surveys instead produces a Cartesian
 product because the `on` clause compares `survey.person_id` to itself (which is
 always true) rather than to `person.person_id`; the bug is a copy-paste error
 that left the table name on the left side of `on` as `survey` instead of `person`.
-Teaches how to carefully check `on` conditions when the same column name appears in
+Shows how to carefully check `on` conditions when the same column name appears in
 both tables.
 
 </details>
@@ -346,7 +346,7 @@ A self-join query that should display each person's name alongside their
 supervisor's name has the labels reversed: the `on` condition `pa.person_id =
 pb.supervisor_id` makes `pa` the supervisor and `pb` the subordinate, but the
 aliases label `pa` as `person_name` and `pb` as `supervisor_name`; the bug is
-swapping the alias names. Teaches how to reason about the direction of a self-join
+swapping the alias names. Shows how to reason about the direction of a self-join
 and how to verify the result against the underlying data.
 
 </details>

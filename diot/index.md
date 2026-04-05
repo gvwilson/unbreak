@@ -11,7 +11,7 @@ of fields? Pay particular attention to rows that contain commas.
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is using `line.split(',')` instead of the `csv` module, so rows that contain
-commas inside quoted fields are split incorrectly. Teaches why hand-rolled parsers
+commas inside quoted fields are split incorrectly. Shows why hand-rolled parsers
 fail on real-world data and when to use standard library tools.
 
 </details>
@@ -26,7 +26,7 @@ Do any of them look unusual?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is using `time.time()` without accounting for system clock adjustments, so
-the function reports negative durations when the clock is set back. Teaches the
+the function reports negative durations when the clock is set back. Shows the
 difference between wall time and monotonic time and when to use `time.monotonic`.
 
 </details>
@@ -42,7 +42,7 @@ timezone-aware path.
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is adding a `timedelta` to a naive datetime, so the function produces results
-that are off by one day around daylight saving time transitions. Teaches the
+that are off by one day around daylight saving time transitions. Shows the
 difference between naive and timezone-aware datetimes.
 
 </details>
@@ -58,7 +58,7 @@ expected elements. What happens when an element is not found?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is that the HTML structure varies and the selector matches zero elements
-without raising an error, so the script fails silently on some pages. Teaches how to
+without raising an error, so the script fails silently on some pages. Shows how to
 handle missing data in HTML parsing and use assertions to catch unexpected input.
 
 </details>
@@ -73,7 +73,7 @@ that look like email addresses but are not. Does it reject the invalid ones?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is a pattern that is too permissive (e.g., missing anchors or character
-class constraints), so the regular expression also matches invalid strings. Teaches
+class constraints), so the regular expression also matches invalid strings. Shows
 how to test regular expressions with both valid and invalid inputs.
 
 </details>
@@ -88,7 +88,7 @@ testing. Does the test still pass?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is that the test calls the function but never asserts anything about the
-result, so it always passes even when the function is broken. Teaches that a test
+result, so it always passes even when the function is broken. Shows that a test
 with no assertions is not a test and how to write assertions correctly.
 
 </details>
@@ -103,7 +103,7 @@ ways?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is that one test modifies a module-level variable that another test depends
-on, so the suite passes in isolation but fails when run together. Teaches test
+on, so the suite passes in isolation but fails when run together. Shows test
 isolation, teardown, and the risks of shared global state.
 
 </details>
@@ -119,7 +119,7 @@ file is saved. Does it find its configuration file?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is using a hardcoded absolute path instead of a path relative to the
-script's location, so the function behaves differently on different machines. Teaches
+script's location, so the function behaves differently on different machines. Shows
 the difference between `__file__`-relative and working-directory-relative paths.
 
 </details>
@@ -134,7 +134,7 @@ be serialized?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is that the data contains `datetime` objects, which are not
-JSON-serializable, so the program raises an error when writing output. Teaches how
+JSON-serializable, so the program raises an error when writing output. Shows how
 to identify serialization errors and write custom JSON encoders.
 
 </details>
@@ -149,7 +149,7 @@ present?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is that the log level is set to `WARNING` but the calls use
-`logger.debug()`, so the messages never appear in the log file. Teaches how
+`logger.debug()`, so the messages never appear in the log file. Shows how
 Python's logging hierarchy works and how to verify the effective log level.
 
 </details>

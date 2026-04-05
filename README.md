@@ -23,6 +23,7 @@ FIXME
 1.  [Polars](@/polars/)
 1.  [The Unix Shell](@/shell/)
 1.  [SQL](@/sql/)
+1.  [Testing](@/testing/)
 1.  [Conclusion](@/finale/)
 </div>
 

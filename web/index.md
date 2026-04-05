@@ -12,7 +12,7 @@ line causes it? Is the problem in the line that fails or somewhere earlier?
 The bug is calling `.json()` without first checking `r.status_code`. A 404 response
 returns an HTML error page, not JSON, so `.json()` raises a `JSONDecodeError` at the
 parsing step rather than flagging the real problem, which is the failed request.
-Teaches how to check `r.status_code` or call `r.raise_for_status()` before reading
+Shows how to check `r.status_code` or call `r.raise_for_status()` before reading
 the response body.
 
 </details>
@@ -29,7 +29,7 @@ receiving? What content type did you intend to send?
 The bug is using `data=` instead of `json=` in the POST call. `data=` sends a
 form-encoded body with `content-type: application/x-www-form-urlencoded`, while
 most APIs expect `json=` which sends a JSON body with `content-type:
-application/json`. Teaches the difference between these two keyword arguments and
+application/json`. Shows the difference between these two keyword arguments and
 why the server may silently reject or misparse a request sent with the wrong
 encoding.
 
@@ -46,7 +46,7 @@ How many did the code intend to send?
 
 The bug is embedding a value that contains `&` directly in an f-string URL. The
 ampersand is interpreted as a query-string separator, so the server receives
-`category=books` and a bare key `games` instead of `category=books&games`. Teaches
+`category=books` and a bare key `games` instead of `category=books&games`. Shows
 how to pass query parameters as a `params=` dict so the HTTP client encodes special
 characters correctly.
 
@@ -63,7 +63,7 @@ What field in the response tells you that more data exists?
 
 The bug is fetching only the first page and ignoring the `next_page` field in the
 response. No error is raised; the script silently processes a fraction of the
-available data. Teaches how to recognize and follow pagination cursors and why APIs
+available data. Shows how to recognize and follow pagination cursors and why APIs
 return data in pages rather than all at once.
 
 </details>
@@ -78,7 +78,7 @@ output?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is passing `timeout=None`, which disables all timeouts and causes the call to
-wait indefinitely for a slow or unresponsive server. Teaches the difference between
+wait indefinitely for a slow or unresponsive server. Shows the difference between
 httpx's default timeout and `timeout=None`, and how to set an explicit
 `httpx.Timeout` to bound how long a request may take.
 
@@ -95,7 +95,7 @@ Is the request actually successful?
 
 The bug is comparing `r.status_code == 200` when a successful POST returns
 `201 Created`. The response is treated as a failure even though the resource was
-created. Teaches the range of 2xx status codes, when each is used, and how to use
+created. Shows the range of 2xx status codes, when each is used, and how to use
 `r.is_success` to accept any successful response.
 
 </details>
@@ -111,7 +111,7 @@ the `Retry-After` header contain? Does the script wait before retrying?
 
 The bug is retrying immediately after a 429 Too Many Requests response without
 reading the `Retry-After` header. Each retry is rejected for the same reason and the
-script loops without ever succeeding. Teaches what 429 means, how to detect it, and
+script loops without ever succeeding. Shows what 429 means, how to detect it, and
 how to wait the server-specified duration before the next attempt.
 
 </details>
@@ -126,7 +126,7 @@ Which fields changed, and which fields were you expecting to keep?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is using PUT with a partial body. PUT replaces the entire resource with
-the request body, so any field not included in the request is wiped. Teaches the
+the request body, so any field not included in the request is wiped. Shows the
 semantic difference between PUT (full replacement) and PATCH (partial update), and
 why sending only the fields you want to change requires PATCH.
 
@@ -143,7 +143,7 @@ appear? What would a server log entry look like?
 
 The bug is placing the API key in the URL query string. Query strings are recorded
 in server access logs, browser history, and any intermediate proxies, so the secret
-is exposed in plaintext. Teaches how to pass credentials in an `Authorization`
+is exposed in plaintext. Shows how to pass credentials in an `Authorization`
 header instead, where they are kept out of logs and not cached by browsers.
 
 </details>
@@ -159,7 +159,7 @@ What happened to the request body that was sent to `/submit`?
 
 The bug is following a 302 redirect from a POST request. HTTP convention changes the
 method from POST to GET when following a 302, so the request body is silently
-dropped and the final endpoint receives an empty GET request. Teaches how redirects
+dropped and the final endpoint receives an empty GET request. Shows how redirects
 interact with request methods, and how to detect this by inspecting the method and
 body at the redirected URL.
 

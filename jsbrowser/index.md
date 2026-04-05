@@ -10,7 +10,7 @@ console output. Are all the field values captured and reported correctly?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is using `var` inside a loop. Hoisting causes the variable to be shared
-across iterations, so the function returns `undefined` for some fields. Teaches
+across iterations, so the function returns `undefined` for some fields. Shows
 `var` hoisting, block scope, and why `let` and `const` are preferable.
 
 </details>
@@ -26,7 +26,7 @@ first click?
 
 The bug is attaching the event listener to a DOM element that is replaced by the
 update, so the listener is discarded and the button stops working after the first
-click. Teaches event delegation and the difference between live and dead DOM
+click. Shows event delegation and the difference between live and dead DOM
 references.
 
 </details>
@@ -42,7 +42,7 @@ expected amount each time?
 
 The bug is that `this` inside the callback refers to the button element rather than
 the object that owns the counter, so the counter increments by the wrong amount.
-Teaches `this` binding in JavaScript callbacks and how to use arrow functions or
+Shows `this` binding in JavaScript callbacks and how to use arrow functions or
 `.bind()` to preserve context.
 
 </details>
@@ -57,7 +57,7 @@ data correct on the first load, or does it appear stale or blank?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is that the fetch result is used before the Promise resolves (code runs
-synchronously after an async call), so the page displays stale data. Teaches the
+synchronously after an async call), so the page displays stale data. Shows the
 JavaScript event loop, Promises, and `async/await`.
 
 </details>
@@ -72,7 +72,7 @@ browser console for errors.
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is that `localStorage` throws a `SecurityError` in private browsing mode but
-the code has no try/catch, so the script fails silently. Teaches browser storage
+the code has no try/catch, so the script fails silently. Shows browser storage
 limitations and how to use the browser console and DevTools to observe thrown
 exceptions.
 
@@ -88,7 +88,7 @@ Does the layout look correct?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is a missing `<meta name="viewport">` tag that prevents mobile scaling, so
-the page layout breaks on narrow screens even though the CSS looks correct. Teaches
+the page layout breaks on narrow screens even though the CSS looks correct. Shows
 how to use browser DevTools' device emulation and inspect computed styles.
 
 </details>
@@ -106,7 +106,7 @@ request from the command line.
 
 The bug is a missing `Access-Control-Allow-Origin` header on the server response, so
 the fetch request returns a CORS error in the browser even though it works from the
-command line. Teaches what CORS is, how to read network error messages in DevTools,
+command line. Shows what CORS is, how to read network error messages in DevTools,
 and how to configure server headers.
 
 </details>
@@ -123,7 +123,7 @@ file the browser is serving.
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is that the browser is serving a cached version of the JavaScript file, so
-the page shows outdated content after a bug fix is deployed. Teaches cache-control
+the page shows outdated content after a bug fix is deployed. Shows cache-control
 headers, hard refresh vs. normal refresh, and how to use DevTools to disable the
 cache during development.
 
@@ -142,7 +142,7 @@ shown?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is deploying a minified bundle without a source map, so JavaScript errors
-are reported on minified line numbers that do not correspond to the source. Teaches
+are reported on minified line numbers that do not correspond to the source. Shows
 what source maps are, how to generate them, and how to load them in DevTools to see
 original source locations.
 
@@ -159,7 +159,7 @@ policy-related messages.
 
 The bug is a Content Security Policy header that blocks an inline script, so the
 application shows blank content in production even though it works in development.
-Teaches how to read CSP violation reports in the browser console, how CSP directives
+Shows how to read CSP violation reports in the browser console, how CSP directives
 work, and how to move inline scripts to external files to comply.
 
 </details>
