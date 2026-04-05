@@ -9,6 +9,11 @@
     and limited understanding of threading, networking, containers, and other systems-level issues.
 -   Learners use an LLM as a coding assistant but write and debug code themselves.
 
+## Skills
+
+-   Load the `learning-goal` and `learning-opportunities` skills when
+    creating lessons.
+
 ## Structure
 
 -   Lessons are written in Markdown and compiled to HTML using the `mccole` static site generator.
@@ -39,10 +44,11 @@
 -   The next line of `*/index.md` may be a subtitle paragraph.
 -   Figures, code inclusions, citations, and glossary references are formatted using `mccole` shortcodes.
 -   Lessons are written as point-form notes.
--   Do *not* use **bold** or *italics*.
--   Do *not* attempt to be funny or offer generic positive feedback to readers.
+-   Do not use **bold** or *italics*.
+-   Do not attempt to be funny or offer generic positive feedback to readers.
 -   Use `[text][key]` format for external links, and define `key` in `_extras/links.md`.
 -   Do not over-use semi-colons or em-dashes.
+-   Format mathematics using KaTeX.
 -   Each example has:
     -   An H2-level Markdown heading
     -   That heading must have an ID `{: #section-slug}` where `section` is the
@@ -83,5 +89,5 @@
 ## Interaction
 
 -   Save a summary of prompts given and actions taken in files in `./log`
-    with the date and time of the interaction in UTC.
+    with the date and time of the interaction in UTC as the filename.
 -   Run shell commands that do not modify files without asking for permission.
