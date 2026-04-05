@@ -20,6 +20,7 @@ FIXME
 1.  [JavaScript Fundamentals](@/jsbrowser/)
 1.  [HTTP and APIs](@/web/)
 1.  [Data Science](@/datasci/)
+1.  [Data Visualization](@/dataviz/)
 1.  [Polars](@/polars/)
 1.  [The Unix Shell](@/shell/)
 1.  [SQL](@/sql/)
