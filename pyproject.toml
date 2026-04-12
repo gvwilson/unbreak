@@ -46,6 +46,7 @@ skips = [
     ".ruff_cache/**",
     "__pycache__/**",
     "bin/**",
+    "docs/**",
     "log/**",
     "uv.lock",
 ]
