@@ -50,6 +50,7 @@ but want to be able to understand and check the code it generates.
 1.  [Contributing](@/contributing/)
 1.  [Bibliography](@/bibliography/)
 1.  [Glossary](@/glossary/)
+1.  [Complex Examples](@/complex/)
 </div>
 
 </div>
