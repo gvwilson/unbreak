@@ -15,5 +15,5 @@ def average_scores(filename):
 
 
 if __name__ == "__main__":
-    filename = sys.argv[1] if len(sys.argv) > 1 else "catadd.txt"
-    print(f"Average: {average_scores(filename)}")
+    result = average_scores("catadd.txt")
+    print(f"Average: {result}")

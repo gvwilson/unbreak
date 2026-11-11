@@ -26,6 +26,5 @@ def count_runs(filename):
 
 
 if __name__ == "__main__":
-    filename = sys.argv[1] if len(sys.argv) > 1 else "indent.txt"
-    for value, count in count_runs(filename):
+    for value, count in count_runs("indent.txt"):
         print(f"{count} x {value!r}")

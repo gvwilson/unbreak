@@ -63,7 +63,7 @@ Shows: how Boolean logic errors cause silent misbehavior, and how a
 small truth table reveals which operator is correct.
 
 To find it: write a two-row truth table for a password that satisfies one condition
-but not the other — say, correct length but no special character. With `and`, both
+but not the other (e.g., correct length but no special character). With `and`, both
 conditions must be false for the overall check to return `True`; valid passwords
 almost never satisfy that, so the gate always rejects.
 
@@ -191,9 +191,9 @@ access? Use `type()` to examine the types of the two values being compared.
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-The bug is that the JSON file stores IDs as integers but the login ID arrives as a
-string from user input, and `"42" != 42` in Python, so the script always reports
-"access denied" even for valid users.
+The bug is that the JSON file stores IDs as integers but the login ID arrives as
+a string, and `"42" != 42` in Python, so the script always reports "access
+denied" even for valid users.
 
 Shows: how JSON types map to Python types and why type conversion must
 happen explicitly at system boundaries.
@@ -213,13 +213,13 @@ Call the function with the argument `0`. Does it return the correct result?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is a base-case condition that uses `>` instead of `>=`, so calling the
-function with zero triggers infinite recursion and raises a `RecursionError`.
+function with zero implicitly returns `None`.
 
 Shows: how to identify missing or incorrect base cases in recursion.
 
-To find it: call `factorial(0)` directly and read the `RecursionError`. Then read the
-base-case condition: `if n > 0` means `0 > 0` is `False`, so the function recurses
-instead of returning 1. Replacing `>` with `>=` fixes it.
+To find it: call `factorial(0)` directly and read the error. Then read the
+base-case condition: `if n > 0` means `0 > 0` is `False`, so the function
+falls through and returns `None`.
 
 </details>
 
@@ -238,10 +238,10 @@ with leftover items from previous calls.
 Shows: Python's mutable default argument trap and why `None` is the
 correct default.
 
-To find it: call `collect()` twice with no arguments and print both return values on
-the same line — `print(collect(), collect())`. The second list will contain all items
-from the first call plus new ones, proving the two calls share the same underlying
-list.
+To find it: call `collect()` twice with no arguments and print both return
+values on the same line (i.e., `print(collect(), collect())`). The second list
+will contain all items from the first call plus new ones, proving the two calls
+share the same underlying list.
 
 </details>
 
@@ -260,12 +260,12 @@ The bug is that certain applications pad fields with trailing spaces, so string
 comparisons always fail for those rows even though the values look correct to the
 naked eye.
 
-Shows: that real-world data often contains invisible characters, and
-how `.strip()` and `repr()` help diagnose string comparison failures.
+Shows: that real-world data often contains invisible characters, and how
+`.strip()` and `repr()` help diagnose string comparison failures.
 
-To find it: print `repr(row[field])` for a row that fails the comparison. You will
-see trailing spaces — e.g., `'Smith   '` — that are invisible in a normal `print`
-but visible in the `repr()` output.
+To find it: print `repr(row[field])` for a row that fails the comparison. You
+will see trailing spaces (e.g., `'Smith '`) that are invisible in a normal
+`print` but visible in the `repr()` output.
 
 </details>
 
@@ -278,15 +278,15 @@ changed?
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-The bug is that `str.replace` returns a new string and the return value is never
-assigned back, so the original message is unchanged at the end.
+The bug is that `str.replace` returns a new string, but the return value is
+never assigned back, so the original message is unchanged at the end.
 
-Shows: that string methods never mutate their argument, and that every
-string transformation must be captured in a variable.
+Shows: that string methods never mutate their argument, and that every string
+transformation must be captured in a variable.
 
-To find it: print `message` both before and after calling `clean_message`. If the
-message is unchanged, the transformation's return value was discarded. Check that
-the result of `str.replace` is assigned back to a variable.
+To find it: print `message` both before and after calling `clean_message`. If
+the message is unchanged, the transformation's return value was discarded. Check
+that the result of `str.replace` is assigned back to a variable.
 
 </details>
 
@@ -299,15 +299,14 @@ expected? Try with a list where every element should be removed.
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-The bug is modifying a list while iterating over it, which causes the loop to skip
-every other matching item.
+The bug is modifying a list while iterating over it, which causes the loop to
+skip every other matching item.
 
-Shows: why mutating a collection during iteration causes unpredictable
-behavior.
+Shows: why mutating a collection during iteration causes unpredictable behavior.
 
-To find it: run with `numbers = [-1, -2, -3, -4]`, which should remove all four elements.
-Print `len(numbers)` after the loop; you will get `2` instead of `0`. Trace the first
-iteration: removing `numbers[0]` shifts `numbers[1]` into position 0, which the loop
-then skips on its next step.
+To find it: run with `numbers = [-1, -2, -3, -4]`, which should remove all four
+elements.  Print `len(numbers)` after the loop; you will get `2` instead of
+`0`. Trace the first iteration: removing `numbers[0]` shifts `numbers[1]` into
+position 0, which the loop then skips on its next step.
 
 </details>

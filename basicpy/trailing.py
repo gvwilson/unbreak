@@ -9,13 +9,13 @@ def find_value(filename, target):
             if len(parts) >= 2:
                 region = parts[0]
                 value = parts[1].strip()
-                if region == target:  # BUG: region may have trailing space from export
+                if region == target:  # BUG: region may have trailing space
                     return value
     return None
 
 
 if __name__ == "__main__":
-    filename = sys.argv[1] if len(sys.argv) > 1 else "trailing.txt"
+    filename = "trailing.txt"
     for target in ["North", "South", "East", "West"]:
         result = find_value(filename, target)
         if result is None:

@@ -8,4 +8,3 @@ if __name__ == "__main__":
     k = 3
     windows = sliding_windows(data, k)
     print(f"Windows: {windows}")
-    print(f"Got {len(windows)}, expected {len(data) - k + 1}")
