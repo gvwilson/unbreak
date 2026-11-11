@@ -1,6 +1,6 @@
 # Data, I/O, and Testing
 
-## Read a contact list from a CSV export {: #diot-quotecsv}
+## Parse records with quoted fields {: #diot-quotecsv}
 
 Run the parser with the provided CSV file. Do all rows produce the correct number
 of fields? Pay particular attention to rows that contain commas.
@@ -89,7 +89,7 @@ in the HTML.
 
 </details>
 
-## Extract phone numbers from a text file {: #diot-overexp}
+## Extract email addresses from a text file {: #diot-overexp}
 
 Test the regular expression against a few valid email addresses and a few strings
 that look like email addresses but are not. Does it reject the invalid ones?

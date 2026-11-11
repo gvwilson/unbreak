@@ -65,7 +65,7 @@ the rounding difference that makes `==` return `False`.
 
 </details>
 
-## Load settings from a configuration file {: #interpy-broad}
+## Scrape titles from a list of URLs {: #interpy-broad}
 
 Run the scraper with the provided URL list, which includes one malformed URL. Does
 it process all the valid URLs? Check whether anything is silently discarded.
@@ -90,7 +90,7 @@ the wrong exception type.
 
 </details>
 
-## Read addresses from a spreadsheet export {: #interpy-commas}
+## Find the top scorer in a CSV file {: #interpy-commas}
 
 Run the script with the provided CSV file and read the traceback. Which line in the
 file triggers the error? Examine that line carefully.

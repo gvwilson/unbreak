@@ -2,7 +2,7 @@
 
 [download databases](./databases.zip)
 
-## Display records sorted by last name then first name {: #sql-sortcol}
+## Sort penguins by island then species {: #sql-sortcol}
 
 Run this query and look at the first several rows. Is the output
 ordered by island first, or by species first?
@@ -49,7 +49,7 @@ page size 5 gives `offset 10`.
 
 </details>
 
-## Calculate the average score per student {: #sql-intdivision}
+## Show body mass in kilograms {: #sql-intdivision}
 
 Run this query and compare the `mass_kg` column to the `body_mass_g` column.
 Do the kilogram values look right for a penguin that weighs, say, 3750 g?
@@ -71,7 +71,7 @@ division is truncating the decimal. Change `1000` to `1000.0` and rerun.
 
 </details>
 
-## List unique participants in a study {: #sql-distinctcols}
+## List distinct species in the penguins dataset {: #sql-distinctcols}
 
 Run this query and count the rows returned. How many distinct species are in the
 dataset? Does the row count match that number?
@@ -94,7 +94,7 @@ producing the extra rows.
 
 </details>
 
-## Find records with no assigned reviewer {: #sql-nullequal}
+## Find penguins with no recorded sex {: #sql-nullequal}
 
 Run this query. How many rows does it return? Are there penguins in the table whose
 sex was not recorded?
@@ -139,7 +139,7 @@ is unexpected, check whether the conditions are mutually exclusive.
 
 </details>
 
-## Query records by status label {: #sql-casevalue}
+## Find all female penguins {: #sql-casevalue}
 
 Run this query and count the rows returned. Then run a query to find the distinct
 values stored in the `sex` column. Do any of them match the literal used in the
@@ -212,7 +212,7 @@ island = 'Biscoe')`. Add parentheses around the `or` sub-expression.
 
 </details>
 
-## Summarize sales by region and product {: #sql-nonaggcol}
+## Show average body mass per species {: #sql-nonaggcol}
 
 Run this query and examine the `sex` column. Pick one species and check a few rows
 against the original data. Are the sex values consistent with what you expected
@@ -285,7 +285,7 @@ data shows three, the database is picking arbitrarily.
 
 </details>
 
-## Count how many records have a phone number {: #sql-countnull}
+## Count the penguin rows {: #sql-countnull}
 
 Run this query. Then run a second query using `count(*)` and compare the two
 results. If the numbers differ, find the rows that account for the difference.
@@ -307,7 +307,7 @@ their `sex` is null.
 
 </details>
 
-## Compute a class average including absent students {: #sql-avgmanual}
+## Compute the average body mass {: #sql-avgmanual}
 
 Run this query and note the result. Then run `select avg(body_mass_g) from penguins`
 and compare. Are the two values the same?
@@ -355,7 +355,7 @@ because null comparisons always produce null, not `true` or `false`.
 
 </details>
 
-## List all customers with or without orders {: #sql-innerleft}
+## List every person and their total credits {: #sql-innerleft}
 
 Run this query and list the people in the result. Then run `select distinct person
 from work` and compare. Does every person from the `work` table appear in the
@@ -404,7 +404,7 @@ which means the `on` clause is missing.
 
 </details>
 
-## Total donations where some records are empty {: #sql-coalescemiss}
+## Show total credits per person {: #sql-coalescemiss}
 
 Run this query and check the `total` column for each person. Which person has a
 null total? What jobs did that person do, according to the `work` table?
@@ -427,7 +427,7 @@ group — wrap it in `coalesce(..., 0)` to return zero instead.
 
 </details>
 
-## Match employees to their department records {: #sql-joinswapped}
+## List each person and their survey count {: #sql-joinswapped}
 
 Run this query. Does every person appear? Compare the `num_surveys` counts to what
 you get from `select count(*) from survey group by person_id`. Do the numbers match?
@@ -451,7 +451,7 @@ row to every other row.
 
 </details>
 
-## Find pairs of employees in the same department {: #sql-selfjoin}
+## List each person and their supervisor {: #sql-selfjoin}
 
 Run this query and look at a few rows. Use the `person` table to verify which
 people are supervisors and which are subordinates. Are the labels in the output

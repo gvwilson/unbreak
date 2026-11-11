@@ -1,6 +1,6 @@
 # Performance, Concurrency, and System Interaction
 
-## Search a large log file for matching entries {: #perfcon-repscans}
+## Find the most common word in a text {: #perfcon-repscans}
 
 Run the word-frequency function on the provided text file and time how long it
 takes. Then run `cProfile` on it to see which lines consume the most time.
@@ -89,7 +89,7 @@ modifications inside workers are invisible to the parent.
 
 </details>
 
-## Test a function that sends email notifications {: #perfcon-mockpatch}
+## Mock a function where it is imported {: #perfcon-mockpatch}
 
 Run the test. Does it pass? Add a print statement inside the mock to check whether
 the mock is actually being called. Then look at the return value of the function
@@ -109,7 +109,7 @@ applied.
 
 To find it: add `print("mock was called")` as the first line of the mock function.
 Run the test. If the print never appears, the mock is not intercepting the real call.
-Then check where `send_email` was imported in the module under test — the patch must
-name that module, not the one where `send_email` is defined.
+Then check where `fetch_data` was imported in the module under test — the patch must
+name that module, not the one where `fetch_data` is defined.
 
 </details>
