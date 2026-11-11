@@ -23,10 +23,10 @@ reveals the off-by-one.
 
 </details>
 
-## Add up totals from a text file {: #basicpy-catadd}
+## Average scores from a text file {: #basicpy-catadd}
 
-Run this script with the provided input file and examine the total it prints. Does
-the value look like a reasonable sum of exam scores?
+Run this script with the provided input file and examine the average it prints. Does
+the value look like a reasonable average of exam scores?
 
 [% inc catadd.py scrub="\s*# BUG.*" %]
 [% inc catadd.txt %]
@@ -35,7 +35,7 @@ the value look like a reasonable sum of exam scores?
 
 The bug is accumulating scores with `total = total + line.strip()` (string
 concatenation) instead of converting each line to a number first, so the script
-always reports a nonsensical total.
+always reports a nonsensical average.
 
 Shows: the difference between string `+` and numeric `+`, and how to
 check the type of a value at runtime using `type()` or `isinstance()`.
