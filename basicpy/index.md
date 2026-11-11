@@ -1,6 +1,6 @@
 # Basic Python
 
-## Calculate a running average over a time series {: #basicpy-sliding}
+## Build sliding windows over a sequence {: #basicpy-sliding}
 
 Run this code with a small list (for example, five elements and a window size of
 three) and count the windows by hand. Does the number of windows the code returns
@@ -69,7 +69,7 @@ almost never satisfy that, so the gate always rejects.
 
 </details>
 
-## Convert temperatures between units {: #basicpy-formula}
+## Convert degrees/minutes/seconds to decimal degrees {: #basicpy-formula}
 
 Call the conversion function with a coordinate you can verify by hand—for example,
 1 degree, 30 minutes, 0 seconds should equal 1.5 decimal degrees. Does the function
@@ -93,7 +93,7 @@ a reference table.
 
 </details>
 
-## Sort a list of student scores {: #basicpy-sortnone}
+## Square and sort a list of numbers {: #basicpy-sortnone}
 
 Run this script and examine what it prints. Is the list what you expected?
 
@@ -102,16 +102,16 @@ Run this script and examine what it prints. Is the list what you expected?
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
 The bug is calling `list.sort()` (which returns `None`) and assigning the result, so
-the list is always empty.
+the result is `None` instead of the sorted list.
 
 Shows: that many list methods mutate in place and return `None`.
 
-To find it: print `sorted_scores` immediately after the assignment. The output
+To find it: print `squared_sorted([3, 1, 4, 1, 5, 9, 2, 6])` immediately after the assignment. The output
 `None` shows the return value of `list.sort()` rather than a sorted list.
 
 </details>
 
-## Count words across multiple files {: #basicpy-indent}
+## Count runs of identical lines in a file {: #basicpy-indent}
 
 Run this script with the provided input file and examine the run-length counts.
 Then trace through the loop by hand with a short example—track what the "previous
@@ -136,7 +136,7 @@ the update is happening outside the loop rather than at the start of each iterat
 
 </details>
 
-## Check whether a number is prime {: #basicpy-noreturn}
+## Filter negative numbers from a list {: #basicpy-noreturn}
 
 Call the function and print its return value. Is it what you expected?
 
@@ -150,7 +150,7 @@ return it, so it returns `None`.
 Shows: that Python functions return `None` by default and how to spot
 missing `return` in control flow.
 
-To find it: print the function's return value directly — `print(is_prime(7))`. Seeing
+To find it: print the function's return value directly — `print(filter_negatives([-3, 1, -1, 4, -1, 5, -9, 2, -6]))`. Seeing
 `None` identifies a missing `return`; follow the control flow to find the branch that
 computes the result without returning it.
 
@@ -290,7 +290,7 @@ the result of `str.replace` is assigned back to a variable.
 
 </details>
 
-## Remove expired entries from a list {: #basicpy-mutiter}
+## Remove negative numbers from a list {: #basicpy-mutiter}
 
 Run this script and count how many items were removed. Is it the number you
 expected? Try with a list where every element should be removed.
@@ -305,9 +305,9 @@ every other matching item.
 Shows: why mutating a collection during iteration causes unpredictable
 behavior.
 
-To find it: run with `items = [2, 4, 6, 8]`, which should remove all four elements.
-Print `len(items)` after the loop; you will get `2` instead of `0`. Trace the first
-iteration: removing `items[0]` shifts `items[1]` into position 0, which the loop
+To find it: run with `numbers = [-1, -2, -3, -4]`, which should remove all four elements.
+Print `len(numbers)` after the loop; you will get `2` instead of `0`. Trace the first
+iteration: removing `numbers[0]` shifts `numbers[1]` into position 0, which the loop
 then skips on its next step.
 
 </details>
