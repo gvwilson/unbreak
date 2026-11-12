@@ -193,36 +193,39 @@ like data, not call it like a function.</p>
 <p>To find it: the traceback says <code>TypeError: 'float' object is not callable</code>, pointing
 to the line with <code>c.area()</code>. Remove the parentheses: <code>c.area</code>.</p>
 </details>
-<h2 id="oopy-no-return">Retrieve the top item from a stack</h2>
-<p>Push 42 onto a <code>Stack</code> and peek at the top. Does <code>peek()</code> return 42?</p>
-<div data-inc="no_return.py" data-scrub="\s*# BUG.*"><span aria-label="Source: oopy/no_return.py" class="inc-path" role="img" tabindex="0" title="oopy/no_return.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Stack</span><span class="p">:</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_items</span> <span class="o">=</span> <span class="p">[]</span>
+<h2 id="oopy-radd">Add a vector and a tuple in either order</h2>
+<p>Create a <code>Vector(1, 2)</code> and add it to <code>(3, 4)</code> — and also add <code>(3, 4)</code> to the vector.
+Do both additions work?</p>
+<div data-inc="radd.py" data-scrub="\s*# BUG.*"><span aria-label="Source: oopy/radd.py" class="inc-path" role="img" tabindex="0" title="oopy/radd.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Vector</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">ox</span><span class="p">,</span> <span class="n">oy</span> <span class="o">=</span> <span class="n">other</span>
+        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">ox</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">oy</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">peek</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">:</span>
-            <span class="n">top</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"Vector(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="si">}</span><span class="s2">)"</span>
 
 
-<span class="n">s</span> <span class="o">=</span> <span class="n">Stack</span><span class="p">()</span>
-<span class="n">s</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">peek</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">result</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">v</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>   <span class="c1"># Vector(4, 6)</span>
+<span class="nb">print</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">v</span><span class="p">)</span>   <span class="c1"># expect Vector(4, 6), get TypeError</span>
 </code></pre></div>
 </div>
 <details class="explanation">
 <summary>Show explanation</summary>
-<p>The bug is the missing <code>return</code> statement. <code>peek</code> computes the top item and assigns
-it to <code>top</code>, but never returns it. Python then falls off the end of the function and
-implicitly returns <code>None</code>. Adding 1 to <code>None</code> raises <code>TypeError: unsupported operand
-type(s) for +: 'NoneType' and 'int'</code>.</p>
-<p>Shows: that forgetting <code>return</code> is silent—no error at the call site—and the failure
-only appears when the caller tries to use the <code>None</code> value it received.</p>
-<p>To find it: print <code>result</code> before trying to add 1. It will print <code>None</code>. Add
-<code>return top</code> inside the <code>if</code> block.</p>
+<p>The bug is defining <code>__add__</code> but not <code>__radd__</code>. When Python evaluates
+<code>vector + (3, 4)</code>, it calls <code>vector.__add__((3, 4))</code>, which works. But for
+<code>(3, 4) + vector</code>, the left operand is a tuple with no idea how to add a <code>Vector</code>.
+Python then tries the vector's reflected method <code>__radd__</code>, which is not defined, so
+it raises <code>TypeError</code>.</p>
+<p>Shows: that binary operators are not automatically commutative for user-defined types,
+and that <code>__radd__</code> (reflected add) handles the case where the custom object is on the
+right-hand side.</p>
+<p>To find it: the traceback says <code>TypeError: unsupported operand type(s) for +: 'tuple'
+and 'Vector'</code>. Add a <code>__radd__</code> method (often implemented by delegating to <code>__add__</code>).</p>
 </details>
 <h2 id="oopy-is-equals">Check whether a status matches a target</h2>
 <p>Create a <code>Status("ok")</code> and call <code>is_ok()</code>. Does it return <code>True</code>?</p>
@@ -360,100 +363,99 @@ assignment inside a method creates a local variable, not an attribute.</p>
 <p>To find it: add <code>print(vars(p))</code> after creating the point. The dictionary will be
 empty, revealing that no attributes were stored.</p>
 </details>
-<h2 id="oopy-mutable-default">Build a bag that can hold any items</h2>
-<p>Create two <code>Bag</code> objects without passing any arguments, add <code>"apple"</code> to the first,
-and print the second. Is the second bag empty?</p>
-<div data-inc="mutable_default.py" data-scrub="\s*# BUG.*"><span aria-label="Source: oopy/mutable_default.py" class="inc-path" role="img" tabindex="0" title="oopy/mutable_default.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Bag</span><span class="p">:</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="o">=</span><span class="p">[]):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="n">items</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<h2 id="oopy-shallowcopy">Copy an object with nested data</h2>
+<p>Create a <code>Playlist</code> with a list of songs, make a copy with <code>copy.copy</code>, and add a song
+to the copy. Does the original's song list stay unchanged?</p>
+<div data-inc="shallowcopy.py" data-scrub="\s*# BUG.*"><span aria-label="Source: oopy/shallowcopy.py" class="inc-path" role="img" tabindex="0" title="oopy/shallowcopy.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 
 
-<span class="n">a</span> <span class="o">=</span> <span class="n">Bag</span><span class="p">()</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">Bag</span><span class="p">()</span>
-<span class="n">a</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"apple"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">items</span><span class="p">)</span>  <span class="c1"># expect [], get ['apple']</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Playlist</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">songs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">songs</span> <span class="o">=</span> <span class="n">songs</span>
+
+
+<span class="n">original</span> <span class="o">=</span> <span class="n">Playlist</span><span class="p">([</span><span class="s2">"alpha"</span><span class="p">,</span> <span class="s2">"beta"</span><span class="p">])</span>
+<span class="n">clone</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">original</span><span class="p">)</span>
+<span class="n">clone</span><span class="o">.</span><span class="n">songs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"gamma"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">original</span><span class="o">.</span><span class="n">songs</span><span class="p">)</span>  <span class="c1"># expect ['alpha', 'beta'], get ['alpha', 'beta', 'gamma']</span>
 </code></pre></div>
 </div>
 <details class="explanation">
 <summary>Show explanation</summary>
-<p>The bug is the mutable default argument <code>items=[]</code>. Python evaluates default
-argument values once, when the <code>def</code> statement runs, not on each call. Every <code>Bag</code>
-created without an explicit list receives a reference to the same list object. Adding
-to one bag therefore adds to all of them.</p>
-<p>Shows: why mutable objects (lists, dicts, sets) must never be used as default
-argument values, and the standard fix of using <code>None</code> as the default and creating a
-new list inside the function body.</p>
-<p>To find it: print <code>id(a.items)</code> and <code>id(b.items)</code>. They are the same number,
-proving both bags point to one list. Fix it with <code>def __init__(self, items=None)</code>
-and <code>self.items = items if items is not None else []</code>.</p>
+<p>The bug is using <code>copy.copy</code>, which performs a shallow copy. The new <code>Playlist</code> is a
+different object, but its <code>songs</code> attribute still points to the <em>same</em> list object as
+the original. Appending to the copy's list therefore mutates the original's list too.</p>
+<p>Shows: the difference between shallow copy (<code>copy.copy</code>, copies the container but
+shares nested objects) and deep copy (<code>copy.deepcopy</code>, recursively copies nested
+objects).</p>
+<p>To find it: print <code>id(original.songs)</code> and <code>id(clone.songs)</code>. They are the same
+number, proving both point to one list. Replace <code>copy.copy</code> with <code>copy.deepcopy</code> to
+copy the list too.</p>
 </details>
-<h2 id="oopy-class-var">Track students enrolled in a course</h2>
-<p>Create two <code>Roster</code> objects, enroll <code>"Alice"</code> in the math roster, and print the
-science roster's students. Is the science list empty?</p>
-<div data-inc="class_var.py" data-scrub="\s*# BUG.*"><span aria-label="Source: oopy/class_var.py" class="inc-path" role="img" tabindex="0" title="oopy/class_var.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Roster</span><span class="p">:</span>
-    <span class="n">students</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">enroll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">student</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">students</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">student</span><span class="p">)</span>
+<h2 id="oopy-contextmanager">Use a custom context manager</h2>
+<p>Use a <code>Timer</code> inside a <code>with</code> block and then call <code>elapsed()</code> on the bound variable.
+Does it work?</p>
+<div data-inc="contextmanager.py" data-scrub="\s*# BUG.*"><span aria-label="Source: oopy/contextmanager.py" class="inc-path" role="img" tabindex="0" title="oopy/contextmanager.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
 
-<span class="n">math</span> <span class="o">=</span> <span class="n">Roster</span><span class="p">(</span><span class="s2">"Math"</span><span class="p">)</span>
-<span class="n">science</span> <span class="o">=</span> <span class="n">Roster</span><span class="p">(</span><span class="s2">"Science"</span><span class="p">)</span>
-<span class="n">math</span><span class="o">.</span><span class="n">enroll</span><span class="p">(</span><span class="s2">"Alice"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">science</span><span class="o">.</span><span class="n">students</span><span class="p">)</span>  <span class="c1"># expect [], get ['Alice']</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Timer</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">elapsed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span>
+
+
+<span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+    <span class="k">pass</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">elapsed</span><span class="p">())</span>  <span class="c1"># expect a number, get AttributeError: 'NoneType' object has no attribute 'elapsed'</span>
 </code></pre></div>
 </div>
 <details class="explanation">
 <summary>Show explanation</summary>
-<p>The bug is <code>students = []</code> at class level. That makes <code>students</code> a class variable:
-one list shared by every <code>Roster</code> instance. When <code>enroll</code> calls
-<code>self.students.append(student)</code>, Python looks up <code>self.students</code>, finds the class
-variable, and mutates it in place. The mutation is visible through every instance.</p>
-<p>Shows: the difference between a class variable (one copy, shared) and an instance
-variable (one copy per object), and why mutable class variables are a common source
-of unexpected sharing.</p>
-<p>To find it: print <code>Roster.students</code> after enrolling Alice. It already contains her
-name, confirming the class-level list was modified. Fix it by moving the list into
-<code>__init__</code>: <code>self.students = []</code>.</p>
+<p>The bug is that <code>__enter__</code> never returns <code>self</code>. The value returned by <code>__enter__</code>
+is what the <code>as</code> target in <code>with Timer() as t</code> binds to. With no <code>return</code> statement,
+<code>__enter__</code> returns <code>None</code>, so <code>t</code> is <code>None</code> and calling <code>t.elapsed()</code> raises
+<code>AttributeError</code>.</p>
+<p>Shows: the context-manager protocol, and that <code>__enter__</code> must return the resource
+(usually <code>self</code>) that the <code>as</code> clause should bind.</p>
+<p>To find it: print <code>t</code> inside the <code>with</code> block — it will be <code>None</code>. Add <code>return self</code>
+at the end of <code>__enter__</code>.</p>
 </details>
-<h2 id="oopy-super-init">Extend a class with a new attribute</h2>
-<p>Create a <code>Dog</code> named <code>"Rex"</code> with breed <code>"Labrador"</code> and call <code>describe()</code>.
-Does it print a sentence with both pieces of information?</p>
-<div data-inc="super_init.py" data-scrub="\s*# BUG.*"><span aria-label="Source: oopy/super_init.py" class="inc-path" role="img" tabindex="0" title="oopy/super_init.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Animal</span><span class="p">:</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+<h2 id="oopy-abstractmethod">Instantiate a class with an abstract method</h2>
+<p>Create a <code>Dog</code> from an <code>Animal</code> base class that declares an abstract <code>speak</code> method.
+Does <code>Dog("Rex")</code> succeed?</p>
+<div data-inc="abstractmethod.py" data-scrub="\s*# BUG.*"><span aria-label="Source: oopy/abstractmethod.py" class="inc-path" role="img" tabindex="0" title="oopy/abstractmethod.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Animal</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">speak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Return the sound this animal makes."""</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Dog</span><span class="p">(</span><span class="n">Animal</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">breed</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">breed</span> <span class="o">=</span> <span class="n">breed</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> is a </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">breed</span><span class="si">}</span><span class="s2">"</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 
 
-<span class="n">d</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">(</span><span class="s2">"Rex"</span><span class="p">,</span> <span class="s2">"Labrador"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">(</span><span class="s2">"Rex"</span><span class="p">)</span>  <span class="c1"># expect a Dog, get TypeError: Can't instantiate abstract class Dog</span>
 </code></pre></div>
 </div>
 <details class="explanation">
 <summary>Show explanation</summary>
-<p>The bug is the missing <code>super().__init__(name)</code> call inside <code>Dog.__init__</code>. Python
-does not automatically run the parent class's <code>__init__</code>. Without that call,
-<code>Animal.__init__</code> never runs, so <code>self.name</code> is never set. <code>describe</code> then raises
-<code>AttributeError</code> when it tries to read <code>self.name</code>.</p>
-<p>Shows: that subclass <code>__init__</code> methods must explicitly call the parent's <code>__init__</code>
-to initialize inherited attributes, and that forgetting this call produces an error
-only when the missing attribute is accessed, not at construction time.</p>
-<p>To find it: add <code>print(vars(d))</code> right after creating the dog. The dictionary will
-contain <code>breed</code> but not <code>name</code>. Add <code>super().__init__(name)</code> as the first line of
-<code>Dog.__init__</code>.</p>
+<p>The bug is that <code>Dog</code> does not implement the abstract method <code>speak</code>. A class
+inheriting from <code>ABC</code> with an <code>@abstractmethod</code> cannot be instantiated until every
+abstract method is implemented in a concrete subclass. Because <code>Dog</code> leaves <code>speak</code>
+unimplemented, <code>Dog("Rex")</code> raises
+<code>TypeError: Can't instantiate abstract class Dog with abstract method speak</code>.</p>
+<p>Shows: how abstract base classes enforce a contract, and that a subclass must
+implement every abstract method before it can be instantiated.</p>
+<p>To find it: the traceback names the abstract method and the class. Add a <code>speak</code>
+method to <code>Dog</code> that returns the appropriate sound.</p>
 </details>
 <h2 id="oopy-str-type">Display an object as a string</h2>
 <p>Create a <code>Temperature</code> of 100 degrees and print it.
@@ -648,43 +650,37 @@ method that returns a hash based on the same fields used in <code>__eq__</code>:
     <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
 </code></pre></div>
 </details>
-<h2 id="oopy-iterator-reuse">Iterate over a countdown twice</h2>
-<p>Create a <code>Countdown</code> from 3 and iterate over it twice.
-Do both passes produce <code>[3, 2, 1]</code>?</p>
-<div data-inc="iterator_reuse.py" data-scrub="\s*# BUG.*"><span aria-label="Source: oopy/iterator_reuse.py" class="inc-path" role="img" tabindex="0" title="oopy/iterator_reuse.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Countdown</span><span class="p">:</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">start</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">=</span> <span class="n">start</span>
+<h2 id="oopy-truthiness">Check whether a collection is empty</h2>
+<p>Create an empty <code>Cart</code> and test it with <code>if cart:</code>. Does Python treat it as empty or
+as having items?</p>
+<div data-inc="truthiness.py" data-scrub="\s*# BUG.*"><span aria-label="Source: oopy/truthiness.py" class="inc-path" role="img" tabindex="0" title="oopy/truthiness.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Cart</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_items</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">StopIteration</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">-=</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span>
 
 
-<span class="n">c</span> <span class="o">=</span> <span class="n">Countdown</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>  <span class="c1"># [3, 2, 1]</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>  <span class="c1"># expect [3, 2, 1], get []</span>
+<span class="n">cart</span> <span class="o">=</span> <span class="n">Cart</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">cart</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"cart has items"</span><span class="p">)</span>  <span class="c1"># expect no output, but prints this</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"cart is empty"</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <details class="explanation">
 <summary>Show explanation</summary>
-<p>The bug is that the <code>Countdown</code> object is both an iterable and its own iterator.
-<code>__iter__</code> returns <code>self</code>, so the second call to <code>list(c)</code> reuses the same object,
-which still has <code>self.current == 0</code> from the first pass. <code>__next__</code> immediately
-raises <code>StopIteration</code>, producing an empty list.</p>
-<p>Shows: the iterator protocol and the difference between an iterable (has <code>__iter__</code>
-returning an iterator) and an iterator (has <code>__next__</code>). A reusable iterable should
-return a fresh iterator object from <code>__iter__</code>, not <code>self</code>.</p>
-<p>To find it: print <code>c.current</code> between the two calls. It will be 0. Fix it by
-extracting the iteration state into a separate class:</p>
-<div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">CountdownIterator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
-</code></pre></div>
+<p>The bug is that <code>__len__</code> always returns 1. Python's truthiness protocol calls
+<code>__bool__</code> if defined, otherwise <code>__len__</code>, and an object is falsy only if <code>__len__</code>
+returns 0. Because this <code>__len__</code> returns 1 even for an empty cart, <code>if cart:</code> is
+always true.</p>
+<p>Shows: Python's truthiness protocol (<code>__bool__</code>, then <code>__len__</code>), and why a custom
+container's emptiness check depends on those methods returning the real size.</p>
+<p>To find it: print <code>len(cart)</code> — it prints 1 even though the cart is empty. Change
+<code>__len__</code> to return <code>len(self._items)</code>.</p>
 </details>
 <h2 id="oopy-method-chain">Build a query with method chaining</h2>
 <p>Build a <code>QueryBuilder</code>, chain <code>.filter()</code> and <code>.limit()</code>, and call <code>.build()</code>.
@@ -807,6 +803,86 @@ access speed) and the trade-off it imposes (no dynamic attributes unless <code>_
 is also included in <code>__slots__</code>).</p>
 <p>To find it: the traceback points directly at <code>p.z = 0</code>. Either add <code>"z"</code> to
 <code>__slots__</code>, or remove <code>__slots__</code> entirely if dynamic attributes are needed.</p>
+</details>
+<h2 id="oopy-sharemut">Track items added to each account</h2>
+<p>Create two <code>BankAccount</code> objects, add transactions to each, and print each account's
+history. Does each account show only its own transactions?</p>
+<div data-inc="sharemut.py" data-scrub="\s*# BUG.*"><span aria-label="Source: oopy/sharemut.py" class="inc-path" role="img" tabindex="0" title="oopy/sharemut.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BankAccount</span><span class="p">:</span>
+    <span class="n">history</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">owner</span> <span class="o">=</span> <span class="n">owner</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">deposit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">owner</span><span class="p">,</span> <span class="s2">"deposit"</span><span class="p">,</span> <span class="n">amount</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">withdraw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">owner</span><span class="p">,</span> <span class="s2">"withdrawal"</span><span class="p">,</span> <span class="n">amount</span><span class="p">))</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="n">alice</span> <span class="o">=</span> <span class="n">BankAccount</span><span class="p">(</span><span class="s2">"Alice"</span><span class="p">)</span>
+    <span class="n">bob</span> <span class="o">=</span> <span class="n">BankAccount</span><span class="p">(</span><span class="s2">"Bob"</span><span class="p">)</span>
+
+    <span class="n">alice</span><span class="o">.</span><span class="n">deposit</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">bob</span><span class="o">.</span><span class="n">deposit</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">alice</span><span class="o">.</span><span class="n">withdraw</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Alice's history: </span><span class="si">{</span><span class="n">alice</span><span class="o">.</span><span class="n">history</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Bob's history:   </span><span class="si">{</span><span class="n">bob</span><span class="o">.</span><span class="n">history</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<details class="explanation">
+<summary>Show explanation</summary>
+<p>The bug is that <code>history = []</code> is defined at class level, so all instances share the
+same list object instead of each having their own, and every account's transactions
+appear in every other account.</p>
+<p>Shows: the difference between shared mutable class attributes and per-instance
+attributes initialized in <code>__init__</code>.</p>
+<p>To find it: create two accounts, add one transaction to the first and a different one
+to the second, then print <code>alice.history</code> and <code>bob.history</code>. If both lists contain
+both transactions, confirm the sharing with <code>print(BankAccount.history is
+alice.history)</code> — it will print <code>True</code>.</p>
+</details>
+<h2 id="oopy-super">Initialize a subclass with its parent's attributes</h2>
+<p>Create a <code>Dog</code> named <code>"Rex"</code> and call <code>speak()</code>. Does it print a sentence with both
+the name and the sound?</p>
+<div data-inc="super.py" data-scrub="\s*# BUG.*"><span aria-label="Source: oopy/super.py" class="inc-path" role="img" tabindex="0" title="oopy/super.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Animal</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">sound</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sound</span> <span class="o">=</span> <span class="n">sound</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">speak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> says </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sound</span><span class="si">}</span><span class="s2">"</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Dog</span><span class="p">(</span><span class="n">Animal</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tricks</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">learn_trick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trick</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tricks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">trick</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">show_tricks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> knows: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tricks</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="n">dog</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">(</span><span class="s2">"Rex"</span><span class="p">)</span>
+    <span class="n">dog</span><span class="o">.</span><span class="n">learn_trick</span><span class="p">(</span><span class="s2">"sit"</span><span class="p">)</span>
+    <span class="n">dog</span><span class="o">.</span><span class="n">learn_trick</span><span class="p">(</span><span class="s2">"shake"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Tricks: </span><span class="si">{</span><span class="n">dog</span><span class="o">.</span><span class="n">tricks</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">dog</span><span class="o">.</span><span class="n">speak</span><span class="p">())</span>
+</code></pre></div>
+</div>
+<details class="explanation">
+<summary>Show explanation</summary>
+<p>The bug is forgetting <code>super().__init__()</code>, so the parent's <code>__init__</code> is never
+called and required attributes are missing when a subclass method tries to use them.</p>
+<p>Shows: Python's method resolution order and how to use <code>super()</code> correctly.</p>
+<p>To find it: instantiate the subclass and immediately try to access a parent-defined
+attribute. The <code>AttributeError</code> names the missing attribute. Search the subclass
+<code>__init__</code> for a call to <code>super().__init__()</code> — its absence is the cause.</p>
 </details>
 </main>
 <footer aria-label="Page navigation">

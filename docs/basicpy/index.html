@@ -533,6 +533,35 @@ elements.  Print <code>len(numbers)</code> after the loop; you will get <code>2<
 <code>0</code>. Trace the first iteration: removing <code>numbers[0]</code> shifts <code>numbers[1]</code> into
 position 0, which the loop then skips on its next step.</p>
 </details>
+<h2 id="basicpy-lexisort">Rank files by version number</h2>
+<p>Run the sort function and examine the output order. Where does <code>file10</code> appear
+relative to <code>file2</code>?</p>
+<div data-inc="lexisort.py" data-scrub="\s*# BUG.*"><span aria-label="Source: basicpy/lexisort.py" class="inc-path" role="img" tabindex="0" title="basicpy/lexisort.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sorted_logs</span><span class="p">(</span><span class="n">filenames</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Return filenames sorted by their embedded sequence number."""</span>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">filenames</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"file10.txt"</span><span class="p">,</span> <span class="s2">"file2.txt"</span><span class="p">,</span> <span class="s2">"file1.txt"</span><span class="p">,</span> <span class="s2">"file20.txt"</span><span class="p">,</span> <span class="s2">"file3.txt"</span><span class="p">]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">sorted_logs</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Sorted order:"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Expected numeric order: file1, file2, file3, file10, file20"</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<details class="explanation">
+<summary>Show explanation</summary>
+<p>The bug is using the default <code>sort()</code>, which gives lexicographic order and places
+<code>file10</code> before <code>file2</code>.</p>
+<p>Shows: the difference between lexicographic and numeric sort order and how to write a
+<code>key</code> function that extracts the embedded integer so the files sort as <code>file1</code>,
+<code>file2</code>, <code>file10</code>.</p>
+<p>To find it: run the sort and search for <code>file10</code> in the output. It appears
+immediately after <code>file1</code>, before <code>file2</code>. That placement is the signature of
+alphabetical order, where <code>"10" &lt; "2"</code> because <code>"1" &lt; "2"</code> at the first character.</p>
+</details>
 </main>
 <footer aria-label="Page navigation">
 <div class="row">

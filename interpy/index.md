@@ -1,49 +1,5 @@
 # Intermediate Python
 
-## Reverse a sequence for display {: #interpy-alias}
-
-Call the function and then print both the original list and the returned value.
-Has the original list changed?
-
-[% inc alias.py scrub="\s*# BUG.*" %]
-
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
-
-The bug is using `list.reverse()` (which mutates in place) instead of `reversed()`
-or slicing, so the original list is also reversed after the call.
-
-Shows: aliasing and the difference between in-place and copy
-operations.
-
-To find it: print `id(original_list)` before the call and `id(returned_list)` after.
-If both print the same number, the function returned the same object rather than a
-copy, and reversing it also mutated the original.
-
-</details>
-
-## Track items added to each shopping cart {: #interpy-sharemut}
-
-Create two account objects, add different transactions to each, and then print the
-transaction history of each. Does each account show only its own transactions?
-
-[% inc sharemut.py scrub="\s*# BUG.*" %]
-
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
-
-The bug is that `history = []` is defined at class level, so all instances share the
-same list object instead of each having their own, and every account's transactions
-appear in every other account.
-
-Shows: the difference between shared mutable class attributes and
-per-instance attributes initialized in `__init__`.
-
-To find it: create two accounts, add one transaction to the first and a different one
-to the second, then print `account1.history` and `account2.history`. If both lists
-contain both transactions, confirm the sharing with `print(Account.history is
-account1.history)` — it will print `True`.
-
-</details>
-
 ## Check whether a running total hits a target {: #interpy-fpeq}
 
 Run this script and examine the two computed values. Are they exactly equal? Try
@@ -114,28 +70,6 @@ quoted.
 
 </details>
 
-## Rank files by version number {: #interpy-lexisort}
-
-Run the sort function and examine the output order. Where does `file10` appear
-relative to `file2`?
-
-[% inc lexisort.py scrub="\s*# BUG.*" %]
-
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
-
-The bug is using the default `sort()`, which gives lexicographic order and places
-`file10` before `file2`.
-
-Shows: the difference between lexicographic and numeric sort order and
-how to write a `key` function that extracts the embedded integer so
-the files sort as `file1`, `file2`, `file10`.
-
-To find it: run the sort and search for `file10` in the output. It appears
-immediately after `file1`, before `file2`. That placement is the signature of
-alphabetical order, where `"10" < "2"` because `"1" < "2"` at the first character.
-
-</details>
-
 ## Process a pipeline of records twice {: #interpy-exhaust}
 
 Run the script and look at both outputs. Does each one produce the values you
@@ -179,27 +113,6 @@ key is identical for both calls.
 
 </details>
 
-## Extend a base class with new attributes {: #interpy-super}
-
-Create an instance of the subclass and try to access an attribute that is set in
-the parent's `__init__`. Does it exist?
-
-[% inc super.py scrub="\s*# BUG.*" %]
-
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
-
-The bug is forgetting `super().__init__()`, so the parent's `__init__` is never
-called and required attributes are missing when a subclass method tries to use them.
-
-Shows: Python's method resolution order and how to use `super()`
-correctly.
-
-To find it: instantiate the subclass and immediately try to access a parent-defined
-attribute. The `AttributeError` names the missing attribute. Search the subclass
-`__init__` for a call to `super().__init__()` — its absence is the cause.
-
-</details>
-
 ## Write results to disk when processing fails {: #interpy-unclosed}
 
 Run the script so that it raises an exception part-way through writing. Then open
@@ -222,5 +135,88 @@ To find it: run the script so that it raises an exception midway through writing
 then open the output file in a text editor. Count the records. If the count is less
 than expected, the buffer was never flushed — `close()` was never called because the
 exception skipped it.
+
+</details>
+
+## Build a list of functions in a loop {: #interpy-latebind}
+
+Call each function in the list produced by `make_multipliers()`. Do they multiply by
+different numbers?
+
+[% inc latebind.py scrub="\s*# BUG.*" %]
+
+<details class="explanation" markdown="1"><summary>Show explanation</summary>
+
+The bug is late binding. Each lambda captures the *variable* `i`, not the value it
+had when the lambda was created. By the time any lambda is called, the loop has
+finished and `i` is 4, so every lambda multiplies by 4.
+
+Shows: that closures capture variables, not values, and why a loop that creates
+functions needs a way to freeze the current value (e.g. a default argument
+`lambda x, i=i: x * i`).
+
+To find it: print what each function returns — they all return the same value.
+Capture the value with `lambda x, i=i: x * i`.
+
+</details>
+
+## Update a variable in an enclosing function {: #interpy-nonlocal}
+
+Call the counter returned by `make_counter()`. Does it return 1?
+
+[% inc nonlocal.py scrub="\s*# BUG.*" %]
+
+<details class="explanation" markdown="1"><summary>Show explanation</summary>
+
+The bug is assigning to `count` without declaring it `nonlocal`. Any assignment to a
+name inside a function makes that name local, so `count = count + 1` tries to read a
+local `count` before it exists and raises `UnboundLocalError`.
+
+Shows: Python's scoping rules (LEGB) and that `nonlocal` (or `global`) is required to
+assign to a variable from an enclosing scope.
+
+To find it: the traceback says `UnboundLocalError: local variable 'count' referenced
+before assignment`. Add `nonlocal count` as the first line of `increment`.
+
+</details>
+
+## Preserve a function's name and docstring {: #interpy-wraps}
+
+Inspect `add.__name__` and `add.__doc__` after decorating it. Do they match the
+original function?
+
+[% inc wraps.py scrub="\s*# BUG.*" %]
+
+<details class="explanation" markdown="1"><summary>Show explanation</summary>
+
+The bug is the missing `@functools.wraps(func)` on the wrapper. Without it, the
+decorator returns a function named `wrapper` with no docstring, so `help()`,
+`repr()`, and introspection tools report the wrong metadata.
+
+Shows: how decorators replace the original function object, and why `functools.wraps`
+is needed to copy `__name__`, `__doc__`, and other attributes to the wrapper.
+
+To find it: print `add.__name__` — it shows `wrapper`, not `add`. Add
+`@functools.wraps(func)` above the wrapper function.
+
+</details>
+
+## Pair up two lists of different lengths {: #interpy-ziplen}
+
+Pair a list of three names with a list of two scores. Does every name get a score?
+
+[% inc ziplen.py scrub="\s*# BUG.*" %]
+
+<details class="explanation" markdown="1"><summary>Show explanation</summary>
+
+The bug is that `zip` stops at the shorter iterable. When the two lists have different
+lengths, `zip` silently drops the extra items from the longer one, so the last name is
+missing from the result.
+
+Shows: that `zip` truncates to the shortest input, and when mismatched lengths matter
+use `itertools.zip_longest` (with a fill value) instead.
+
+To find it: compare `len(names)` and `len(scores)` to the number of pairs returned.
+The count is 2, not 3. Use `itertools.zip_longest(names, scores)` to keep all names.
 
 </details>

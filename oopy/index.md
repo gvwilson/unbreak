@@ -114,24 +114,27 @@ to the line with `c.area()`. Remove the parentheses: `c.area`.
 
 </details>
 
-## Retrieve the top item from a stack {: #oopy-no-return}
+## Add a vector and a tuple in either order {: #oopy-radd}
 
-Push 42 onto a `Stack` and peek at the top. Does `peek()` return 42?
+Create a `Vector(1, 2)` and add it to `(3, 4)` — and also add `(3, 4)` to the vector.
+Do both additions work?
 
-[% inc no_return.py scrub="\s*# BUG.*" %]
+[% inc radd.py scrub="\s*# BUG.*" %]
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-The bug is the missing `return` statement. `peek` computes the top item and assigns
-it to `top`, but never returns it. Python then falls off the end of the function and
-implicitly returns `None`. Adding 1 to `None` raises `TypeError: unsupported operand
-type(s) for +: 'NoneType' and 'int'`.
+The bug is defining `__add__` but not `__radd__`. When Python evaluates
+`vector + (3, 4)`, it calls `vector.__add__((3, 4))`, which works. But for
+`(3, 4) + vector`, the left operand is a tuple with no idea how to add a `Vector`.
+Python then tries the vector's reflected method `__radd__`, which is not defined, so
+it raises `TypeError`.
 
-Shows: that forgetting `return` is silent—no error at the call site—and the failure
-only appears when the caller tries to use the `None` value it received.
+Shows: that binary operators are not automatically commutative for user-defined types,
+and that `__radd__` (reflected add) handles the case where the custom object is on the
+right-hand side.
 
-To find it: print `result` before trying to add 1. It will print `None`. Add
-`return top` inside the `if` block.
+To find it: the traceback says `TypeError: unsupported operand type(s) for +: 'tuple'
+and 'Vector'`. Add a `__radd__` method (often implemented by delegating to `__add__`).
 
 </details>
 
@@ -244,75 +247,71 @@ empty, revealing that no attributes were stored.
 
 </details>
 
-## Build a bag that can hold any items {: #oopy-mutable-default}
+## Copy an object with nested data {: #oopy-shallowcopy}
 
-Create two `Bag` objects without passing any arguments, add `"apple"` to the first,
-and print the second. Is the second bag empty?
+Create a `Playlist` with a list of songs, make a copy with `copy.copy`, and add a song
+to the copy. Does the original's song list stay unchanged?
 
-[% inc mutable_default.py scrub="\s*# BUG.*" %]
+[% inc shallowcopy.py scrub="\s*# BUG.*" %]
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-The bug is the mutable default argument `items=[]`. Python evaluates default
-argument values once, when the `def` statement runs, not on each call. Every `Bag`
-created without an explicit list receives a reference to the same list object. Adding
-to one bag therefore adds to all of them.
+The bug is using `copy.copy`, which performs a shallow copy. The new `Playlist` is a
+different object, but its `songs` attribute still points to the *same* list object as
+the original. Appending to the copy's list therefore mutates the original's list too.
 
-Shows: why mutable objects (lists, dicts, sets) must never be used as default
-argument values, and the standard fix of using `None` as the default and creating a
-new list inside the function body.
+Shows: the difference between shallow copy (`copy.copy`, copies the container but
+shares nested objects) and deep copy (`copy.deepcopy`, recursively copies nested
+objects).
 
-To find it: print `id(a.items)` and `id(b.items)`. They are the same number,
-proving both bags point to one list. Fix it with `def __init__(self, items=None)`
-and `self.items = items if items is not None else []`.
+To find it: print `id(original.songs)` and `id(clone.songs)`. They are the same
+number, proving both point to one list. Replace `copy.copy` with `copy.deepcopy` to
+copy the list too.
 
 </details>
 
-## Track students enrolled in a course {: #oopy-class-var}
+## Use a custom context manager {: #oopy-contextmanager}
 
-Create two `Roster` objects, enroll `"Alice"` in the math roster, and print the
-science roster's students. Is the science list empty?
+Use a `Timer` inside a `with` block and then call `elapsed()` on the bound variable.
+Does it work?
 
-[% inc class_var.py scrub="\s*# BUG.*" %]
+[% inc contextmanager.py scrub="\s*# BUG.*" %]
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-The bug is `students = []` at class level. That makes `students` a class variable:
-one list shared by every `Roster` instance. When `enroll` calls
-`self.students.append(student)`, Python looks up `self.students`, finds the class
-variable, and mutates it in place. The mutation is visible through every instance.
+The bug is that `__enter__` never returns `self`. The value returned by `__enter__`
+is what the `as` target in `with Timer() as t` binds to. With no `return` statement,
+`__enter__` returns `None`, so `t` is `None` and calling `t.elapsed()` raises
+`AttributeError`.
 
-Shows: the difference between a class variable (one copy, shared) and an instance
-variable (one copy per object), and why mutable class variables are a common source
-of unexpected sharing.
+Shows: the context-manager protocol, and that `__enter__` must return the resource
+(usually `self`) that the `as` clause should bind.
 
-To find it: print `Roster.students` after enrolling Alice. It already contains her
-name, confirming the class-level list was modified. Fix it by moving the list into
-`__init__`: `self.students = []`.
+To find it: print `t` inside the `with` block — it will be `None`. Add `return self`
+at the end of `__enter__`.
 
 </details>
 
-## Extend a class with a new attribute {: #oopy-super-init}
+## Instantiate a class with an abstract method {: #oopy-abstractmethod}
 
-Create a `Dog` named `"Rex"` with breed `"Labrador"` and call `describe()`.
-Does it print a sentence with both pieces of information?
+Create a `Dog` from an `Animal` base class that declares an abstract `speak` method.
+Does `Dog("Rex")` succeed?
 
-[% inc super_init.py scrub="\s*# BUG.*" %]
+[% inc abstractmethod.py scrub="\s*# BUG.*" %]
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-The bug is the missing `super().__init__(name)` call inside `Dog.__init__`. Python
-does not automatically run the parent class's `__init__`. Without that call,
-`Animal.__init__` never runs, so `self.name` is never set. `describe` then raises
-`AttributeError` when it tries to read `self.name`.
+The bug is that `Dog` does not implement the abstract method `speak`. A class
+inheriting from `ABC` with an `@abstractmethod` cannot be instantiated until every
+abstract method is implemented in a concrete subclass. Because `Dog` leaves `speak`
+unimplemented, `Dog("Rex")` raises
+`TypeError: Can't instantiate abstract class Dog with abstract method speak`.
 
-Shows: that subclass `__init__` methods must explicitly call the parent's `__init__`
-to initialize inherited attributes, and that forgetting this call produces an error
-only when the missing attribute is accessed, not at construction time.
+Shows: how abstract base classes enforce a contract, and that a subclass must
+implement every abstract method before it can be instantiated.
 
-To find it: add `print(vars(d))` right after creating the dog. The dictionary will
-contain `breed` but not `name`. Add `super().__init__(name)` as the first line of
-`Dog.__init__`.
+To find it: the traceback names the abstract method and the class. Add a `speak`
+method to `Dog` that returns the appropriate sound.
 
 </details>
 
@@ -462,31 +461,25 @@ def __hash__(self):
 
 </details>
 
-## Iterate over a countdown twice {: #oopy-iterator-reuse}
+## Check whether a collection is empty {: #oopy-truthiness}
 
-Create a `Countdown` from 3 and iterate over it twice.
-Do both passes produce `[3, 2, 1]`?
+Create an empty `Cart` and test it with `if cart:`. Does Python treat it as empty or
+as having items?
 
-[% inc iterator_reuse.py scrub="\s*# BUG.*" %]
+[% inc truthiness.py scrub="\s*# BUG.*" %]
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-The bug is that the `Countdown` object is both an iterable and its own iterator.
-`__iter__` returns `self`, so the second call to `list(c)` reuses the same object,
-which still has `self.current == 0` from the first pass. `__next__` immediately
-raises `StopIteration`, producing an empty list.
+The bug is that `__len__` always returns 1. Python's truthiness protocol calls
+`__bool__` if defined, otherwise `__len__`, and an object is falsy only if `__len__`
+returns 0. Because this `__len__` returns 1 even for an empty cart, `if cart:` is
+always true.
 
-Shows: the iterator protocol and the difference between an iterable (has `__iter__`
-returning an iterator) and an iterator (has `__next__`). A reusable iterable should
-return a fresh iterator object from `__iter__`, not `self`.
+Shows: Python's truthiness protocol (`__bool__`, then `__len__`), and why a custom
+container's emptiness check depends on those methods returning the real size.
 
-To find it: print `c.current` between the two calls. It will be 0. Fix it by
-extracting the iteration state into a separate class:
-
-```python
-def __iter__(self):
-    return CountdownIterator(self.start)
-```
+To find it: print `len(cart)` — it prints 1 even though the cart is empty. Change
+`__len__` to return `len(self._items)`.
 
 </details>
 
@@ -579,5 +572,48 @@ is also included in `__slots__`).
 
 To find it: the traceback points directly at `p.z = 0`. Either add `"z"` to
 `__slots__`, or remove `__slots__` entirely if dynamic attributes are needed.
+
+</details>
+
+## Track items added to each account {: #oopy-sharemut}
+
+Create two `BankAccount` objects, add transactions to each, and print each account's
+history. Does each account show only its own transactions?
+
+[% inc sharemut.py scrub="\s*# BUG.*" %]
+
+<details class="explanation" markdown="1"><summary>Show explanation</summary>
+
+The bug is that `history = []` is defined at class level, so all instances share the
+same list object instead of each having their own, and every account's transactions
+appear in every other account.
+
+Shows: the difference between shared mutable class attributes and per-instance
+attributes initialized in `__init__`.
+
+To find it: create two accounts, add one transaction to the first and a different one
+to the second, then print `alice.history` and `bob.history`. If both lists contain
+both transactions, confirm the sharing with `print(BankAccount.history is
+alice.history)` — it will print `True`.
+
+</details>
+
+## Initialize a subclass with its parent's attributes {: #oopy-super}
+
+Create a `Dog` named `"Rex"` and call `speak()`. Does it print a sentence with both
+the name and the sound?
+
+[% inc super.py scrub="\s*# BUG.*" %]
+
+<details class="explanation" markdown="1"><summary>Show explanation</summary>
+
+The bug is forgetting `super().__init__()`, so the parent's `__init__` is never
+called and required attributes are missing when a subclass method tries to use them.
+
+Shows: Python's method resolution order and how to use `super()` correctly.
+
+To find it: instantiate the subclass and immediately try to access a parent-defined
+attribute. The `AttributeError` names the missing attribute. Search the subclass
+`__init__` for a call to `super().__init__()` — its absence is the cause.
 
 </details>

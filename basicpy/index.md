@@ -310,3 +310,25 @@ elements.  Print `len(numbers)` after the loop; you will get `2` instead of
 position 0, which the loop then skips on its next step.
 
 </details>
+
+## Rank files by version number {: #basicpy-lexisort}
+
+Run the sort function and examine the output order. Where does `file10` appear
+relative to `file2`?
+
+[% inc lexisort.py scrub="\s*# BUG.*" %]
+
+<details class="explanation" markdown="1"><summary>Show explanation</summary>
+
+The bug is using the default `sort()`, which gives lexicographic order and places
+`file10` before `file2`.
+
+Shows: the difference between lexicographic and numeric sort order and how to write a
+`key` function that extracts the embedded integer so the files sort as `file1`,
+`file2`, `file10`.
+
+To find it: run the sort and search for `file10` in the output. It appears
+immediately after `file1`, before `file2`. That placement is the signature of
+alphabetical order, where `"10" < "2"` because `"1" < "2"` at the first character.
+
+</details>
