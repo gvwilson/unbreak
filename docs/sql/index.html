@@ -297,27 +297,25 @@ aggregate function avg()</code>. Aggregate functions cannot appear in <code>wher
 haven't been grouped yet at that point. Move the condition to a <code>having</code> clause after
 the <code>group by</code>.</p>
 </details>
-<h2 id="sql-groupbymissing">Count entries per category and subcategory</h2>
-<p>Run this query and examine the <code>island</code> column. Do all the rows for a given species
-show the same island? Check a few values against the original table.</p>
-<div data-inc="groupbymissing.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/groupbymissing.sql" class="inc-path" role="img" tabindex="0" title="sql/groupbymissing.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- Count the number of penguins observed on each island, broken down by species.</span>
-<span class="k">select</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">island</span><span class="p">,</span><span class="w"> </span><span class="nf">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">num_penguins</span>
+<h2 id="sql-limitorder">Show the five heaviest penguins</h2>
+<p>Run this query a few times and note which rows appear. Are they the
+five heaviest penguins, or does the result change?</p>
+<div data-inc="limitorder.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/limitorder.sql" class="inc-path" role="img" tabindex="0" title="sql/limitorder.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- Show the five heaviest penguins.</span>
+<span class="k">select</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">island</span><span class="p">,</span><span class="w"> </span><span class="n">body_mass_g</span>
 <span class="k">from</span><span class="w"> </span><span class="n">penguins</span>
-<span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">species</span><span class="p">;</span>
+<span class="k">limit</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
 </code></pre></div>
 </div>
 <details class="explanation">
 <summary>Show explanation</summary>
-<p>A query that counts penguins per species per island produces unreliable island
-values because <code>island</code> appears in <code>select</code> but not in <code>group by</code>, so the database
-picks an arbitrary island for each species group; the bug is omitting <code>island</code> from
-the <code>group by</code> clause.</p>
-<p>Shows: that every non-aggregated column in <code>select</code> must also appear
-in <code>group by</code>.</p>
-<p>To find it: run the query and note the <code>island</code> value for one species. Then run
-<code>select island from penguins where species = 'Adelie'</code> to see all islands that
-species actually inhabits. If the grouped result shows only one island but the raw
-data shows three, the database is picking arbitrarily.</p>
+<p>A query that uses <code>limit</code> without <code>order by</code> returns an arbitrary set
+of rows, not the five heaviest. The database makes no ordering
+promise, so the result can change between runs; the bug is omitting
+<code>order by</code>.</p>
+<p>Shows: that <code>limit</code> only restricts the number of rows, and that an
+explicit <code>order by</code> is required to control <em>which</em> rows are returned.</p>
+<p>To find it: add <code>order by body_mass_g desc</code> before the <code>limit</code> clause
+and rerun. The heaviest five penguins now appear consistently.</p>
 </details>
 <h2 id="sql-countnull">Count the penguin rows</h2>
 <p>Run this query. Then run a second query using <code>count(*)</code> and compare the two
@@ -360,26 +358,26 @@ calculation. If they differ, check whether <code>count(*)</code> and <code>count
 the same number — if not, some rows have a null mass and the manual denominator is
 too large.</p>
 </details>
-<h2 id="sql-nullneq">Find records that don't match a given value</h2>
-<p>Run this query. How many rows does it return? Then run a query using <code>is not null</code>
-and compare the row counts.</p>
-<div data-inc="nullneq.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/nullneq.sql" class="inc-path" role="img" tabindex="0" title="sql/nullneq.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- Find all penguins whose sex has been recorded.</span>
-<span class="k">select</span><span class="w"> </span><span class="o">*</span>
+<h2 id="sql-nullorder">Order rows that contain null values</h2>
+<p>Run this query and look at the first few rows. Do the penguins with no
+recorded body mass appear where you expected?</p>
+<div data-inc="nullorder.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/nullorder.sql" class="inc-path" role="img" tabindex="0" title="sql/nullorder.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- List penguins ordered by body mass, lightest first.</span>
+<span class="k">select</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">island</span><span class="p">,</span><span class="w"> </span><span class="n">body_mass_g</span>
 <span class="k">from</span><span class="w"> </span><span class="n">penguins</span>
-<span class="k">where</span><span class="w"> </span><span class="n">sex</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">null</span><span class="p">;</span>
+<span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">body_mass_g</span><span class="p">;</span>
 </code></pre></div>
 </div>
 <details class="explanation">
 <summary>Show explanation</summary>
-<p>A query that should return only penguins with a recorded sex returns zero rows
-because comparing any value to null with <code>!=</code> produces null (not true) in SQL's
-ternary logic, so the <code>where</code> clause never passes any row; the bug is using
-<code>!= null</code> instead of <code>is not null</code>.</p>
-<p>Shows: that null comparisons with <code>=</code> or <code>!=</code> always yield null, and
-that <code>is null</code> / <code>is not null</code> are the only reliable null tests.</p>
-<p>To find it: run <code>select count(*) from penguins where sex is not null</code>. If that
-returns rows but the original query returns zero, the <code>!= null</code> test is failing
-because null comparisons always produce null, not <code>true</code> or <code>false</code>.</p>
+<p>A query that orders by <code>body_mass_g</code> puts the rows with a null body
+mass first, because SQLite sorts nulls before non-null values. The
+nulls appear as if they were lighter than everything else; the bug is
+not accounting for null ordering.</p>
+<p>Shows: how null values sort in <code>order by</code>, and how to control their
+placement with <code>order by body_mass_g is null, body_mass_g</code>.</p>
+<p>To find it: compare <code>select body_mass_g from penguins order by
+body_mass_g</code> to the same query with <code>order by body_mass_g is null,
+body_mass_g</code>. The nulls move from the top to the bottom.</p>
 </details>
 <h2 id="sql-innerleft">List every person and their total credits</h2>
 <p>Run this query and list the people in the result. Then run <code>select distinct person

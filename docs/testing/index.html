@@ -57,29 +57,28 @@
 </nav>
 <main id="main-content">
 <h1>Testing</h1>
-<h2 id="testing-vacuous">Write a test for a totaling function</h2>
-<p>Run <code>pytest test_vacuous.py -v</code>. Does the test pass? Add a print
-statement inside <code>test_total</code> to confirm that <code>result</code> is being
-computed. Does a passing test mean the function is correct?</p>
-<div data-inc="test_vacuous.py" data-scrub="\s*# BUG.*"><span aria-label="Source: testing/test_vacuous.py" class="inc-path" role="img" tabindex="0" title="testing/test_vacuous.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">total</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+<h2 id="testing-discovery">Write a test that is actually discovered</h2>
+<p>Run <code>pytest test_discovery.py -v</code>. How many tests ran? Why does pytest
+report that no tests were collected?</p>
+<div data-inc="test_discovery.py" data-scrub="\s*# BUG.*"><span aria-label="Source: testing/test_discovery.py" class="inc-path" role="img" tabindex="0" title="testing/test_discovery.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">total</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_total</span><span class="p">():</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">total</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_total</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">total</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span> <span class="o">==</span> <span class="mi">6</span>
+    <span class="k">assert</span> <span class="n">total</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span> <span class="o">==</span> <span class="mi">10</span>
 </code></pre></div>
 </div>
 <details class="explanation">
 <summary>Show explanation</summary>
-<p>The bug is that the test contains no assertion, so pytest has nothing
-to check and always reports it as passing. A vacuous test gives false
-confidence: the function could return any value and the test would
-still pass.</p>
-<p>Shows: that every test must contain at least one assertion that can
-actually fail.</p>
-<p>To find it: modify the function to return an obviously wrong value,
-such as returning <code>0</code> regardless of input, then rerun the test. If it
-still passes, the test has no assertion and is not checking anything.</p>
+<p>The bug is the test function name <code>check_total</code>. pytest only collects
+functions whose names start with <code>test_</code>, so <code>check_total</code> is silently
+ignored and the run reports "no tests ran".</p>
+<p>Shows: pytest's test-discovery rule and why a misspelled test name
+means the function is never exercised.</p>
+<p>To find it: run <code>pytest test_discovery.py --collect-only</code>. It lists no
+tests. Rename <code>check_total</code> to <code>test_total</code> and rerun to confirm the
+function is now collected.</p>
 </details>
 <h2 id="testing-tupleassert">Test that a doubling function returns the right value</h2>
 <p>Run <code>pytest test_tupleassert.py -v</code>. Does the test pass? What value
@@ -109,33 +108,29 @@ that a non-empty tuple is always truthy. Remove the outer parentheses
 so the assertion becomes <code>assert result == expected</code>, then rerun to
 confirm the test can now fail.</p>
 </details>
-<h2 id="testing-floatequal">Test a running total function</h2>
-<p>Run <code>pytest test_floatequal.py -v</code>. Read the assertion error
-carefully. What value did <code>running_total</code> actually return?</p>
-<div data-inc="test_floatequal.py" data-scrub="\s*# BUG.*"><span aria-label="Source: testing/test_floatequal.py" class="inc-path" role="img" tabindex="0" title="testing/test_floatequal.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">running_total</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
-    <span class="n">total</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
-        <span class="n">total</span> <span class="o">+=</span> <span class="n">v</span>
-    <span class="k">return</span> <span class="n">total</span>
+<h2 id="testing-nan">Test that a result contains no NaN</h2>
+<p>Run <code>pytest test_nan.py -v</code>. Does the test pass? The result list
+contains a <code>NaN</code> — should it have failed?</p>
+<div data-inc="test_nan.py" data-scrub="\s*# BUG.*"><span aria-label="Source: testing/test_nan.py" class="inc-path" role="img" tabindex="0" title="testing/test_nan.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">normalize</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">v</span> <span class="o">-</span> <span class="n">mean</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_running_total</span><span class="p">():</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">running_total</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
-    <span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="mf">0.6</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_has_no_nan</span><span class="p">():</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"nan"</span><span class="p">)]</span>
+    <span class="k">assert</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"nan"</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span>
 </code></pre></div>
 </div>
 <details class="explanation">
 <summary>Show explanation</summary>
-<p>The bug is comparing floating-point results with <code>==</code>. Repeated
-addition accumulates rounding error in IEEE 754 arithmetic, so
-<code>0.1 + 0.2 + 0.3</code> produces <code>0.6000000000000001</code>, not <code>0.6</code>.</p>
-<p>Shows: how to use <code>pytest.approx</code> to compare floats within a
-tolerance, and why exact equality between computed floats is
-unreliable.</p>
-<p>To find it: print <code>f"{result:.20f}"</code> in the test before the
-assertion. If the last few digits are not all zeros, rounding error
-has accumulated. Replace <code>assert result == expected</code> with
-<code>assert result == pytest.approx(expected)</code>.</p>
+<p>The bug is using <code>float("nan") not in result</code>. <code>NaN</code> is not equal to
+anything, including itself, so the <code>in</code> test (which uses <code>==</code>) is
+always <code>False</code>, and the assertion passes even though the list contains
+a <code>NaN</code>.</p>
+<p>Shows: that <code>NaN</code> comparisons are always <code>False</code>, and how to detect
+<code>NaN</code> with <code>math.isnan</code>.</p>
+<p>To find it: print <code>float("nan") == float("nan")</code> — it prints <code>False</code>.
+Replace the assertion with <code>assert not any(math.isnan(x) for x in result)</code>.</p>
 </details>
 <h2 id="testing-broadexc">Test that a function rejects invalid input</h2>
 <p>Run <code>pytest test_broadexc.py -v</code>. Does the test pass? What exception
@@ -312,63 +307,67 @@ raising call, inside the <code>with</code> block. Run the test: if the print
 never appears, execution never reached that line. Move the assertion
 to after the <code>with</code> block.</p>
 </details>
-<h2 id="testing-missingreturn">Test a string prefix-stripping function</h2>
-<p>Run <code>pytest test_missingreturn.py -v</code>. Read the assertion error. What
-value did <code>strip_prefix</code> return? Is that what you expected from the
-code?</p>
-<div data-inc="test_missingreturn.py" data-scrub="\s*# BUG.*"><span aria-label="Source: testing/test_missingreturn.py" class="inc-path" role="img" tabindex="0" title="testing/test_missingreturn.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">strip_prefix</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
-        <span class="n">text</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">):]</span>
+<h2 id="testing-unreachable">Test a function with an unreachable assertion</h2>
+<p>Run <code>pytest test_unreachable.py -v</code>. Does the test pass? Does it
+actually exercise all three branches of <code>classify</code>?</p>
+<div data-inc="test_unreachable.py" data-scrub="\s*# BUG.*"><span aria-label="Source: testing/test_unreachable.py" class="inc-path" role="img" tabindex="0" title="testing/test_unreachable.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">classify</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"negative"</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"zero"</span>
+    <span class="k">return</span> <span class="s2">"positive"</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_strip_prefix</span><span class="p">():</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">strip_prefix</span><span class="p">(</span><span class="s2">"ERROR: disk full"</span><span class="p">,</span> <span class="s2">"ERROR: "</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="s2">"disk full"</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_classify</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">classify</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"negative"</span>
+    <span class="k">return</span>
+    <span class="k">assert</span> <span class="n">classify</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"zero"</span>
+    <span class="k">assert</span> <span class="n">classify</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"positive"</span>
 </code></pre></div>
 </div>
 <details class="explanation">
 <summary>Show explanation</summary>
-<p>The bug is a missing <code>return</code> in <code>strip_prefix</code>. The slicing
-expression computes the correct substring but discards it, so the
-function returns <code>None</code>. The test then compares <code>None == "disk full"</code>
-and fails.</p>
-<p>Shows: how to recognise a missing <code>return</code> from a <code>None</code> assertion
-error and how to check function return values as a first step when a
-test fails unexpectedly.</p>
-<p>To find it: print <code>result</code> in the test before the assertion. If it
-prints <code>None</code>, the function did not return a value. Read the function
-and find the branch that computes the answer but has no <code>return</code>
-statement.</p>
+<p>The bug is a bare <code>return</code> in the middle of <code>test_classify</code>. It exits
+the test before the assertions for the <code>"zero"</code> and <code>"positive"</code> cases
+run, so only the first branch is ever checked and the test always
+passes.</p>
+<p>Shows: how an early <code>return</code> silently truncates a test and why
+coverage tools flag branches that no assertion ever reaches.</p>
+<p>To find it: add <code>print("after return")</code> on the line after the <code>return</code>.
+It never prints. Remove the <code>return</code> so every assertion runs.</p>
 </details>
-<h2 id="testing-paramtype">Test a function that returns a sorted list</h2>
-<p>Run <code>pytest test_paramtype.py -v</code>. All three cases fail. Read the
-assertion error for the first case. What value did <code>result</code> have?</p>
-<div data-inc="test_paramtype.py" data-scrub="\s*# BUG.*"><span aria-label="Source: testing/test_paramtype.py" class="inc-path" role="img" tabindex="0" title="testing/test_paramtype.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+<h2 id="testing-raisematch">Test that the right error message is raised</h2>
+<p>Run <code>pytest test_raisematch.py -v</code>. Does the test pass? Which
+<code>ValueError</code> message did <code>parse_count("abc")</code> actually raise — the one
+the test intended?</p>
+<div data-inc="test_raisematch.py" data-scrub="\s*# BUG.*"><span aria-label="Source: testing/test_raisematch.py" class="inc-path" role="img" tabindex="0" title="testing/test_raisematch.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
 
 
-<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">"values,expected"</span><span class="p">,</span> <span class="p">[</span>
-    <span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span>
-    <span class="p">([</span><span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">]),</span>
-    <span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span>
-<span class="p">])</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">test_sort_returns_sorted_list</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="n">expected</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_count</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"count cannot be None"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"count must be an integer"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_parse_count_rejects_none</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+        <span class="n">parse_count</span><span class="p">(</span><span class="s2">"abc"</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <details class="explanation">
 <summary>Show explanation</summary>
-<p>The bug is calling <code>values.sort()</code> and assigning its return
-value. <code>list.sort()</code> sorts the list in place and returns <code>None</code>; the
-sorted result is in <code>values</code>, not in <code>result</code>. The assertion then
-compares <code>None</code> against the expected list and fails.</p>
-<p>Shows: the difference between <code>list.sort()</code> (in-place, returns <code>None</code>)
-and <code>sorted()</code> (returns a new sorted list), and how parametrize makes
-the pattern of failure visible across multiple inputs at once.</p>
-<p>To find it: print <code>result</code> inside the test for the first failing
-case. If <code>result</code> is <code>None</code>, the function returned <code>None</code> instead of a
-list. Check whether the function calls <code>list.sort()</code>, which returns
-<code>None</code>, or <code>sorted()</code>, which returns a new sorted list.</p>
+<p>The bug is <code>pytest.raises(ValueError)</code> without a <code>match=</code> argument. It
+checks only the exception type, not the message, so a <code>ValueError</code>
+raised for a different reason ("count must be an integer") passes a
+test that intended to check "count cannot be None".</p>
+<p>Shows: that <code>match=</code> pins a test to the specific message, and why
+checking the type alone can let the wrong failure through.</p>
+<p>To find it: print the caught exception with
+<code>with pytest.raises(ValueError) as exc: ...; print(exc.value)</code>. Add
+<code>match="cannot be None"</code> and rerun to confirm the test now fails for
+the wrong input.</p>
 </details>
 <h2 id="testing-tmpfile">Test a function that writes JSON to a file</h2>
 <p>Run <code>pytest test_tmpfile.py -v</code>. The test passes. After it finishes,

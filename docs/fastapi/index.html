@@ -187,63 +187,45 @@ it optional.</p>
 A <code>422</code> means the request was malformed.
 The <code>r.json()["detail"]</code> list names each missing or invalid field.</p>
 </details>
-<h2 id="fastapi-putpatch">Update the price of an existing item</h2>
-<p>Start the server, run the client, and compare the "before" and "after" output.
-Which fields changed that you did not intend to change?</p>
-<div data-inc="putpatch_server.py"><span aria-label="Source: fastapi/putpatch_server.py" class="inc-path" role="img" tabindex="0" title="fastapi/putpatch_server.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+<h2 id="fastapi-formdata">Submit form data to a JSON endpoint</h2>
+<p>Start the server, run the client, and read the status code.
+The client sends valid JSON, so why does the server reject it?</p>
+<div data-inc="formdata_server.py"><span aria-label="Source: fastapi/formdata_server.py" class="inc-path" role="img" tabindex="0" title="fastapi/formdata_server.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Form</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">uvicorn</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
 
 
-<span class="k">class</span><span class="w"> </span><span class="nc">Item</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
-    <span class="n">price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">in_stock</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
-
-
-<span class="n">STORE</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Item</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="n">Item</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"widget"</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="mf">9.99</span><span class="p">,</span> <span class="n">in_stock</span><span class="o">=</span><span class="kc">True</span><span class="p">)}</span>
-
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/items/</span><span class="si">{item_id}</span><span class="s2">"</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_item</span><span class="p">(</span><span class="n">item_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-    <span class="n">item</span> <span class="o">=</span> <span class="n">STORE</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">item_id</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">item</span> <span class="k">if</span> <span class="n">item</span> <span class="k">else</span> <span class="p">{</span><span class="s2">"error"</span><span class="p">:</span> <span class="s2">"not found"</span><span class="p">}</span>
-
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s2">"/items/</span><span class="si">{item_id}</span><span class="s2">"</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">update_item</span><span class="p">(</span><span class="n">item_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Item</span><span class="p">):</span>
-    <span class="n">STORE</span><span class="p">[</span><span class="n">item_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
-    <span class="k">return</span> <span class="n">STORE</span><span class="p">[</span><span class="n">item_id</span><span class="p">]</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/register"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">register</span><span class="p">(</span><span class="n">username</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="o">...</span><span class="p">),</span> <span class="n">email</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="o">...</span><span class="p">)):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"username"</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span> <span class="s2">"email"</span><span class="p">:</span> <span class="n">email</span><span class="p">}</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
     <span class="n">uvicorn</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">"localhost"</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8000</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<div data-inc="putpatch_client.py" data-scrub="\s*# BUG.*"><span aria-label="Source: fastapi/putpatch_client.py" class="inc-path" role="img" tabindex="0" title="fastapi/putpatch_client.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+<div data-inc="formdata_client.py" data-scrub="\s*# BUG.*"><span aria-label="Source: fastapi/formdata_client.py" class="inc-path" role="img" tabindex="0" title="fastapi/formdata_client.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
 
-<span class="n">r</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"http://localhost:8000/items/1"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"before:"</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
-
-<span class="n">r</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s2">"http://localhost:8000/items/1"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"widget v2"</span><span class="p">})</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"after: "</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">"http://localhost:8000/register"</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"username"</span><span class="p">:</span> <span class="s2">"alice"</span><span class="p">,</span> <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"alice@example.com"</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"status:"</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"body:"</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <details class="explanation">
 <summary>Show explanation</summary>
-<p>The bug is using PUT with a partial body.
-PUT replaces the entire resource with the supplied body.
-Any field not included in the request resets to its model default,
-so <code>price</code> goes from <code>9.99</code> to <code>0.0</code> and <code>in_stock</code> stays <code>True</code> only
-by coincidence; the original value is gone.</p>
-<p>Shows: the semantic difference between PUT (full replacement) and PATCH
-(partial update), and why sending only the fields you want to change requires
-a PATCH endpoint that merges the incoming data with the stored record.</p>
-<p>To find it: fetch and print the item before and after.
-If fields you did not mention in the request body have changed,
-PUT replaced the whole resource.</p>
+<p>The bug is that the server declares the fields with <code>Form(...)</code>, which
+tells FastAPI to read them from form-encoded data, but the client sends
+a JSON body with <code>json=</code>. FastAPI cannot find the form fields and
+returns <code>422 Unprocessable Entity</code>.</p>
+<p>Shows: the difference between <code>Form(...)</code> (form-encoded) and a Pydantic
+body model (JSON), and how to match the client's <code>data=</code>/<code>json=</code> to the
+server's declaration.</p>
+<p>To find it: change the client's <code>json=</code> to <code>data=</code> and rerun. The
+request now succeeds, confirming the server expected form data.</p>
 </details>
 <h2 id="fastapi-bodyasquery">Place an order through the API</h2>
 <p>Start the server, run the client, and read the output.
@@ -633,10 +615,10 @@ need it.</p>
 <p>To find it: add <code>internal_code: str</code> to <code>ItemOut</code> and rerun the client.
 The field will appear in the response.</p>
 </details>
-<h2 id="fastapi-authquery">Fetch protected data with an API key</h2>
-<p>Start the server, run the client, and look at the URL the client actually sent.
-Where does the secret appear?</p>
-<div data-inc="authquery_server.py"><span aria-label="Source: fastapi/authquery_server.py" class="inc-path" role="img" tabindex="0" title="fastapi/authquery_server.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Request</span>
+<h2 id="fastapi-apikeyheader">Protect an endpoint with a dependency</h2>
+<p>Start the server, run the client with no API key, and read the status code.
+The endpoint is protected — why does it return the secret anyway?</p>
+<div data-inc="apikeyheader_server.py" data-scrub="\s*# BUG.*"><span aria-label="Source: fastapi/apikeyheader_server.py" class="inc-path" role="img" tabindex="0" title="fastapi/apikeyheader_server.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Header</span><span class="p">,</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">HTTPException</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">uvicorn</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
@@ -644,39 +626,37 @@ Where does the secret appear?</p>
 <span class="n">SECRET</span> <span class="o">=</span> <span class="s2">"s3cr3t"</span>
 
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/data"</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_data</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">api_key</span> <span class="o">!=</span> <span class="n">SECRET</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">"error"</span><span class="p">:</span> <span class="s2">"unauthorized"</span><span class="p">}</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  request URL logged by server: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">"value"</span><span class="p">:</span> <span class="mi">42</span><span class="p">}</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">require_api_key</span><span class="p">(</span><span class="n">x_api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)):</span>
+    <span class="k">pass</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/protected"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">protected</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">require_api_key</span><span class="p">)):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"secret"</span><span class="p">:</span> <span class="s2">"the answer is 42"</span><span class="p">}</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
     <span class="n">uvicorn</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">"localhost"</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8000</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<div data-inc="authquery_client.py" data-scrub="\s*# BUG.*"><span aria-label="Source: fastapi/authquery_client.py" class="inc-path" role="img" tabindex="0" title="fastapi/authquery_client.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+<div data-inc="apikeyheader_client.py" data-scrub="\s*# BUG.*"><span aria-label="Source: fastapi/apikeyheader_client.py" class="inc-path" role="img" tabindex="0" title="fastapi/apikeyheader_client.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
 
-<span class="n">API_KEY</span> <span class="o">=</span> <span class="s2">"s3cr3t"</span>
-
-<span class="n">r</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"http://localhost:8000/data"</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">"api_key"</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">})</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"http://localhost:8000/protected"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"status:"</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"URL sent (check for the key):"</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"body:"</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
 </code></pre></div>
 </div>
 <details class="explanation">
 <summary>Show explanation</summary>
-<p>The bug is putting the API key in the URL query string with <code>params=</code>.
-The full URL, including the key, is recorded in every server access log,
-stored in browser history, and forwarded by HTTP proxies.
-A key that appears in URLs is not secret for long.</p>
-<p>Shows: how to send credentials in an <code>Authorization</code> header
-(<code>headers={"Authorization": f"Bearer {API_KEY}"}</code>) where they are kept out
-of logs and not cached by browsers.</p>
-<p>To find it: print <code>str(r.request.url)</code>.
-If the secret appears after <code>?api_key=</code>, it will be logged.
-Switch to a header.</p>
+<p>The bug is that the <code>require_api_key</code> dependency does nothing: it
+returns <code>None</code> instead of raising <code>HTTPException(status_code=401)</code> when
+the <code>x-api-key</code> header is missing or wrong. The protected endpoint runs
+for anyone, and the secret is returned with a <code>200</code>.</p>
+<p>Shows: how <code>Depends</code> injects a guard into a route, and that a guard must
+raise an exception to actually reject a request.</p>
+<p>To find it: make the dependency raise
+<code>HTTPException(status_code=401, detail="unauthorized")</code> when the header
+is missing. Rerun the client and confirm it now gets <code>401</code>.</p>
 </details>
 <h2 id="fastapi-middleware">Log the body of every incoming request</h2>
 <p>Start the server, run the client, and compare what the middleware prints to what
