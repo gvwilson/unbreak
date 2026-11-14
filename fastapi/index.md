@@ -89,30 +89,28 @@ The `r.json()["detail"]` list names each missing or invalid field.
 
 </details>
 
-## Update the price of an existing item {: #fastapi-putpatch}
+## Submit form data to a JSON endpoint {: #fastapi-formdata}
 
-Start the server, run the client, and compare the "before" and "after" output.
-Which fields changed that you did not intend to change?
+Start the server, run the client, and read the status code.
+The client sends valid JSON, so why does the server reject it?
 
-[% inc putpatch_server.py %]
+[% inc formdata_server.py %]
 
-[% inc putpatch_client.py scrub="\s*# BUG.*" %]
+[% inc formdata_client.py scrub="\s*# BUG.*" %]
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-The bug is using PUT with a partial body.
-PUT replaces the entire resource with the supplied body.
-Any field not included in the request resets to its model default,
-so `price` goes from `9.99` to `0.0` and `in_stock` stays `True` only
-by coincidence; the original value is gone.
+The bug is that the server declares the fields with `Form(...)`, which
+tells FastAPI to read them from form-encoded data, but the client sends
+a JSON body with `json=`. FastAPI cannot find the form fields and
+returns `422 Unprocessable Entity`.
 
-Shows: the semantic difference between PUT (full replacement) and PATCH
-(partial update), and why sending only the fields you want to change requires
-a PATCH endpoint that merges the incoming data with the stored record.
+Shows: the difference between `Form(...)` (form-encoded) and a Pydantic
+body model (JSON), and how to match the client's `data=`/`json=` to the
+server's declaration.
 
-To find it: fetch and print the item before and after.
-If fields you did not mention in the request body have changed,
-PUT replaced the whole resource.
+To find it: change the client's `json=` to `data=` and rerun. The
+request now succeeds, confirming the server expected form data.
 
 </details>
 
@@ -333,29 +331,28 @@ The field will appear in the response.
 
 </details>
 
-## Fetch protected data with an API key {: #fastapi-authquery}
+## Protect an endpoint with a dependency {: #fastapi-apikeyheader}
 
-Start the server, run the client, and look at the URL the client actually sent.
-Where does the secret appear?
+Start the server, run the client with no API key, and read the status code.
+The endpoint is protected — why does it return the secret anyway?
 
-[% inc authquery_server.py %]
+[% inc apikeyheader_server.py scrub="\s*# BUG.*" %]
 
-[% inc authquery_client.py scrub="\s*# BUG.*" %]
+[% inc apikeyheader_client.py scrub="\s*# BUG.*" %]
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-The bug is putting the API key in the URL query string with `params=`.
-The full URL, including the key, is recorded in every server access log,
-stored in browser history, and forwarded by HTTP proxies.
-A key that appears in URLs is not secret for long.
+The bug is that the `require_api_key` dependency does nothing: it
+returns `None` instead of raising `HTTPException(status_code=401)` when
+the `x-api-key` header is missing or wrong. The protected endpoint runs
+for anyone, and the secret is returned with a `200`.
 
-Shows: how to send credentials in an `Authorization` header
-(`headers={"Authorization": f"Bearer {API_KEY}"}`) where they are kept out
-of logs and not cached by browsers.
+Shows: how `Depends` injects a guard into a route, and that a guard must
+raise an exception to actually reject a request.
 
-To find it: print `str(r.request.url)`.
-If the secret appears after `?api_key=`, it will be logged.
-Switch to a header.
+To find it: make the dependency raise
+`HTTPException(status_code=401, detail="unauthorized")` when the header
+is missing. Rerun the client and confirm it now gets `401`.
 
 </details>
 

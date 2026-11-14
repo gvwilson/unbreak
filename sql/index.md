@@ -261,27 +261,25 @@ the `group by`.
 
 </details>
 
-## Count entries per category and subcategory {: #sql-groupbymissing}
+## Show the five heaviest penguins {: #sql-limitorder}
 
-Run this query and examine the `island` column. Do all the rows for a given species
-show the same island? Check a few values against the original table.
+Run this query a few times and note which rows appear. Are they the
+five heaviest penguins, or does the result change?
 
-[% inc groupbymissing.sql scrub="\s*--.*BUG.*" %]
+[% inc limitorder.sql scrub="\s*--.*BUG.*" %]
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A query that counts penguins per species per island produces unreliable island
-values because `island` appears in `select` but not in `group by`, so the database
-picks an arbitrary island for each species group; the bug is omitting `island` from
-the `group by` clause.
+A query that uses `limit` without `order by` returns an arbitrary set
+of rows, not the five heaviest. The database makes no ordering
+promise, so the result can change between runs; the bug is omitting
+`order by`.
 
-Shows: that every non-aggregated column in `select` must also appear
-in `group by`.
+Shows: that `limit` only restricts the number of rows, and that an
+explicit `order by` is required to control *which* rows are returned.
 
-To find it: run the query and note the `island` value for one species. Then run
-`select island from penguins where species = 'Adelie'` to see all islands that
-species actually inhabits. If the grouped result shows only one island but the raw
-data shows three, the database is picking arbitrarily.
+To find it: add `order by body_mass_g desc` before the `limit` clause
+and rerun. The heaviest five penguins now appear consistently.
 
 </details>
 
@@ -332,26 +330,26 @@ too large.
 
 </details>
 
-## Find records that don't match a given value {: #sql-nullneq}
+## Order rows that contain null values {: #sql-nullorder}
 
-Run this query. How many rows does it return? Then run a query using `is not null`
-and compare the row counts.
+Run this query and look at the first few rows. Do the penguins with no
+recorded body mass appear where you expected?
 
-[% inc nullneq.sql scrub="\s*--.*BUG.*" %]
+[% inc nullorder.sql scrub="\s*--.*BUG.*" %]
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-A query that should return only penguins with a recorded sex returns zero rows
-because comparing any value to null with `!=` produces null (not true) in SQL's
-ternary logic, so the `where` clause never passes any row; the bug is using
-`!= null` instead of `is not null`.
+A query that orders by `body_mass_g` puts the rows with a null body
+mass first, because SQLite sorts nulls before non-null values. The
+nulls appear as if they were lighter than everything else; the bug is
+not accounting for null ordering.
 
-Shows: that null comparisons with `=` or `!=` always yield null, and
-that `is null` / `is not null` are the only reliable null tests.
+Shows: how null values sort in `order by`, and how to control their
+placement with `order by body_mass_g is null, body_mass_g`.
 
-To find it: run `select count(*) from penguins where sex is not null`. If that
-returns rows but the original query returns zero, the `!= null` test is failing
-because null comparisons always produce null, not `true` or `false`.
+To find it: compare `select body_mass_g from penguins order by
+body_mass_g` to the same query with `order by body_mass_g is null,
+body_mass_g`. The nulls move from the top to the bottom.
 
 </details>
 

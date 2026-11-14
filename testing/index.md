@@ -1,26 +1,24 @@
 # Testing
 
-## Write a test for a totaling function {: #testing-vacuous}
+## Write a test that is actually discovered {: #testing-discovery}
 
-Run `pytest test_vacuous.py -v`. Does the test pass? Add a print
-statement inside `test_total` to confirm that `result` is being
-computed. Does a passing test mean the function is correct?
+Run `pytest test_discovery.py -v`. How many tests ran? Why does pytest
+report that no tests were collected?
 
-[% inc test_vacuous.py scrub="\s*# BUG.*" %]
+[% inc test_discovery.py scrub="\s*# BUG.*" %]
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-The bug is that the test contains no assertion, so pytest has nothing
-to check and always reports it as passing. A vacuous test gives false
-confidence: the function could return any value and the test would
-still pass.
+The bug is the test function name `check_total`. pytest only collects
+functions whose names start with `test_`, so `check_total` is silently
+ignored and the run reports "no tests ran".
 
-Shows: that every test must contain at least one assertion that can
-actually fail.
+Shows: pytest's test-discovery rule and why a misspelled test name
+means the function is never exercised.
 
-To find it: modify the function to return an obviously wrong value,
-such as returning `0` regardless of input, then rerun the test. If it
-still passes, the test has no assertion and is not checking anything.
+To find it: run `pytest test_discovery.py --collect-only`. It lists no
+tests. Rename `check_total` to `test_total` and rerun to confirm the
+function is now collected.
 
 </details>
 
@@ -50,27 +48,25 @@ confirm the test can now fail.
 
 </details>
 
-## Test a running total function {: #testing-floatequal}
+## Test that a result contains no NaN {: #testing-nan}
 
-Run `pytest test_floatequal.py -v`. Read the assertion error
-carefully. What value did `running_total` actually return?
+Run `pytest test_nan.py -v`. Does the test pass? The result list
+contains a `NaN` — should it have failed?
 
-[% inc test_floatequal.py scrub="\s*# BUG.*" %]
+[% inc test_nan.py scrub="\s*# BUG.*" %]
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-The bug is comparing floating-point results with `==`. Repeated
-addition accumulates rounding error in IEEE 754 arithmetic, so
-`0.1 + 0.2 + 0.3` produces `0.6000000000000001`, not `0.6`.
+The bug is using `float("nan") not in result`. `NaN` is not equal to
+anything, including itself, so the `in` test (which uses `==`) is
+always `False`, and the assertion passes even though the list contains
+a `NaN`.
 
-Shows: how to use `pytest.approx` to compare floats within a
-tolerance, and why exact equality between computed floats is
-unreliable.
+Shows: that `NaN` comparisons are always `False`, and how to detect
+`NaN` with `math.isnan`.
 
-To find it: print `f"{result:.20f}"` in the test before the
-assertion. If the last few digits are not all zeros, rounding error
-has accumulated. Replace `assert result == expected` with
-`assert result == pytest.approx(expected)`.
+To find it: print `float("nan") == float("nan")` — it prints `False`.
+Replace the assertion with `assert not any(math.isnan(x) for x in result)`.
 
 </details>
 
@@ -206,54 +202,50 @@ to after the `with` block.
 
 </details>
 
-## Test a string prefix-stripping function {: #testing-missingreturn}
+## Test a function with an unreachable assertion {: #testing-unreachable}
 
-Run `pytest test_missingreturn.py -v`. Read the assertion error. What
-value did `strip_prefix` return? Is that what you expected from the
-code?
+Run `pytest test_unreachable.py -v`. Does the test pass? Does it
+actually exercise all three branches of `classify`?
 
-[% inc test_missingreturn.py scrub="\s*# BUG.*" %]
+[% inc test_unreachable.py scrub="\s*# BUG.*" %]
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-The bug is a missing `return` in `strip_prefix`. The slicing
-expression computes the correct substring but discards it, so the
-function returns `None`. The test then compares `None == "disk full"`
-and fails.
+The bug is a bare `return` in the middle of `test_classify`. It exits
+the test before the assertions for the `"zero"` and `"positive"` cases
+run, so only the first branch is ever checked and the test always
+passes.
 
-Shows: how to recognise a missing `return` from a `None` assertion
-error and how to check function return values as a first step when a
-test fails unexpectedly.
+Shows: how an early `return` silently truncates a test and why
+coverage tools flag branches that no assertion ever reaches.
 
-To find it: print `result` in the test before the assertion. If it
-prints `None`, the function did not return a value. Read the function
-and find the branch that computes the answer but has no `return`
-statement.
+To find it: add `print("after return")` on the line after the `return`.
+It never prints. Remove the `return` so every assertion runs.
 
 </details>
 
-## Test a function that returns a sorted list {: #testing-paramtype}
+## Test that the right error message is raised {: #testing-raisematch}
 
-Run `pytest test_paramtype.py -v`. All three cases fail. Read the
-assertion error for the first case. What value did `result` have?
+Run `pytest test_raisematch.py -v`. Does the test pass? Which
+`ValueError` message did `parse_count("abc")` actually raise — the one
+the test intended?
 
-[% inc test_paramtype.py scrub="\s*# BUG.*" %]
+[% inc test_raisematch.py scrub="\s*# BUG.*" %]
 
 <details class="explanation" markdown="1"><summary>Show explanation</summary>
 
-The bug is calling `values.sort()` and assigning its return
-value. `list.sort()` sorts the list in place and returns `None`; the
-sorted result is in `values`, not in `result`. The assertion then
-compares `None` against the expected list and fails.
+The bug is `pytest.raises(ValueError)` without a `match=` argument. It
+checks only the exception type, not the message, so a `ValueError`
+raised for a different reason ("count must be an integer") passes a
+test that intended to check "count cannot be None".
 
-Shows: the difference between `list.sort()` (in-place, returns `None`)
-and `sorted()` (returns a new sorted list), and how parametrize makes
-the pattern of failure visible across multiple inputs at once.
+Shows: that `match=` pins a test to the specific message, and why
+checking the type alone can let the wrong failure through.
 
-To find it: print `result` inside the test for the first failing
-case. If `result` is `None`, the function returned `None` instead of a
-list. Check whether the function calls `list.sort()`, which returns
-`None`, or `sorted()`, which returns a new sorted list.
+To find it: print the caught exception with
+`with pytest.raises(ValueError) as exc: ...; print(exc.value)`. Add
+`match="cannot be None"` and rerun to confirm the test now fails for
+the wrong input.
 
 </details>
 
