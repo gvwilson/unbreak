@@ -1,0 +1,36 @@
+metadata-files:
+  - mccole/mccole.yml
+
+book:
+  title: "Unbreaking Software"
+  repo-url: "https://github.com/gvwilson/unbreak"
+  repo-actions: [edit, source, issue]
+  chapters:
+    - index.qmd
+    - intro/index.qmd
+    - basicpy/index.qmd
+    - interpy/index.qmd
+    - oopy/index.qmd
+    - regexp/index.qmd
+    - diot/index.qmd
+    - perfcon/index.qmd
+    - jsbrowser/index.qmd
+    - css/index.qmd
+    - web/index.qmd
+    - htmx/index.qmd
+    - alpine/index.qmd
+    - fastapi/index.qmd
+    - datasci/index.qmd
+    - dataviz/index.qmd
+    - polars/index.qmd
+    - shell/index.qmd
+    - sql/index.qmd
+    - testing/index.qmd
+    - finale/index.qmd
+  appendices:
+    - license/index.qmd
+    - conduct/index.qmd
+    - contributing/index.qmd
+    - bibliography/index.qmd
+    - glossary/index.qmd
+    - complex/index.qmd

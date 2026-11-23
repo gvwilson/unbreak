@@ -2,14 +2,14 @@
 
 [download databases](./databases.zip)
 
-## Sort penguins by island then species {: #sql-sortcol}
+## Sort penguins by island then species
 
 Run this query and look at the first several rows. Is the output
 ordered by island first, or by species first?
 
-[% inc sortcol.sql scrub="\s*--.*BUG.*" %]
+{{< inc sql/sortcol.sql >}}
 
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
+::: {.callout-note collapse="true" title="Show explanation"}
 
 A query meant to sort penguins by island and then by species within
 each island produces species-first ordering instead; the bug is
@@ -23,17 +23,17 @@ To find it: run the query and examine the first few rows. If all
 island, the sort is species-first. Compare the `order by` column
 sequence to the intended priority.
 
-</details>
+:::
 
-## Retrieve the second page of search results {: #sql-offsetpage}
+## Retrieve the second page of search results
 
 Run this query and note which rows are returned. Count from the
 beginning of the full table to check whether rows 11-15 are actually
 what you got.
 
-[% inc offsetpage.sql scrub="\s*--.*BUG.*" %]
+{{< inc sql/offsetpage.sql >}}
 
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
+::: {.callout-note collapse="true" title="Show explanation"}
 
 A query meant to retrieve the third page of five rows returns rows 12-16 instead
 of rows 11-15; the bug is using `offset 11` (which skips 11 rows) instead of
@@ -47,16 +47,16 @@ returned row has `rowid = 12` but the page should start at row 11, the offset is
 off by one. The formula is `(page_number - 1) * page_size`, so page 3 with
 page size 5 gives `offset 10`.
 
-</details>
+:::
 
-## Show body mass in kilograms {: #sql-intdivision}
+## Show body mass in kilograms
 
 Run this query and compare the `mass_kg` column to the `body_mass_g` column.
 Do the kilogram values look right for a penguin that weighs, say, 3750 g?
 
-[% inc intdivision.sql scrub="\s*--.*BUG.*" %]
+{{< inc sql/intdivision.sql >}}
 
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
+::: {.callout-note collapse="true" title="Show explanation"}
 
 A query that converts body mass from grams to kilograms silently truncates the
 result because SQLite performs integer division when both operands are integers;
@@ -69,16 +69,16 @@ To find it: run `select body_mass_g, body_mass_g / 1000 as mass_kg from penguins
 limit 5`. A penguin weighing 3750 g should show `3.75` kg; if it shows `3`, integer
 division is truncating the decimal. Change `1000` to `1000.0` and rerun.
 
-</details>
+:::
 
-## List distinct species in the penguins dataset {: #sql-distinctcols}
+## List distinct species in the penguins dataset
 
 Run this query and count the rows returned. How many distinct species are in the
 dataset? Does the row count match that number?
 
-[% inc distinctcols.sql scrub="\s*--.*BUG.*" %]
+{{< inc sql/distinctcols.sql >}}
 
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
+::: {.callout-note collapse="true" title="Show explanation"}
 
 A query intended to list the distinct species in the dataset returns seven rows
 instead of three because `distinct` is applied to both `species` and `sex`,
@@ -92,16 +92,16 @@ To find it: run `select count(*) from (select distinct species from penguins)`. 
 that returns 3 but the original query returns 7, the extra column is what is
 producing the extra rows.
 
-</details>
+:::
 
-## Find penguins with no recorded sex {: #sql-nullequal}
+## Find penguins with no recorded sex
 
 Run this query. How many rows does it return? Are there penguins in the table whose
 sex was not recorded?
 
-[% inc nullequal.sql scrub="\s*--.*BUG.*" %]
+{{< inc sql/nullequal.sql >}}
 
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
+::: {.callout-note collapse="true" title="Show explanation"}
 
 A query that tries to find penguins with no recorded sex returns zero rows because
 comparing any value to `null` with `=` produces `null` (not `true`) in SQL's
@@ -115,16 +115,16 @@ To find it: run `select count(*) from penguins where sex is null`. If that retur
 a nonzero count but `where sex = null` returns zero, the `=` test is failing because
 null comparisons always produce null, never `true`.
 
-</details>
+:::
 
-## Filter for records in two different categories {: #sql-impossibleand}
+## Filter for records in two different categories
 
 Run this query. How many rows does it return? Choose a penguin you know is on
 Biscoe island from a previous query and check whether it appears here.
 
-[% inc impossibleand.sql scrub="\s*--.*BUG.*" %]
+{{< inc sql/impossibleand.sql >}}
 
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
+::: {.callout-note collapse="true" title="Show explanation"}
 
 A query that should return penguins from either Biscoe or Dream island returns
 zero rows because `and` requires both conditions to be true at the same time, but
@@ -137,17 +137,17 @@ To find it: ask whether a single penguin can be on Biscoe island and Dream islan
 at the same time. It cannot, so `AND` can never be true. Whenever a zero-row result
 is unexpected, check whether the conditions are mutually exclusive.
 
-</details>
+:::
 
-## Find all female penguins {: #sql-casevalue}
+## Find all female penguins
 
 Run this query and count the rows returned. Then run a query to find the distinct
 values stored in the `sex` column. Do any of them match the literal used in the
 `where` clause?
 
-[% inc casevalue.sql scrub="\s*--.*BUG.*" %]
+{{< inc sql/casevalue.sql >}}
 
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
+::: {.callout-note collapse="true" title="Show explanation"}
 
 A query that should return all female penguins returns zero rows because the `sex`
 column stores the value `'FEMALE'` in uppercase but the query filters on
@@ -162,17 +162,17 @@ To find it: run `select distinct sex from penguins` before writing the filter. I
 the results show `'FEMALE'` in uppercase, a `where sex = 'female'` will return zero
 rows because the literal does not match.
 
-</details>
+:::
 
-## Filter on a calculated column {: #sql-wherealiased}
+## Filter on a calculated column
 
 Run this query. Does it raise an error or return wrong results? Add a second
 `select` that uses the full expression `body_mass_g / 1000.0` in the `where`
 clause and compare the two queries' output.
 
-[% inc wherealiased.sql scrub="\s*--.*BUG.*" %]
+{{< inc sql/wherealiased.sql >}}
 
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
+::: {.callout-note collapse="true" title="Show explanation"}
 
 A query that tries to filter using a column alias defined in the `select` clause
 fails with a "no such column" error because SQL evaluates `where` before `select`,
@@ -186,16 +186,16 @@ evaluates `where` before `select`, so the alias defined in `select` does not yet
 exist when `where` runs. Replace the alias in `where` with the full expression
 `body_mass_g / 1000.0`.
 
-</details>
+:::
 
-## Select records matching one of two conditions {: #sql-andorprecedence}
+## Select records matching one of two conditions
 
 Run this query. Which species and islands appear in the result? Is the output what
 you expected based on the comment describing the intent?
 
-[% inc andorprecedence.sql scrub="\s*--.*BUG.*" %]
+{{< inc sql/andorprecedence.sql >}}
 
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
+::: {.callout-note collapse="true" title="Show explanation"}
 
 A query intended to find Adelie or Chinstrap penguins that are on Biscoe island
 instead returns all Adelie penguins from any island plus Chinstraps on Biscoe,
@@ -210,17 +210,17 @@ islands appear in the result. If they do, `and` is binding more tightly than `or
 and the condition is being read as `species = 'Adelie' or (species = 'Chinstrap' and
 island = 'Biscoe')`. Add parentheses around the `or` sub-expression.
 
-</details>
+:::
 
-## Show average body mass per species {: #sql-nonaggcol}
+## Show average body mass per species
 
 Run this query and examine the `sex` column. Pick one species and check a few rows
 against the original data. Are the sex values consistent with what you expected
 for that species group?
 
-[% inc nonaggcol.sql scrub="\s*--.*BUG.*" %]
+{{< inc sql/nonaggcol.sql >}}
 
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
+::: {.callout-note collapse="true" title="Show explanation"}
 
 A query that groups by species but also selects `sex` without aggregating it
 produces an arbitrary, unpredictable sex value for each species group because `sex`
@@ -235,16 +235,16 @@ original table. If the grouped query shows a single sex for the group but the ra
 data contains both sexes for that species, the database is picking an arbitrary
 value.
 
-</details>
+:::
 
-## Keep only groups above a minimum size {: #sql-wherenothavin}
+## Keep only groups above a minimum size
 
 Run this query. Does it return a result or raise an error? Check whether moving
 the condition to a `having` clause after `group by` fixes the problem.
 
-[% inc wherenothavin.sql scrub="\s*--.*BUG.*" %]
+{{< inc sql/wherenothavin.sql >}}
 
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
+::: {.callout-note collapse="true" title="Show explanation"}
 
 A query that tries to filter groups by their average value using `where` raises an
 error because aggregate functions like `avg()` cannot appear in `where`; `where`
@@ -259,16 +259,16 @@ aggregate function avg()`. Aggregate functions cannot appear in `where` because 
 haven't been grouped yet at that point. Move the condition to a `having` clause after
 the `group by`.
 
-</details>
+:::
 
-## Show the five heaviest penguins {: #sql-limitorder}
+## Show the five heaviest penguins
 
 Run this query a few times and note which rows appear. Are they the
 five heaviest penguins, or does the result change?
 
-[% inc limitorder.sql scrub="\s*--.*BUG.*" %]
+{{< inc sql/limitorder.sql >}}
 
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
+::: {.callout-note collapse="true" title="Show explanation"}
 
 A query that uses `limit` without `order by` returns an arbitrary set
 of rows, not the five heaviest. The database makes no ordering
@@ -281,16 +281,16 @@ explicit `order by` is required to control *which* rows are returned.
 To find it: add `order by body_mass_g desc` before the `limit` clause
 and rerun. The heaviest five penguins now appear consistently.
 
-</details>
+:::
 
-## Count the penguin rows {: #sql-countnull}
+## Count the penguin rows
 
 Run this query. Then run a second query using `count(*)` and compare the two
 results. If the numbers differ, find the rows that account for the difference.
 
-[% inc countnull.sql scrub="\s*--.*BUG.*" %]
+{{< inc sql/countnull.sql >}}
 
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
+::: {.callout-note collapse="true" title="Show explanation"}
 
 A query meant to count all penguins in the dataset underreports the total because
 `count(sex)` only counts rows where `sex` is not null, omitting the 11 penguins
@@ -303,16 +303,16 @@ To find it: run `select count(*), count(sex) from penguins`. If the two numbers
 differ, the difference is the number of penguins `count(sex)` is missing because
 their `sex` is null.
 
-</details>
+:::
 
-## Compute the average body mass {: #sql-avgmanual}
+## Compute the average body mass
 
 Run this query and note the result. Then run `select avg(body_mass_g) from penguins`
 and compare. Are the two values the same?
 
-[% inc avgmanual.sql scrub="\s*--.*BUG.*" %]
+{{< inc sql/avgmanual.sql >}}
 
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
+::: {.callout-note collapse="true" title="Show explanation"}
 
 A manual average calculation divides the sum of body masses by the total row count,
 but `sum()` skips the two rows where `body_mass_g` is null while `count(*)` still
@@ -328,16 +328,16 @@ calculation. If they differ, check whether `count(*)` and `count(body_mass_g)` r
 the same number — if not, some rows have a null mass and the manual denominator is
 too large.
 
-</details>
+:::
 
-## Order rows that contain null values {: #sql-nullorder}
+## Order rows that contain null values
 
 Run this query and look at the first few rows. Do the penguins with no
 recorded body mass appear where you expected?
 
-[% inc nullorder.sql scrub="\s*--.*BUG.*" %]
+{{< inc sql/nullorder.sql >}}
 
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
+::: {.callout-note collapse="true" title="Show explanation"}
 
 A query that orders by `body_mass_g` puts the rows with a null body
 mass first, because SQLite sorts nulls before non-null values. The
@@ -351,17 +351,17 @@ To find it: compare `select body_mass_g from penguins order by
 body_mass_g` to the same query with `order by body_mass_g is null,
 body_mass_g`. The nulls move from the top to the bottom.
 
-</details>
+:::
 
-## List every person and their total credits {: #sql-innerleft}
+## List every person and their total credits
 
 Run this query and list the people in the result. Then run `select distinct person
 from work` and compare. Does every person from the `work` table appear in the
 query output?
 
-[% inc innerleft.sql scrub="\s*--.*BUG.*" %]
+{{< inc sql/innerleft.sql >}}
 
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
+::: {.callout-note collapse="true" title="Show explanation"}
 
 A query that should list total credits for every person silently omits people whose
 jobs do not appear in the `job` table (because their work has no matching credit
@@ -375,17 +375,17 @@ the join result. Any name present in `work` but absent from the join result was
 dropped because `inner join` excludes rows with no matching partner in the other
 table.
 
-</details>
+:::
 
-## Join two tables to combine related records {: #sql-noonclause}
+## Join two tables to combine related records
 
 Run this query. Count the rows returned. How many rows are in the `job` table?
 How many are in the `work` table? How do those numbers relate to the row count
 you observed?
 
-[% inc noonclause.sql scrub="\s*--.*BUG.*" %]
+{{< inc sql/noonclause.sql >}}
 
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
+::: {.callout-note collapse="true" title="Show explanation"}
 
 A query that should pair each job with its matching work records instead returns
 every possible combination of rows from both tables because the `on` clause is
@@ -400,16 +400,16 @@ To find it: count the rows in `job` and the rows in `work`, then multiply. If th
 query result has exactly that many rows, the join produced a Cartesian product,
 which means the `on` clause is missing.
 
-</details>
+:::
 
-## Show total credits per person {: #sql-coalescemiss}
+## Show total credits per person
 
 Run this query and check the `total` column for each person. Which person has a
 null total? What jobs did that person do, according to the `work` table?
 
-[% inc coalescemiss.sql scrub="\s*--.*BUG.*" %]
+{{< inc sql/coalescemiss.sql >}}
 
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
+::: {.callout-note collapse="true" title="Show explanation"}
 
 A query that uses a left join to include all people shows null instead of 0 for
 a person whose jobs produce no credit values, because `sum()` of an all-null group
@@ -423,16 +423,16 @@ To find it: look for null values in the `total` column of the result. Then run
 that person has work records. The null total comes from `sum()` over an all-null
 group — wrap it in `coalesce(..., 0)` to return zero instead.
 
-</details>
+:::
 
-## List each person and their survey count {: #sql-joinswapped}
+## List each person and their survey count
 
 Run this query. Does every person appear? Compare the `num_surveys` counts to what
 you get from `select count(*) from survey group by person_id`. Do the numbers match?
 
-[% inc joinswapped.sql scrub="\s*--.*BUG.*" %]
+{{< inc sql/joinswapped.sql >}}
 
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
+::: {.callout-note collapse="true" title="Show explanation"}
 
 A query that should join people to their surveys instead produces a Cartesian
 product because the `on` clause compares `survey.person_id` to itself (which is
@@ -447,17 +447,17 @@ survey group by person_id`. If every person shows the same `num_surveys` equal t
 the total number of survey rows, the `on` clause is always true and is joining every
 row to every other row.
 
-</details>
+:::
 
-## List each person and their supervisor {: #sql-selfjoin}
+## List each person and their supervisor
 
 Run this query and look at a few rows. Use the `person` table to verify which
 people are supervisors and which are subordinates. Are the labels in the output
 correct?
 
-[% inc selfjoin.sql scrub="\s*--.*BUG.*" %]
+{{< inc sql/selfjoin.sql >}}
 
-<details class="explanation" markdown="1"><summary>Show explanation</summary>
+::: {.callout-note collapse="true" title="Show explanation"}
 
 A self-join query that should display each person's name alongside their
 supervisor's name has the labels reversed: the `on` condition `pa.person_id =
@@ -472,4 +472,4 @@ To find it: pick one row from the result and look up both IDs in the `person` ta
 If the person labeled `supervisor_name` is actually listed as a subordinate in the
 raw data, the alias names in the query are reversed.
 
-</details>
+:::
