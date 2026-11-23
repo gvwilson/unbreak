@@ -1,18 +1,7 @@
 ---
-subtitle: "a short course on debugging"
 ---
 
-# Overview {.unnumbered}
-
-## Learner Persona
-
-Learners are comfortable reading and writing classes and unit tests in Python,
-but have limited understanding of lower-level programming languages like C or Rust,
-only superficial understanding of JavaScript,
-and have never dealt with threading, networking, or containers.
-They use an LLM as a coding assistant
-but want to be able to understand and check the code it generates.
-
+A short course on debugging.
 All of the material is available under an open license,
 and contributions through our [repository](@repo) are welcome.
 All contributors are required to respect our Code of Conduct.

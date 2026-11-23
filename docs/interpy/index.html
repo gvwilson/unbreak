@@ -20,23 +20,23 @@
     <div class="topnav-dropdown">
       <span class="topnav-item">Contents</span>
       <div class="topnav-menu"><ul>
-<li><a href="#check-whether-a-running-total-hits-a-target" id="toc-check-whether-a-running-total-hits-a-target"><span class="header-section-number">3.1</span> Check whether a running total hits a target</a></li>
-<li><a href="#scrape-titles-from-a-list-of-urls" id="toc-scrape-titles-from-a-list-of-urls"><span class="header-section-number">3.2</span> Scrape titles from a list of URLs</a></li>
-<li><a href="#find-the-top-scorer-in-a-csv-file" id="toc-find-the-top-scorer-in-a-csv-file"><span class="header-section-number">3.3</span> Find the top scorer in a CSV file</a></li>
-<li><a href="#process-a-pipeline-of-records-twice" id="toc-process-a-pipeline-of-records-twice"><span class="header-section-number">3.4</span> Process a pipeline of records twice</a></li>
-<li><a href="#cache-results-of-an-expensive-calculation" id="toc-cache-results-of-an-expensive-calculation"><span class="header-section-number">3.5</span> Cache results of an expensive calculation</a></li>
-<li><a href="#write-results-to-disk-when-processing-fails" id="toc-write-results-to-disk-when-processing-fails"><span class="header-section-number">3.6</span> Write results to disk when processing fails</a></li>
-<li><a href="#build-a-list-of-functions-in-a-loop" id="toc-build-a-list-of-functions-in-a-loop"><span class="header-section-number">3.7</span> Build a list of functions in a loop</a></li>
-<li><a href="#update-a-variable-in-an-enclosing-function" id="toc-update-a-variable-in-an-enclosing-function"><span class="header-section-number">3.8</span> Update a variable in an enclosing function</a></li>
-<li><a href="#preserve-a-functions-name-and-docstring" id="toc-preserve-a-functions-name-and-docstring"><span class="header-section-number">3.9</span> Preserve a function’s name and docstring</a></li>
-<li><a href="#pair-up-two-lists-of-different-lengths" id="toc-pair-up-two-lists-of-different-lengths"><span class="header-section-number">3.10</span> Pair up two lists of different lengths</a></li>
+<li><a href="#check-whether-a-running-total-hits-a-target" id="toc-check-whether-a-running-total-hits-a-target"><span class="header-section-number">4.1</span> Check whether a running total hits a target</a></li>
+<li><a href="#scrape-titles-from-a-list-of-urls" id="toc-scrape-titles-from-a-list-of-urls"><span class="header-section-number">4.2</span> Scrape titles from a list of URLs</a></li>
+<li><a href="#find-the-top-scorer-in-a-csv-file" id="toc-find-the-top-scorer-in-a-csv-file"><span class="header-section-number">4.3</span> Find the top scorer in a CSV file</a></li>
+<li><a href="#process-a-pipeline-of-records-twice" id="toc-process-a-pipeline-of-records-twice"><span class="header-section-number">4.4</span> Process a pipeline of records twice</a></li>
+<li><a href="#cache-results-of-an-expensive-calculation" id="toc-cache-results-of-an-expensive-calculation"><span class="header-section-number">4.5</span> Cache results of an expensive calculation</a></li>
+<li><a href="#write-results-to-disk-when-processing-fails" id="toc-write-results-to-disk-when-processing-fails"><span class="header-section-number">4.6</span> Write results to disk when processing fails</a></li>
+<li><a href="#build-a-list-of-functions-in-a-loop" id="toc-build-a-list-of-functions-in-a-loop"><span class="header-section-number">4.7</span> Build a list of functions in a loop</a></li>
+<li><a href="#update-a-variable-in-an-enclosing-function" id="toc-update-a-variable-in-an-enclosing-function"><span class="header-section-number">4.8</span> Update a variable in an enclosing function</a></li>
+<li><a href="#preserve-a-functions-name-and-docstring" id="toc-preserve-a-functions-name-and-docstring"><span class="header-section-number">4.9</span> Preserve a function’s name and docstring</a></li>
+<li><a href="#pair-up-two-lists-of-different-lengths" id="toc-pair-up-two-lists-of-different-lengths"><span class="header-section-number">4.10</span> Pair up two lists of different lengths</a></li>
 </ul></div>
     </div>
   </nav>
 </header>
 <main class="content"><header id="title-block-header" class="quarto-title-block"></header>
 <h1 class="title">Intermediate Python</h1>
-<h2 data-number="3.1" id="check-whether-a-running-total-hits-a-target"><span class="header-section-number">3.1</span> Check whether a running total hits a target</h2>
+<h2 data-number="4.1" id="check-whether-a-running-total-hits-a-target"><span class="header-section-number">4.1</span> Check whether a running total hits a target</h2>
 <p>Run this script and examine the two computed values. Are they exactly equal? Try printing each value with many decimal places.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> running_total(amounts):</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return the total by accumulating amounts one at a time."""</span></span>
@@ -69,7 +69,7 @@ Show explanation
 <p>Shows: floating-point representation errors and how to use <code>math.isclose</code>.</p>
 <p>To find it: print both values with 20 decimal places using <code>f"{val:.20f}"</code>. You will see that one ends in <code>...000001</code> rather than matching the other exactly, revealing the rounding difference that makes <code>==</code> return <code>False</code>.</p>
 </details>
-<h2 data-number="3.2" id="scrape-titles-from-a-list-of-urls"><span class="header-section-number">3.2</span> Scrape titles from a list of URLs</h2>
+<h2 data-number="4.2" id="scrape-titles-from-a-list-of-urls"><span class="header-section-number">4.2</span> Scrape titles from a list of URLs</h2>
 <p>Run the scraper with the provided URL list, which includes one malformed URL. Does it process all the valid URLs? Check whether anything is silently discarded.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> urllib.parse <span class="im">import</span> urlparse</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>URLS <span class="op">=</span> [</span>
@@ -109,32 +109,33 @@ Show explanation
 <p>Shows: how overly broad exception handlers swallow unrelated bugs, and how to use <code>logging.exception</code> to record errors instead of ignoring them.</p>
 <p>To find it: replace <code>pass</code> in the <code>except</code> block with <code>logging.exception("caught")</code>. Run the script again and read the log output. You will see a <code>ValueError</code> from the URL parser printed for the malformed URL, proving the <code>except</code> block was swallowing the wrong exception type.</p>
 </details>
-<h2 data-number="3.3" id="find-the-top-scorer-in-a-csv-file"><span class="header-section-number">3.3</span> Find the top scorer in a CSV file</h2>
+<h2 data-number="4.3" id="find-the-top-scorer-in-a-csv-file"><span class="header-section-number">4.3</span> Find the top scorer in a CSV file</h2>
 <p>Run the script with the provided CSV file and read the traceback. Which line in the file triggers the error? Examine that line carefully.</p>
-<p><code class="sourceCode python"><span class="im">import</span> sys
-<span class="kw">def</span> top_scorer(filename):
-    <span class="co">"""Return the (name, score) pair with the highest score."""</span>
-    best_name <span class="op">=</span> <span class="va">None</span>
-    best_score <span class="op">=</span> <span class="op">-</span><span class="dv">1</span>
-    <span class="cf">with</span> <span class="bu">open</span>(filename) <span class="im">as</span> f:
-        <span class="bu">next</span>(f)  <span class="co"># skip header</span>
-        <span class="cf">for</span> line <span class="kw">in</span> f:
-            parts <span class="op">=</span> line.strip().split(<span class="st">","</span>)
-            name <span class="op">=</span> parts[<span class="dv">0</span>]
-            score <span class="op">=</span> <span class="bu">int</span>(parts[<span class="dv">1</span>])
-            <span class="cf">if</span> score <span class="op">&gt;</span> best_score:
-                best_score <span class="op">=</span> score
-                best_name <span class="op">=</span> name
-    <span class="cf">return</span> best_name, best_score
-<span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:
-    filename <span class="op">=</span> sys.argv[<span class="dv">1</span>] <span class="cf">if</span> <span class="bu">len</span>(sys.argv) <span class="op">&gt;</span> <span class="dv">1</span> <span class="cf">else</span> <span class="st">"commas.csv"</span>
-    name, score <span class="op">=</span> top_scorer(filename)
-    <span class="bu">print</span>(<span class="ss">f"Top scorer: </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>score<span class="sc">}</span><span class="ss">)"</span>)</code> <code>name,score
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> top_scorer(filename):</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return the (name, score) pair with the highest score."""</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    best_name <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    best_score <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(filename) <span class="im">as</span> f:</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">next</span>(f)  <span class="co"># skip header</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> line <span class="kw">in</span> f:</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>            parts <span class="op">=</span> line.strip().split(<span class="st">","</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>            name <span class="op">=</span> parts[<span class="dv">0</span>]</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>            score <span class="op">=</span> <span class="bu">int</span>(parts[<span class="dv">1</span>])</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> score <span class="op">&gt;</span> best_score:</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>                best_score <span class="op">=</span> score</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>                best_name <span class="op">=</span> name</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> best_name, best_score</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    filename <span class="op">=</span> sys.argv[<span class="dv">1</span>] <span class="cf">if</span> <span class="bu">len</span>(sys.argv) <span class="op">&gt;</span> <span class="dv">1</span> <span class="cf">else</span> <span class="st">"commas.csv"</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    name, score <span class="op">=</span> top_scorer(filename)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Top scorer: </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>score<span class="sc">}</span><span class="ss">)"</span>)</span></code></pre></div>
+<pre><code>name,score
 Alice Johnson,95
 Bob Smith,87
 Martinez, Carlos,92
 Wong, Jennifer,88
-Diana Prince,79</code></p>
+Diana Prince,79</code></pre>
 <details>
 <summary>
 Show explanation
@@ -143,22 +144,22 @@ Show explanation
 <p>Shows: why hand-rolled CSV parsing fails on real data and when to use the <code>csv</code> module.</p>
 <p>To find it: open the CSV in a text editor and find the row that triggers the <code>IndexError</code>. Count the commas on that line — there are two, not one. The extra comma sits inside a quoted name field that <code>line.split(',')</code> does not recognize as quoted.</p>
 </details>
-<h2 data-number="3.4" id="process-a-pipeline-of-records-twice"><span class="header-section-number">3.4</span> Process a pipeline of records twice</h2>
+<h2 data-number="4.4" id="process-a-pipeline-of-records-twice"><span class="header-section-number">4.4</span> Process a pipeline of records twice</h2>
 <p>Run the script and look at both outputs. Does each one produce the values you expected?</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> positive_numbers(data):</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Yield each positive number from data."""</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (x <span class="cf">for</span> x <span class="kw">in</span> data <span class="cf">if</span> x <span class="op">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> [<span class="op">-</span><span class="dv">1</span>, <span class="dv">2</span>, <span class="op">-</span><span class="dv">3</span>, <span class="dv">4</span>, <span class="op">-</span><span class="dv">5</span>, <span class="dv">6</span>, <span class="op">-</span><span class="dv">7</span>, <span class="dv">8</span>]</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    gen <span class="op">=</span> positive_numbers(data)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> <span class="bu">sum</span>(gen)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    count <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> _ <span class="kw">in</span> gen)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Total: </span><span class="sc">{</span>total<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Count: </span><span class="sc">{</span>count<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> count <span class="op">&gt;</span> <span class="dv">0</span>:</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Mean:  </span><span class="sc">{</span>total <span class="op">/</span> count<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Cannot compute mean: generator was exhausted before count was taken"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> positive_numbers(data):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Yield each positive number from data."""</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (x <span class="cf">for</span> x <span class="kw">in</span> data <span class="cf">if</span> x <span class="op">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> [<span class="op">-</span><span class="dv">1</span>, <span class="dv">2</span>, <span class="op">-</span><span class="dv">3</span>, <span class="dv">4</span>, <span class="op">-</span><span class="dv">5</span>, <span class="dv">6</span>, <span class="op">-</span><span class="dv">7</span>, <span class="dv">8</span>]</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    gen <span class="op">=</span> positive_numbers(data)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> <span class="bu">sum</span>(gen)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    count <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> _ <span class="kw">in</span> gen)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Total: </span><span class="sc">{</span>total<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Count: </span><span class="sc">{</span>count<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> count <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Mean:  </span><span class="sc">{</span>total <span class="op">/</span> count<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Cannot compute mean: generator was exhausted before count was taken"</span>)</span></code></pre></div>
 <details>
 <summary>
 Show explanation
@@ -167,25 +168,25 @@ Show explanation
 <p>Shows: that generators are single-use iterators and when to use lists instead.</p>
 <p>To find it: print <code>type(pipeline)</code> to confirm it is a generator. Then assign <code>results = list(pipeline)</code> and print <code>results</code> a second time — the second access returns an empty list, proving the generator was exhausted on the first pass.</p>
 </details>
-<h2 data-number="3.5" id="cache-results-of-an-expensive-calculation"><span class="header-section-number">3.5</span> Cache results of an expensive calculation</h2>
+<h2 data-number="4.5" id="cache-results-of-an-expensive-calculation"><span class="header-section-number">4.5</span> Cache results of an expensive calculation</h2>
 <p>Call the cached function twice with the same positional argument but a different keyword argument each time. Do both calls return the correct result?</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> memoize(func):</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Cache the results of func calls."""</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    cache <span class="op">=</span> {}</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> wrapper(<span class="op">*</span>args, <span class="op">**</span>kwargs):</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        key <span class="op">=</span> args</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> key <span class="kw">not</span> <span class="kw">in</span> cache:</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>            cache[key] <span class="op">=</span> func(<span class="op">*</span>args, <span class="op">**</span>kwargs)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> cache[key]</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> wrapper</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="at">@memoize</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> power(base, exponent<span class="op">=</span><span class="dv">2</span>):</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  (computing </span><span class="sc">{</span>base<span class="sc">}</span><span class="ss">^</span><span class="sc">{</span>exponent<span class="sc">}</span><span class="ss">)"</span>)</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> base <span class="op">**</span> exponent</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"power(3)            = </span><span class="sc">{</span>power(<span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"power(3, exponent=3)= </span><span class="sc">{</span>power(<span class="dv">3</span>, exponent<span class="op">=</span><span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"power(3, 3)         = </span><span class="sc">{</span>power(<span class="dv">3</span>, <span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> memoize(func):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Cache the results of func calls."""</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    cache <span class="op">=</span> {}</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> wrapper(<span class="op">*</span>args, <span class="op">**</span>kwargs):</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        key <span class="op">=</span> args</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> key <span class="kw">not</span> <span class="kw">in</span> cache:</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>            cache[key] <span class="op">=</span> func(<span class="op">*</span>args, <span class="op">**</span>kwargs)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> cache[key]</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> wrapper</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="at">@memoize</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> power(base, exponent<span class="op">=</span><span class="dv">2</span>):</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  (computing </span><span class="sc">{</span>base<span class="sc">}</span><span class="ss">^</span><span class="sc">{</span>exponent<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> base <span class="op">**</span> exponent</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"power(3)            = </span><span class="sc">{</span>power(<span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"power(3, exponent=3)= </span><span class="sc">{</span>power(<span class="dv">3</span>, exponent<span class="op">=</span><span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"power(3, 3)         = </span><span class="sc">{</span>power(<span class="dv">3</span>, <span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div>
 <details>
 <summary>
 Show explanation
@@ -194,36 +195,37 @@ Show explanation
 <p>Shows: how to construct correct cache keys and test with varied inputs.</p>
 <p>To find it: call the cached function twice with the same positional argument but different keyword arguments — e.g., <code>f(1, multiplier=2)</code> then <code>f(1, multiplier=3)</code>. If both return the same value, add <code>print(key)</code> inside the decorator to show the key is identical for both calls.</p>
 </details>
-<h2 data-number="3.6" id="write-results-to-disk-when-processing-fails"><span class="header-section-number">3.6</span> Write results to disk when processing fails</h2>
+<h2 data-number="4.6" id="write-results-to-disk-when-processing-fails"><span class="header-section-number">4.6</span> Write results to disk when processing fails</h2>
 <p>Run the script so that it raises an exception part-way through writing. Then open the output file. Does it contain complete data?</p>
-<p><code class="sourceCode python"><span class="im">import</span> os
-<span class="im">import</span> sys
-<span class="kw">def</span> summarize(input_file, output_file):
-    <span class="co">"""Write uppercased non-blank lines from input_file to output_file."""</span>
-    out <span class="op">=</span> <span class="bu">open</span>(output_file, <span class="st">"w"</span>)
-    <span class="cf">with</span> <span class="bu">open</span>(input_file) <span class="im">as</span> f:
-        <span class="cf">for</span> line <span class="kw">in</span> f:
-            line <span class="op">=</span> line.rstrip(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)
-            <span class="cf">if</span> <span class="kw">not</span> line:
-                <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"Unexpected blank line in </span><span class="sc">{</span>input_file<span class="sc">!r}</span><span class="ss">"</span>)
-            out.write(line.upper() <span class="op">+</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)
-    out.close()
-<span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:
-    input_file <span class="op">=</span> sys.argv[<span class="dv">1</span>] <span class="cf">if</span> <span class="bu">len</span>(sys.argv) <span class="op">&gt;</span> <span class="dv">1</span> <span class="cf">else</span> <span class="st">"unclosed.txt"</span>
-    output_file <span class="op">=</span> <span class="st">"unclosed_out.txt"</span>
-    <span class="cf">try</span>:
-        summarize(input_file, output_file)
-    <span class="cf">except</span> <span class="pp">ValueError</span> <span class="im">as</span> e:
-        <span class="bu">print</span>(<span class="ss">f"Error: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)
-    <span class="cf">if</span> os.path.exists(output_file):
-        <span class="cf">with</span> <span class="bu">open</span>(output_file) <span class="im">as</span> f:
-            lines <span class="op">=</span> f.readlines()
-        <span class="bu">print</span>(<span class="ss">f"Output has </span><span class="sc">{</span><span class="bu">len</span>(lines)<span class="sc">}</span><span class="ss"> line(s) — may be incomplete (buffer not flushed)"</span>)
-        <span class="cf">for</span> line <span class="kw">in</span> lines:
-            <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>line<span class="sc">!r}</span><span class="ss">"</span>)</code> <code>first line
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> summarize(input_file, output_file):</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Write uppercased non-blank lines from input_file to output_file."""</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> <span class="bu">open</span>(output_file, <span class="st">"w"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(input_file) <span class="im">as</span> f:</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> line <span class="kw">in</span> f:</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>            line <span class="op">=</span> line.rstrip(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> line:</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"Unexpected blank line in </span><span class="sc">{</span>input_file<span class="sc">!r}</span><span class="ss">"</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>            out.write(line.upper() <span class="op">+</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    out.close()</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    input_file <span class="op">=</span> sys.argv[<span class="dv">1</span>] <span class="cf">if</span> <span class="bu">len</span>(sys.argv) <span class="op">&gt;</span> <span class="dv">1</span> <span class="cf">else</span> <span class="st">"unclosed.txt"</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    output_file <span class="op">=</span> <span class="st">"unclosed_out.txt"</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        summarize(input_file, output_file)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">ValueError</span> <span class="im">as</span> e:</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Error: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(output_file):</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(output_file) <span class="im">as</span> f:</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>            lines <span class="op">=</span> f.readlines()</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Output has </span><span class="sc">{</span><span class="bu">len</span>(lines)<span class="sc">}</span><span class="ss"> line(s) — may be incomplete (buffer not flushed)"</span>)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> line <span class="kw">in</span> lines:</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>line<span class="sc">!r}</span><span class="ss">"</span>)</span></code></pre></div>
+<pre><code>first line
 second line
 fourth line after blank
-fifth line</code></p>
+fifth line</code></pre>
 <details>
 <summary>
 Show explanation
@@ -232,16 +234,16 @@ Show explanation
 <p>Shows: why context managers guarantee file cleanup even when exceptions occur, and how to use <code>with open(…) as f</code> to prevent data loss.</p>
 <p>To find it: run the script so that it raises an exception midway through writing, then open the output file in a text editor. Count the records. If the count is less than expected, the buffer was never flushed — <code>close()</code> was never called because the exception skipped it.</p>
 </details>
-<h2 data-number="3.7" id="build-a-list-of-functions-in-a-loop"><span class="header-section-number">3.7</span> Build a list of functions in a loop</h2>
+<h2 data-number="4.7" id="build-a-list-of-functions-in-a-loop"><span class="header-section-number">4.7</span> Build a list of functions in a loop</h2>
 <p>Call each function in the list produced by <code>make_multipliers()</code>. Do they multiply by different numbers?</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_multipliers():</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return a list of functions that multiply by 0, 1, 2, 3, 4."""</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    multipliers <span class="op">=</span> []</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        multipliers.append(<span class="kw">lambda</span> x: x <span class="op">*</span> i)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> multipliers</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>funcs <span class="op">=</span> make_multipliers()</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([f(<span class="dv">10</span>) <span class="cf">for</span> f <span class="kw">in</span> funcs])  <span class="co"># expect [0, 10, 20, 30, 40], get [40, 40, 40, 40, 40]</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_multipliers():</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return a list of functions that multiply by 0, 1, 2, 3, 4."""</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    multipliers <span class="op">=</span> []</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        multipliers.append(<span class="kw">lambda</span> x: x <span class="op">*</span> i)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> multipliers</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>funcs <span class="op">=</span> make_multipliers()</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([f(<span class="dv">10</span>) <span class="cf">for</span> f <span class="kw">in</span> funcs])  <span class="co"># expect [0, 10, 20, 30, 40], get [40, 40, 40, 40, 40]</span></span></code></pre></div>
 <details>
 <summary>
 Show explanation
@@ -250,16 +252,16 @@ Show explanation
 <p>Shows: that closures capture variables, not values, and why a loop that creates functions needs a way to freeze the current value (e.g.&nbsp;a default argument <code>lambda x, i=i: x * i</code>).</p>
 <p>To find it: print what each function returns — they all return the same value. Capture the value with <code>lambda x, i=i: x * i</code>.</p>
 </details>
-<h2 data-number="3.8" id="update-a-variable-in-an-enclosing-function"><span class="header-section-number">3.8</span> Update a variable in an enclosing function</h2>
+<h2 data-number="4.8" id="update-a-variable-in-an-enclosing-function"><span class="header-section-number">4.8</span> Update a variable in an enclosing function</h2>
 <p>Call the counter returned by <code>make_counter()</code>. Does it return 1?</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_counter():</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    count <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> increment():</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        count <span class="op">=</span> count <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> count</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> increment</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>counter <span class="op">=</span> make_counter()</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(counter())  <span class="co"># expect 1, get UnboundLocalError</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_counter():</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> increment():</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        count <span class="op">=</span> count <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> count</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> increment</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>counter <span class="op">=</span> make_counter()</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(counter())  <span class="co"># expect 1, get UnboundLocalError</span></span></code></pre></div>
 <details>
 <summary>
 Show explanation
@@ -268,20 +270,20 @@ Show explanation
 <p>Shows: Python’s scoping rules (LEGB) and that <code>nonlocal</code> (or <code>global</code>) is required to assign to a variable from an enclosing scope.</p>
 <p>To find it: the traceback says <code>UnboundLocalError: local variable 'count' referenced before assignment</code>. Add <code>nonlocal count</code> as the first line of <code>increment</code>.</p>
 </details>
-<h2 data-number="3.9" id="preserve-a-functions-name-and-docstring"><span class="header-section-number">3.9</span> Preserve a function’s name and docstring</h2>
+<h2 data-number="4.9" id="preserve-a-functions-name-and-docstring"><span class="header-section-number">4.9</span> Preserve a function’s name and docstring</h2>
 <p>Inspect <code>add.__name__</code> and <code>add.__doc__</code> after decorating it. Do they match the original function?</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> logged(func):</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> wrapper(<span class="op">*</span>args, <span class="op">**</span>kwargs):</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"calling </span><span class="sc">{</span>func<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> func(<span class="op">*</span>args, <span class="op">**</span>kwargs)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> wrapper</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="at">@logged</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add(a, b):</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return a + b."""</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a <span class="op">+</span> b</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(add(<span class="dv">2</span>, <span class="dv">3</span>))       <span class="co"># calling add / 5</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(add.<span class="va">__name__</span>)    <span class="co"># expect 'add', get 'wrapper'</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(add.__doc__)     <span class="co"># expect 'Return a + b.', get None</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> logged(func):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> wrapper(<span class="op">*</span>args, <span class="op">**</span>kwargs):</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"calling </span><span class="sc">{</span>func<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> func(<span class="op">*</span>args, <span class="op">**</span>kwargs)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> wrapper</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="at">@logged</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add(a, b):</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return a + b."""</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a <span class="op">+</span> b</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(add(<span class="dv">2</span>, <span class="dv">3</span>))       <span class="co"># calling add / 5</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(add.<span class="va">__name__</span>)    <span class="co"># expect 'add', get 'wrapper'</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(add.__doc__)     <span class="co"># expect 'Return a + b.', get None</span></span></code></pre></div>
 <details>
 <summary>
 Show explanation
@@ -290,13 +292,13 @@ Show explanation
 <p>Shows: how decorators replace the original function object, and why <code>functools.wraps</code> is needed to copy <code>__name__</code>, <code>__doc__</code>, and other attributes to the wrapper.</p>
 <p>To find it: print <code>add.__name__</code> — it shows <code>wrapper</code>, not <code>add</code>. Add <code>@functools.wraps(func)</code> above the wrapper function.</p>
 </details>
-<h2 data-number="3.10" id="pair-up-two-lists-of-different-lengths"><span class="header-section-number">3.10</span> Pair up two lists of different lengths</h2>
+<h2 data-number="4.10" id="pair-up-two-lists-of-different-lengths"><span class="header-section-number">4.10</span> Pair up two lists of different lengths</h2>
 <p>Pair a list of three names with a list of two scores. Does every name get a score?</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pair(names, scores):</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">list</span>(<span class="bu">zip</span>(names, scores))</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> [<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Carol"</span>]</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> [<span class="dv">90</span>, <span class="dv">85</span>]</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pair(names, scores))  <span class="co"># expect 3 pairs, get [('Alice', 90), ('Bob', 85)]</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pair(names, scores):</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">list</span>(<span class="bu">zip</span>(names, scores))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> [<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Carol"</span>]</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> [<span class="dv">90</span>, <span class="dv">85</span>]</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pair(names, scores))  <span class="co"># expect 3 pairs, get [('Alice', 90), ('Bob', 85)]</span></span></code></pre></div>
 <details>
 <summary>
 Show explanation
