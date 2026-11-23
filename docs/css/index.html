@@ -1,355 +1,57 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head><meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>CSS</title>
+  <link rel="stylesheet" href="../mccole/mccole-book.css">
 
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.11.9">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-
-<title>9&nbsp; CSS – Unbreaking Software</title>
-<style>
-/* Default styles provided by pandoc.
-** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-*/
-span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: 1.5em;}
-div.column{flex: auto;}
-@media screen {
-div.columns{gap: min(4vw, 1.5em);}
-div.column{overflow-x: auto;}
-}
-div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-ul.task-list{list-style: none;}
-ul.task-list li input[type="checkbox"] {
-  width: 0.8em;
-  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
-  vertical-align: middle;
-}
-</style>
-
-
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../web/index.html" rel="next">
-<link href="../jsbrowser/index.html" rel="prev">
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-01a495efc5497ac6e3f5457e7ed18e65.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
-  "copy-button": false,
-  "collapse-after": 3,
-  "panel-placement": "start",
-  "type": "textbox",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
-  "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
-  }
-}</script>
-
-
-<link rel="stylesheet" href="../mccole/book.css">
 </head>
-
-<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
-
-<div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav" aria-label="Toolbar">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../css/index.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">CSS</span></a></li></ol></nav>
-        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
+<body>
+<header class="topbar">
+  <nav class="topnav">
+    <a class="topnav-item" href="../index.html">Home</a>
+    <div class="topnav-dropdown">
+      <span class="topnav-item">Chapters</span>
+      <div class="topnav-menu"><ul class="topnav-list"><li><a href="../intro/index.html">Introduction</a></li><li><a href="../basicpy/index.html">Basic Python</a></li><li><a href="../interpy/index.html">Intermediate Python</a></li><li><a href="../oopy/index.html">Object-Oriented Python</a></li><li><a href="../regexp/index.html">Regular Expressions</a></li><li><a href="../diot/index.html">Data, I/O, and Testing</a></li><li><a href="../perfcon/index.html">Performance, Concurrency, and System Interaction</a></li><li><a href="../jsbrowser/index.html">JavaScript Fundamentals and the Browser</a></li><li><a href="../css/index.html">CSS</a></li><li><a href="../web/index.html">HTTP and APIs</a></li><li><a href="../htmx/index.html">HTMX</a></li><li><a href="../alpine/index.html">Alpine.js</a></li><li><a href="../fastapi/index.html">FastAPI</a></li><li><a href="../datasci/index.html">Data Science</a></li><li><a href="../dataviz/index.html">Data Visualization</a></li><li><a href="../polars/index.html">Polars</a></li><li><a href="../shell/index.html">The Unix Shell</a></li><li><a href="../sql/index.html">SQL</a></li><li><a href="../testing/index.html">Testing</a></li><li><a href="../finale/index.html">Conclusion</a></li></ul></div>
+    </div>
+    <div class="topnav-dropdown">
+      <span class="topnav-item">Appendices</span>
+      <div class="topnav-menu"><ul class="topnav-list"><li><a href="../license/index.html">License</a></li><li><a href="../conduct/index.html">Code of Conduct</a></li><li><a href="../contributing/index.html">Contributing</a></li><li><a href="../bibliography/index.html">Bibliography</a></li><li><a href="../glossary/index.html">Glossary</a></li><li><a href="../complex/index.html">Complex Examples</a></li></ul></div>
+    </div>
+    <div class="topnav-dropdown">
+      <span class="topnav-item">Contents</span>
+      <div class="topnav-menu"><ul>
+<li><a href="#change-the-color-of-a-heading" id="toc-change-the-color-of-a-heading"><span class="header-section-number">9.1</span> Change the color of a heading</a></li>
+<li><a href="#make-a-heading-larger" id="toc-make-a-heading-larger"><span class="header-section-number">9.2</span> Make a heading larger</a></li>
+<li><a href="#style-an-error-message" id="toc-style-an-error-message"><span class="header-section-number">9.3</span> Style an error message</a></li>
+<li><a href="#style-a-button-with-several-properties" id="toc-style-a-button-with-several-properties"><span class="header-section-number">9.4</span> Style a button with several properties</a></li>
+<li><a href="#set-the-width-of-a-label" id="toc-set-the-width-of-a-label"><span class="header-section-number">9.5</span> Set the width of a label</a></li>
+<li><a href="#add-a-background-image-to-a-panel" id="toc-add-a-background-image-to-a-panel"><span class="header-section-number">9.6</span> Add a background image to a panel</a></li>
+<li><a href="#hide-a-notice-without-moving-other-content" id="toc-hide-a-notice-without-moving-other-content"><span class="header-section-number">9.7</span> Hide a notice without moving other content</a></li>
+<li><a href="#center-a-button-on-the-page" id="toc-center-a-button-on-the-page"><span class="header-section-number">9.8</span> Center a button on the page</a></li>
+<li><a href="#center-a-card-horizontally" id="toc-center-a-card-horizontally"><span class="header-section-number">9.9</span> Center a card horizontally</a></li>
+<li><a href="#color-a-link-differently-on-hover" id="toc-color-a-link-differently-on-hover"><span class="header-section-number">9.10</span> Color a link differently on hover</a></li>
+<li><a href="#fit-a-panel-inside-a-container" id="toc-fit-a-panel-inside-a-container"><span class="header-section-number">9.11</span> Fit a panel inside a container</a></li>
+<li><a href="#override-a-color-in-a-stylesheet" id="toc-override-a-color-in-a-stylesheet"><span class="header-section-number">9.12</span> Override a color in a stylesheet</a></li>
+<li><a href="#add-space-between-sections" id="toc-add-space-between-sections"><span class="header-section-number">9.13</span> Add space between sections</a></li>
+<li><a href="#put-a-border-around-an-image-and-caption" id="toc-put-a-border-around-an-image-and-caption"><span class="header-section-number">9.14</span> Put a border around an image and caption</a></li>
+<li><a href="#show-a-tooltip-above-an-icon" id="toc-show-a-tooltip-above-an-icon"><span class="header-section-number">9.15</span> Show a tooltip above an icon</a></li>
+<li><a href="#add-a-decorative-bullet-to-each-list-item" id="toc-add-a-decorative-bullet-to-each-list-item"><span class="header-section-number">9.16</span> Add a decorative bullet to each list item</a></li>
+<li><a href="#fill-half-a-page-with-a-colored-banner" id="toc-fill-half-a-page-with-a-colored-banner"><span class="header-section-number">9.17</span> Fill half a page with a colored banner</a></li>
+<li><a href="#animate-a-button-color-on-hover" id="toc-animate-a-button-color-on-hover"><span class="header-section-number">9.18</span> Animate a button color on hover</a></li>
+<li><a href="#wrap-a-grid-of-cards-to-a-new-row" id="toc-wrap-a-grid-of-cards-to-a-new-row"><span class="header-section-number">9.19</span> Wrap a grid of cards to a new row</a></li>
+<li><a href="#add-a-shadow-to-a-card" id="toc-add-a-shadow-to-a-card"><span class="header-section-number">9.20</span> Add a shadow to a card</a></li>
+<li><a href="#make-a-full-width-header-with-no-horizontal-scroll" id="toc-make-a-full-width-header-with-no-horizontal-scroll"><span class="header-section-number">9.21</span> Make a full-width header with no horizontal scroll</a></li>
+<li><a href="#show-a-dropdown-menu-on-top-of-a-card" id="toc-show-a-dropdown-menu-on-top-of-a-card"><span class="header-section-number">9.22</span> Show a dropdown menu on top of a card</a></li>
+<li><a href="#set-consistent-font-sizes-with-relative-units" id="toc-set-consistent-font-sizes-with-relative-units"><span class="header-section-number">9.23</span> Set consistent font sizes with relative units</a></li>
+<li><a href="#highlight-every-other-row-in-a-table" id="toc-highlight-every-other-row-in-a-table"><span class="header-section-number">9.24</span> Highlight every other row in a table</a></li>
+</ul></div>
     </div>
   </nav>
 </header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
-<!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-    <div class="sidebar-title mb-0 py-0">
-      <a href="../">Unbreaking Software</a> 
-        <div class="sidebar-tools-main">
-    <a href="https://github.com/gvwilson/unbreak" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-</div>
-    </div>
-      </div>
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
-        </div>
-        </div>
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Overview</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../intro/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../basicpy/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Basic Python</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../interpy/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Intermediate Python</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../oopy/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Object-Oriented Python</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../regexp/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Regular Expressions</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../diot/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data, I/O, and Testing</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../perfcon/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Performance, Concurrency, and System Interaction</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../jsbrowser/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">JavaScript Fundamentals and the Browser</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../css/index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">CSS</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../web/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">HTTP and APIs</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../htmx/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">HTMX</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../alpine/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Alpine.js</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../fastapi/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">FastAPI</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../datasci/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Data Science</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../dataviz/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Data Visualization</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../polars/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Polars</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../shell/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Unix Shell</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../sql/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">SQL</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../testing/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Testing</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../finale/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text" id="quarto-sidebar-section-1-label">Appendices</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
-      </div>
-      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../license/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">License</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../conduct/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Code of Conduct</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../contributing/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Contributing</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../bibliography/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Bibliography</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../glossary/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../complex/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Complex Examples</span></span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#change-the-color-of-a-heading" id="toc-change-the-color-of-a-heading" class="nav-link active" data-scroll-target="#change-the-color-of-a-heading"><span class="header-section-number">9.1</span> Change the color of a heading</a></li>
-  <li><a href="#make-a-heading-larger" id="toc-make-a-heading-larger" class="nav-link" data-scroll-target="#make-a-heading-larger"><span class="header-section-number">9.2</span> Make a heading larger</a></li>
-  <li><a href="#style-an-error-message" id="toc-style-an-error-message" class="nav-link" data-scroll-target="#style-an-error-message"><span class="header-section-number">9.3</span> Style an error message</a></li>
-  <li><a href="#style-a-button-with-several-properties" id="toc-style-a-button-with-several-properties" class="nav-link" data-scroll-target="#style-a-button-with-several-properties"><span class="header-section-number">9.4</span> Style a button with several properties</a></li>
-  <li><a href="#set-the-width-of-a-label" id="toc-set-the-width-of-a-label" class="nav-link" data-scroll-target="#set-the-width-of-a-label"><span class="header-section-number">9.5</span> Set the width of a label</a></li>
-  <li><a href="#add-a-background-image-to-a-panel" id="toc-add-a-background-image-to-a-panel" class="nav-link" data-scroll-target="#add-a-background-image-to-a-panel"><span class="header-section-number">9.6</span> Add a background image to a panel</a></li>
-  <li><a href="#hide-a-notice-without-moving-other-content" id="toc-hide-a-notice-without-moving-other-content" class="nav-link" data-scroll-target="#hide-a-notice-without-moving-other-content"><span class="header-section-number">9.7</span> Hide a notice without moving other content</a></li>
-  <li><a href="#center-a-button-on-the-page" id="toc-center-a-button-on-the-page" class="nav-link" data-scroll-target="#center-a-button-on-the-page"><span class="header-section-number">9.8</span> Center a button on the page</a></li>
-  <li><a href="#center-a-card-horizontally" id="toc-center-a-card-horizontally" class="nav-link" data-scroll-target="#center-a-card-horizontally"><span class="header-section-number">9.9</span> Center a card horizontally</a></li>
-  <li><a href="#color-a-link-differently-on-hover" id="toc-color-a-link-differently-on-hover" class="nav-link" data-scroll-target="#color-a-link-differently-on-hover"><span class="header-section-number">9.10</span> Color a link differently on hover</a></li>
-  <li><a href="#fit-a-panel-inside-a-container" id="toc-fit-a-panel-inside-a-container" class="nav-link" data-scroll-target="#fit-a-panel-inside-a-container"><span class="header-section-number">9.11</span> Fit a panel inside a container</a></li>
-  <li><a href="#override-a-color-in-a-stylesheet" id="toc-override-a-color-in-a-stylesheet" class="nav-link" data-scroll-target="#override-a-color-in-a-stylesheet"><span class="header-section-number">9.12</span> Override a color in a stylesheet</a></li>
-  <li><a href="#add-space-between-sections" id="toc-add-space-between-sections" class="nav-link" data-scroll-target="#add-space-between-sections"><span class="header-section-number">9.13</span> Add space between sections</a></li>
-  <li><a href="#put-a-border-around-an-image-and-caption" id="toc-put-a-border-around-an-image-and-caption" class="nav-link" data-scroll-target="#put-a-border-around-an-image-and-caption"><span class="header-section-number">9.14</span> Put a border around an image and caption</a></li>
-  <li><a href="#show-a-tooltip-above-an-icon" id="toc-show-a-tooltip-above-an-icon" class="nav-link" data-scroll-target="#show-a-tooltip-above-an-icon"><span class="header-section-number">9.15</span> Show a tooltip above an icon</a></li>
-  <li><a href="#add-a-decorative-bullet-to-each-list-item" id="toc-add-a-decorative-bullet-to-each-list-item" class="nav-link" data-scroll-target="#add-a-decorative-bullet-to-each-list-item"><span class="header-section-number">9.16</span> Add a decorative bullet to each list item</a></li>
-  <li><a href="#fill-half-a-page-with-a-colored-banner" id="toc-fill-half-a-page-with-a-colored-banner" class="nav-link" data-scroll-target="#fill-half-a-page-with-a-colored-banner"><span class="header-section-number">9.17</span> Fill half a page with a colored banner</a></li>
-  <li><a href="#animate-a-button-color-on-hover" id="toc-animate-a-button-color-on-hover" class="nav-link" data-scroll-target="#animate-a-button-color-on-hover"><span class="header-section-number">9.18</span> Animate a button color on hover</a></li>
-  <li><a href="#wrap-a-grid-of-cards-to-a-new-row" id="toc-wrap-a-grid-of-cards-to-a-new-row" class="nav-link" data-scroll-target="#wrap-a-grid-of-cards-to-a-new-row"><span class="header-section-number">9.19</span> Wrap a grid of cards to a new row</a></li>
-  <li><a href="#add-a-shadow-to-a-card" id="toc-add-a-shadow-to-a-card" class="nav-link" data-scroll-target="#add-a-shadow-to-a-card"><span class="header-section-number">9.20</span> Add a shadow to a card</a></li>
-  <li><a href="#make-a-full-width-header-with-no-horizontal-scroll" id="toc-make-a-full-width-header-with-no-horizontal-scroll" class="nav-link" data-scroll-target="#make-a-full-width-header-with-no-horizontal-scroll"><span class="header-section-number">9.21</span> Make a full-width header with no horizontal scroll</a></li>
-  <li><a href="#show-a-dropdown-menu-on-top-of-a-card" id="toc-show-a-dropdown-menu-on-top-of-a-card" class="nav-link" data-scroll-target="#show-a-dropdown-menu-on-top-of-a-card"><span class="header-section-number">9.22</span> Show a dropdown menu on top of a card</a></li>
-  <li><a href="#set-consistent-font-sizes-with-relative-units" id="toc-set-consistent-font-sizes-with-relative-units" class="nav-link" data-scroll-target="#set-consistent-font-sizes-with-relative-units"><span class="header-section-number">9.23</span> Set consistent font sizes with relative units</a></li>
-  <li><a href="#highlight-every-other-row-in-a-table" id="toc-highlight-every-other-row-in-a-table" class="nav-link" data-scroll-target="#highlight-every-other-row-in-a-table"><span class="header-section-number">9.24</span> Highlight every other row in a table</a></li>
-  </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/gvwilson/unbreak/edit/main/css/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/gvwilson/unbreak/blob/main/css/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/gvwilson/unbreak/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
-    </div>
-<!-- main -->
-<main class="content" id="quarto-document-content" tabindex="-1">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">CSS</span></h1>
-</div>
-
-
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
+<main class="content"><header id="title-block-header" class="quarto-title-block"></header>
+<h1 class="title">CSS</h1>
 <p>CSS controls how HTML elements look on screen. Its rules seem simple at first—select an element, set some properties—but a handful of non-obvious behaviors trip up almost every developer at least once. Open each example directly in a browser to see the problem in action.</p>
-<section id="change-the-color-of-a-heading" class="level2" data-number="9.1">
-<h2 data-number="9.1" class="anchored" data-anchor-id="change-the-color-of-a-heading"><span class="header-section-number">9.1</span> Change the color of a heading</h2>
+<h2 data-number="9.1" id="change-the-color-of-a-heading"><span class="header-section-number">9.1</span> Change the color of a heading</h2>
 <p>Open the page. The heading should be red. Is it?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -368,27 +70,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;p&gt;Is it?&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is <code>font-color</code>, which is not a valid CSS property. The correct property is <code>color</code>. When a browser encounters a property name it does not recognize, it discards the entire declaration silently—no error appears on the page or in the console unless you check the DevTools Styles panel.</p>
 <p>Shows: that CSS ignores unknown property names without warning, and that the property for text color is <code>color</code>, not <code>font-color</code>.</p>
 <p>To find it: open DevTools, select the <code>&lt;h1&gt;</code>, and look at the Styles panel. The <code>font-color: tomato</code> declaration will have a yellow warning triangle or a strikethrough indicating it is invalid. Change <code>font-color</code> to <code>color</code>.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="make-a-heading-larger" class="level2" data-number="9.2">
-<h2 data-number="9.2" class="anchored" data-anchor-id="make-a-heading-larger"><span class="header-section-number">9.2</span> Make a heading larger</h2>
+<h2 data-number="9.2" id="make-a-heading-larger"><span class="header-section-number">9.2</span> Make a heading larger</h2>
 <p>Open the page. The heading should be noticeably larger than the paragraph below it. Is it?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -407,27 +97,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;p&gt;Is it noticeably larger than the paragraph text?&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is a missing unit. <code>font-size: 48</code> is invalid—CSS requires a unit such as <code>px</code>, <code>em</code>, or <code>rem</code> for length values (zero is the only exception). The browser discards the invalid declaration and falls back to the default heading size.</p>
 <p>Shows: that most CSS length values require an explicit unit and that <code>48</code> and <code>48px</code> are completely different things to the browser.</p>
 <p>To find it: open DevTools, select the <code>&lt;h1&gt;</code>, and look at the Styles panel. The <code>font-size: 48</code> line will be flagged as invalid. Change it to <code>font-size: 48px</code>.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="style-an-error-message" class="level2" data-number="9.3">
-<h2 data-number="9.3" class="anchored" data-anchor-id="style-an-error-message"><span class="header-section-number">9.3</span> Style an error message</h2>
+<h2 data-number="9.3" id="style-an-error-message"><span class="header-section-number">9.3</span> Style an error message</h2>
 <p>Open the page. The message should have a red background and white text. Does it?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -449,27 +127,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;p&gt;The message above should have a red background and white text. Does it?&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is a mismatch between the selector and the HTML. The CSS targets <code>.warning</code> but the element has <code>class="error"</code>. CSS class selectors are case-sensitive and must match exactly. No element in the document has the class <code>warning</code>, so the rule applies to nothing.</p>
 <p>Shows: how to connect CSS rules to HTML elements via class names, and that a missing style is often a typo in either the selector or the HTML attribute.</p>
 <p>To find it: compare the selector in the stylesheet to the <code>class</code> attribute in the HTML. Either change <code>.warning</code> to <code>.error</code> in the CSS, or change <code>class="error"</code> to <code>class="warning"</code> in the HTML.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="style-a-button-with-several-properties" class="level2" data-number="9.4">
-<h2 data-number="9.4" class="anchored" data-anchor-id="style-a-button-with-several-properties"><span class="header-section-number">9.4</span> Style a button with several properties</h2>
+<h2 data-number="9.4" id="style-a-button-with-several-properties"><span class="header-section-number">9.4</span> Style a button with several properties</h2>
 <p>Open the page. The button should have white text and visible padding around it. Does it?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -494,27 +160,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;button class="btn"&gt;Click me&lt;/button&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is a missing semicolon after <code>color: white</code>. CSS declarations inside a rule are separated by semicolons. When the semicolon is absent, the parser treats the next line as a continuation of the same declaration. <code>color: white padding: 10px 20px</code> is not a valid value, so the browser discards the entire declaration—losing both the <code>color</code> and the <code>padding</code>.</p>
 <p>Shows: how a single missing semicolon can silently drop multiple declarations and why CSS parse errors do not stop the rest of the stylesheet from loading.</p>
 <p>To find it: open DevTools, select the button, and look at the Styles panel. Both <code>color</code> and <code>padding</code> will be absent or flagged. Add the missing semicolon after <code>color: white</code>.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="set-the-width-of-a-label" class="level2" data-number="9.5">
-<h2 data-number="9.5" class="anchored" data-anchor-id="set-the-width-of-a-label"><span class="header-section-number">9.5</span> Set the width of a label</h2>
+<h2 data-number="9.5" id="set-the-width-of-a-label"><span class="header-section-number">9.5</span> Set the width of a label</h2>
 <p>Open the page. The blue label should be 200px wide. Is it wider than its text?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -537,27 +191,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;p&gt;&lt;span class="label"&gt;Status: OK&lt;/span&gt;&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is that <code>&lt;span&gt;</code> is an inline element. Inline elements flow with text and ignore <code>width</code> and <code>height</code> declarations. The label is exactly as wide as its content regardless of what the CSS says.</p>
 <p>Shows: the inline/block distinction and that <code>width</code> only affects block-level or replaced elements (such as <code>&lt;img&gt;</code>).</p>
 <p>To find it: in DevTools, select the <code>&lt;span&gt;</code> and look at the box model diagram. The width will equal the text width, not 200px. Add <code>display: inline-block</code> or <code>display: block</code> to the <code>.label</code> rule to make <code>width</code> take effect.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="add-a-background-image-to-a-panel" class="level2" data-number="9.6">
-<h2 data-number="9.6" class="anchored" data-anchor-id="add-a-background-image-to-a-panel"><span class="header-section-number">9.6</span> Add a background image to a panel</h2>
+<h2 data-number="9.6" id="add-a-background-image-to-a-panel"><span class="header-section-number">9.6</span> Add a background image to a panel</h2>
 <p>Open the page. The panel should have a blue background (shown when the image is missing). Is it blue?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -582,27 +224,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;div class="panel"&gt;Panel content&lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is declaration order. The <code>background</code> shorthand property sets every background sub-property at once, including <code>background-color</code>, resetting it to <code>transparent</code>. Because <code>background</code> appears after <code>background-color</code> in the rule, it overwrites the blue color. The image URL does not exist, and the fallback color is now transparent rather than blue.</p>
 <p>Shows: that <code>background</code> is a shorthand that resets all background sub-properties, and that rule order within a block matters.</p>
 <p>To find it: in DevTools, look at the computed <code>background-color</code> for the panel. It will be transparent. Either move <code>background-color</code> after the <code>background</code> line, or include the color directly in the shorthand: <code>background: url("...") no-repeat center center steelblue</code>.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="hide-a-notice-without-moving-other-content" class="level2" data-number="9.7">
-<h2 data-number="9.7" class="anchored" data-anchor-id="hide-a-notice-without-moving-other-content"><span class="header-section-number">9.7</span> Hide a notice without moving other content</h2>
+<h2 data-number="9.7" id="hide-a-notice-without-moving-other-content"><span class="header-section-number">9.7</span> Hide a notice without moving other content</h2>
 <p>Open the page. Compare where the paragraph sits relative to where it would be if the notice were visible. Did the paragraph move up?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -626,27 +256,15 @@ ul.task-list li input[type="checkbox"] {
      Does it move when the notice is hidden?&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is using <code>display: none</code> when <code>visibility: hidden</code> is needed. <code>display: none</code> removes the element from the layout entirely—other elements flow in as if it were not there. <code>visibility: hidden</code> hides the element visually but reserves its space, so surrounding elements do not shift.</p>
 <p>Shows: the difference between <code>display: none</code> (removes from flow) and <code>visibility: hidden</code> (invisible but still occupies space).</p>
 <p>To find it: in DevTools, toggle <code>display: none</code> off. The notice reappears and the paragraph drops back to its original position, confirming the layout was collapsing. Change <code>display: none</code> to <code>visibility: hidden</code> to hide the notice while preserving the layout.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="center-a-button-on-the-page" class="level2" data-number="9.8">
-<h2 data-number="9.8" class="anchored" data-anchor-id="center-a-button-on-the-page"><span class="header-section-number">9.8</span> Center a button on the page</h2>
+<h2 data-number="9.8" id="center-a-button-on-the-page"><span class="header-section-number">9.8</span> Center a button on the page</h2>
 <p>Open the page. The button should be centered horizontally on the page. Is it?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -673,27 +291,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;button class="btn"&gt;Submit&lt;/button&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is applying <code>text-align: center</code> to the button itself. <code>text-align</code> controls the alignment of inline content—text and inline elements—inside the element it is applied to. On the button, it centers the label text within the button’s box. It does nothing to position the button on the page.</p>
 <p>Shows: that <code>text-align</code> affects content inside an element, not the element’s position in its parent, and that centering a block-level element requires a different technique.</p>
 <p>To find it: look at the button in DevTools. The text inside is centered, but the button stretches edge to edge. Move <code>text-align: center</code> to the parent element (e.g., <code>body</code> or a wrapper <code>&lt;div&gt;</code>). A block-level child inherits the alignment hint and centers within its parent.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="center-a-card-horizontally" class="level2" data-number="9.9">
-<h2 data-number="9.9" class="anchored" data-anchor-id="center-a-card-horizontally"><span class="header-section-number">9.9</span> Center a card horizontally</h2>
+<h2 data-number="9.9" id="center-a-card-horizontally"><span class="header-section-number">9.9</span> Center a card horizontally</h2>
 <p>Open the page. The blue card should be centered with equal space on each side. Is it?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -716,27 +322,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;div class="card"&gt;Centered card&lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-9" class="callout-9-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is a missing <code>width</code>. <code>margin: 0 auto</code> centers a block element by dividing leftover horizontal space equally between the left and right margins. But a block element without an explicit width expands to fill its container entirely, leaving no leftover space to distribute. The card is full-width and <code>auto</code> resolves to zero on both sides.</p>
 <p>Shows: that <code>margin: 0 auto</code> only works when the element is narrower than its container, which requires an explicit width.</p>
 <p>To find it: in DevTools, look at the computed <code>margin-left</code> and <code>margin-right</code>—both will be 0. Add <code>width: 300px</code> (or any value less than the container width) to <code>.card</code> so the browser has remaining space to divide equally.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="color-a-link-differently-on-hover" class="level2" data-number="9.10">
-<h2 data-number="9.10" class="anchored" data-anchor-id="color-a-link-differently-on-hover"><span class="header-section-number">9.10</span> Color a link differently on hover</h2>
+<h2 data-number="9.10" id="color-a-link-differently-on-hover"><span class="header-section-number">9.10</span> Color a link differently on hover</h2>
 <p>Click the link to visit it, then come back and hover over it. Does it turn red?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -763,27 +357,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;p&gt;&lt;a href="https://example.com" target="_blank"&gt;Visit example.com&lt;/a&gt;&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-10" class="callout-10-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is rule order. All three selectors (<code>a:hover</code>, <code>a:visited</code>, <code>a:link</code>) have the same specificity, so the browser uses source order as a tiebreaker—the last matching rule wins. For a visited link, both <code>a:hover</code> and <code>a:visited</code> match when the cursor is over it. Because <code>a:visited</code> appears after <code>a:hover</code> in the stylesheet, it always wins and the hover color never shows. The correct order is <code>:link</code>, <code>:visited</code>, <code>:hover</code>, <code>:active</code>—often remembered as LVHA.</p>
 <p>Shows: how the CSS cascade uses source order when specificity is equal, and why link pseudo-classes must be declared in LVHA order.</p>
 <p>To find it: reorder the rules so <code>a:link</code> comes first, then <code>a:visited</code>, then <code>a:hover</code>. With that order, <code>:hover</code> appears later and overrides <code>:visited</code> when the cursor is present.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="fit-a-panel-inside-a-container" class="level2" data-number="9.11">
-<h2 data-number="9.11" class="anchored" data-anchor-id="fit-a-panel-inside-a-container"><span class="header-section-number">9.11</span> Fit a panel inside a container</h2>
+<h2 data-number="9.11" id="fit-a-panel-inside-a-container"><span class="header-section-number">9.11</span> Fit a panel inside a container</h2>
 <p>Open the page. The blue panel should sit entirely within the grey container. Does it, or does it overflow to the right?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -814,27 +396,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-11" class="callout-11-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is <code>box-sizing: content-box</code>, which is the default. When <code>width: 100%</code> is set, the browser assigns 100% of the container’s width to the content area alone. Padding is then added on top, making the element wider than the container—300px content + 20px left padding + 20px right padding = 340px total.</p>
 <p>Shows: the CSS box model and the difference between <code>content-box</code> and <code>border-box</code>.</p>
 <p>To find it: open DevTools, select the panel, and look at the box model diagram in the Computed tab. The total rendered width will exceed the container’s width. Add <code>box-sizing: border-box</code> to the <code>.panel</code> rule so that padding is included inside the declared width rather than added to it.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="override-a-color-in-a-stylesheet" class="level2" data-number="9.12">
-<h2 data-number="9.12" class="anchored" data-anchor-id="override-a-color-in-a-stylesheet"><span class="header-section-number">9.12</span> Override a color in a stylesheet</h2>
+<h2 data-number="9.12" id="override-a-color-in-a-stylesheet"><span class="header-section-number">9.12</span> Override a color in a stylesheet</h2>
 <p>Open the page. Both elements use the <code>.highlight</code> class. Are they both red?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -858,27 +428,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;p class="highlight"&gt;This paragraph uses the same class and should also be red.&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-12" class="callout-12-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is a specificity conflict. The selector <code>nav.highlight</code> targets an element type plus a class, giving it specificity (0,1,1). The later rule <code>.highlight</code> is class-only, specificity (0,1,0). CSS resolves conflicts by specificity first and source order second, so the less-specific later rule loses to the more-specific earlier rule even though it appears afterward in the file.</p>
 <p>Shows: how the browser calculates specificity and why rule order alone does not determine which style wins.</p>
 <p>To find it: in DevTools, click the <code>&lt;nav&gt;</code> element and examine the Styles panel. The <code>.highlight { color: red }</code> rule will be shown with a strikethrough, indicating it was overridden. To fix it, either change <code>.highlight</code> to <code>nav.highlight, .highlight</code> or restructure the stylesheet so both elements share a single rule without the extra type selector.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="add-space-between-sections" class="level2" data-number="9.13">
-<h2 data-number="9.13" class="anchored" data-anchor-id="add-space-between-sections"><span class="header-section-number">9.13</span> Add space between sections</h2>
+<h2 data-number="9.13" id="add-space-between-sections"><span class="header-section-number">9.13</span> Add space between sections</h2>
 <p>Open the page. Section Two has <code>margin-top: 60px</code> and Section One has <code>margin-bottom: 20px</code>. Measure the gap. Is it 80px?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -906,27 +464,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;div class="section"&gt;Section Three&lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-13" class="callout-13-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is margin collapsing. When two block elements are adjacent siblings, their vertical margins do not add up—they collapse into a single margin equal to the larger of the two values. The gap between Section One and Section Two is 60px (the larger margin), not 80px (the sum).</p>
 <p>Shows: vertical margin collapsing between adjacent siblings and why the gap is never the sum of both margins.</p>
 <p>To find it: in DevTools, hover over the gap between sections. The box model overlay will show only the dominant margin. To get the full 80px gap, convert one of the margins to padding on the element itself, or add <code>display: flow-root</code> to a wrapper to create a new block formatting context that prevents collapsing.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="put-a-border-around-an-image-and-caption" class="level2" data-number="9.14">
-<h2 data-number="9.14" class="anchored" data-anchor-id="put-a-border-around-an-image-and-caption"><span class="header-section-number">9.14</span> Put a border around an image and caption</h2>
+<h2 data-number="9.14" id="put-a-border-around-an-image-and-caption"><span class="header-section-number">9.14</span> Put a border around an image and caption</h2>
 <p>Open the page. The blue border should enclose the image placeholder and the caption. Does the border appear to wrap them?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -963,27 +509,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-14" class="callout-14-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is that floated elements are removed from the normal flow. The parent <code>.card</code> has no in-flow children to give it height, so it collapses to zero height (plus padding). The blue border wraps only the padding, not the floated image or caption.</p>
 <p>Shows: how floats interact with parent element height and the classic clearfix problem.</p>
 <p>To find it: in DevTools, select <code>.card</code> and observe its height is 16px (just padding). Fix it by adding <code>overflow: auto</code> to <code>.card</code>, which forces the parent to contain its floated children. Alternatively, add a clearing element after the floats, or switch to flexbox or grid.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="show-a-tooltip-above-an-icon" class="level2" data-number="9.15">
-<h2 data-number="9.15" class="anchored" data-anchor-id="show-a-tooltip-above-an-icon"><span class="header-section-number">9.15</span> Show a tooltip above an icon</h2>
+<h2 data-number="9.15" id="show-a-tooltip-above-an-icon"><span class="header-section-number">9.15</span> Show a tooltip above an icon</h2>
 <p>Open the page. The dark tooltip should appear in front of the red banner. Does it?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -1026,27 +560,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;div class="banner"&gt;I am the banner (position: relative, z-index: 10)&lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-15" class="callout-15-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is that <code>z-index</code> only works on elements with a <code>position</code> value other than <code>static</code>. The <code>.tooltip</code> element has no <code>position</code> property, so it remains <code>position: static</code> and the <code>z-index: 100</code> declaration is ignored entirely. The <code>.banner</code> element has <code>position: relative</code>, which enters it into stacking order, so it always paints on top.</p>
 <p>Shows: the requirement that <code>z-index</code> needs a non-static <code>position</code> to take effect.</p>
 <p>To find it: in DevTools, select <code>.tooltip</code> and look for <code>z-index</code> in the Computed styles. It will show <code>auto</code> (ignored) rather than <code>100</code>. Add <code>position: relative</code> to <code>.tooltip</code> to activate <code>z-index</code> and let the tooltip stack above the banner.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="add-a-decorative-bullet-to-each-list-item" class="level2" data-number="9.16">
-<h2 data-number="9.16" class="anchored" data-anchor-id="add-a-decorative-bullet-to-each-list-item"><span class="header-section-number">9.16</span> Add a decorative bullet to each list item</h2>
+<h2 data-number="9.16" id="add-a-decorative-bullet-to-each-list-item"><span class="header-section-number">9.16</span> Add a decorative bullet to each list item</h2>
 <p>Open the page. Each list item should have a gold star to its left. Do any stars appear?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -1076,27 +598,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;/ul&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-16" class="callout-16-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is a missing <code>content</code> property. The <code>::before</code> pseudo-element exists in the DOM only when <code>content</code> is present—without it the pseudo-element is not generated at all, so no star appears regardless of how <code>color</code> or <code>font-size</code> are set.</p>
 <p>Shows: that <code>::before</code> and <code>::after</code> require <code>content</code> to exist, and that <code>content: ""</code> (an empty string) is the minimum needed.</p>
 <p>To find it: in DevTools, expand the <code>&lt;li&gt;</code> element. No <code>::before</code> node will appear in the tree. Add <code>content: "\2605"</code> (the Unicode star character) to the <code>li::before</code> rule. Use <code>content: ""</code> as a baseline if you only want to style a generated box with no visible text.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="fill-half-a-page-with-a-colored-banner" class="level2" data-number="9.17">
-<h2 data-number="9.17" class="anchored" data-anchor-id="fill-half-a-page-with-a-colored-banner"><span class="header-section-number">9.17</span> Fill half a page with a colored banner</h2>
+<h2 data-number="9.17" id="fill-half-a-page-with-a-colored-banner"><span class="header-section-number">9.17</span> Fill half a page with a colored banner</h2>
 <p>Open the page. The blue banner should fill half the grey wrapper. Is the wrapper visible at all?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -1123,27 +633,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;p&gt;Text below the wrapper.&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-17" class="callout-17-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is that percentage heights are resolved relative to the parent’s computed height. The <code>.wrapper</code> has no explicit height—its height is <code>auto</code>, which the browser calculates from its in-flow content. The browser cannot resolve <code>50%</code> of <code>auto</code>, so it treats the child’s height as zero. The blue banner has no height and is invisible; the grey wrapper collapses to nothing as well.</p>
 <p>Shows: how percentage heights require an explicit height on the ancestor and why <code>auto</code> breaks the chain.</p>
 <p>To find it: in DevTools, select <code>.banner</code> and look at its computed height: 0px. To fix it, give <code>.wrapper</code> an explicit height (e.g., <code>height: 300px</code>), use viewport units (<code>height: 50vh</code>) on the banner directly, or switch to a flexbox or grid layout.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="animate-a-button-color-on-hover" class="level2" data-number="9.18">
-<h2 data-number="9.18" class="anchored" data-anchor-id="animate-a-button-color-on-hover"><span class="header-section-number">9.18</span> Animate a button color on hover</h2>
+<h2 data-number="9.18" id="animate-a-button-color-on-hover"><span class="header-section-number">9.18</span> Animate a button color on hover</h2>
 <p>Open the page and hover over the button. Does the background color fade smoothly to red, or does it snap?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -1173,27 +671,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;button class="btn"&gt;Hover me&lt;/button&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-18-contents" aria-controls="callout-18" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-18" class="callout-18-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is that <code>transition: color 0.4s ease</code> animates the <code>color</code> property (text color), not <code>background-color</code>. The hover rule changes <code>background-color</code>, which has no transition declared, so it jumps instantly. Only a text-color change would animate here, but the hover rule does not change text color, so nothing animates at all.</p>
 <p>Shows: how transitions must name the exact CSS property being changed and that <code>color</code> and <code>background-color</code> are distinct.</p>
 <p>To find it: in DevTools, look at the <code>.btn</code> rule and the hover rule side by side. The transitioned property (<code>color</code>) does not match the property changed on hover (<code>background-color</code>). Fix it by changing the transition to <code>background-color 0.4s ease</code> or using <code>transition: all 0.4s ease</code> to cover every animated property.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="wrap-a-grid-of-cards-to-a-new-row" class="level2" data-number="9.19">
-<h2 data-number="9.19" class="anchored" data-anchor-id="wrap-a-grid-of-cards-to-a-new-row"><span class="header-section-number">9.19</span> Wrap a grid of cards to a new row</h2>
+<h2 data-number="9.19" id="wrap-a-grid-of-cards-to-a-new-row"><span class="header-section-number">9.19</span> Wrap a grid of cards to a new row</h2>
 <p>Open the page. Five cards should wrap onto two rows inside the dashed box. Do they wrap, or do they overflow to the right?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -1232,27 +718,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-19-contents" aria-controls="callout-19" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-19" class="callout-19-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is that <code>flex-wrap</code> defaults to <code>nowrap</code>. All flex children are forced onto a single line regardless of the container’s width. When the total minimum size of the children exceeds the container, they shrink as much as they can and then overflow.</p>
 <p>Shows: the default <code>flex-wrap: nowrap</code> behavior and why adding <code>flex-wrap: wrap</code> is usually necessary for responsive grid-style layouts.</p>
 <p>To find it: open DevTools and select the <code>.grid</code> container. In the Layout panel, the flex wrapping option will show <code>nowrap</code>. Add <code>flex-wrap: wrap</code> to <code>.grid</code> so children that do not fit on one line flow onto subsequent lines.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="add-a-shadow-to-a-card" class="level2" data-number="9.20">
-<h2 data-number="9.20" class="anchored" data-anchor-id="add-a-shadow-to-a-card"><span class="header-section-number">9.20</span> Add a shadow to a card</h2>
+<h2 data-number="9.20" id="add-a-shadow-to-a-card"><span class="header-section-number">9.20</span> Add a shadow to a card</h2>
 <p>Open the page. The white card should have a visible drop shadow. Can you see any shadow?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -1282,27 +756,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-20-contents" aria-controls="callout-20" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-20" class="callout-20-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is <code>overflow: hidden</code> on the container. <code>box-shadow</code> is painted outside the element’s border-box, in the space between the card and the container’s edge. Because <code>overflow: hidden</code> clips everything that extends beyond the container’s boundary, the shadow—which lives in that clipped region—is invisible.</p>
 <p>Shows: that <code>overflow: hidden</code> clips more than just scrollable content; it also clips effects such as <code>box-shadow</code> and <code>outline</code> that paint outside the element’s box.</p>
 <p>To find it: temporarily set the container to <code>overflow: visible</code> in DevTools. The shadow will reappear immediately. Fix it by removing <code>overflow: hidden</code>, switching to <code>overflow: clip</code> (which does not affect shadows in all browsers), or adding enough <code>padding</code> to the container so the shadow falls inside rather than outside it.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="make-a-full-width-header-with-no-horizontal-scroll" class="level2" data-number="9.21">
-<h2 data-number="9.21" class="anchored" data-anchor-id="make-a-full-width-header-with-no-horizontal-scroll"><span class="header-section-number">9.21</span> Make a full-width header with no horizontal scroll</h2>
+<h2 data-number="9.21" id="make-a-full-width-header-with-no-horizontal-scroll"><span class="header-section-number">9.21</span> Make a full-width header with no horizontal scroll</h2>
 <p>Open the page and scroll down until the vertical scrollbar appears. Does a horizontal scrollbar also appear at the bottom?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -1336,27 +798,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-21-contents" aria-controls="callout-21" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-21" class="callout-21-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is <code>width: 100vw</code>. The <code>vw</code> unit measures the full viewport width including the scrollbar gutter. When a vertical scrollbar is present (about 15–17px wide on most platforms), the available content area is narrower than <code>100vw</code>. The header overflows by the scrollbar width, which causes the browser to add a horizontal scrollbar.</p>
 <p>Shows: the difference between <code>100vw</code> (viewport width) and <code>100%</code> (width of the containing block, which excludes the scrollbar).</p>
 <p>To find it: resize the window so no vertical scrollbar is present—the horizontal scrollbar disappears. Add the scrollbar back—it returns. Replace <code>width: 100vw</code> with <code>width: 100%</code> on the header. Because block-level elements default to <code>width: 100%</code>, you can also simply remove the width declaration entirely.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="show-a-dropdown-menu-on-top-of-a-card" class="level2" data-number="9.22">
-<h2 data-number="9.22" class="anchored" data-anchor-id="show-a-dropdown-menu-on-top-of-a-card"><span class="header-section-number">9.22</span> Show a dropdown menu on top of a card</h2>
+<h2 data-number="9.22" id="show-a-dropdown-menu-on-top-of-a-card"><span class="header-section-number">9.22</span> Show a dropdown menu on top of a card</h2>
 <p>Open the page. The dark dropdown should appear in front of the red overlay. Does it?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -1403,27 +853,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;div class="overlay"&gt;Overlay (z-index: 10)&lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-22-contents" aria-controls="callout-22" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-22" class="callout-22-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is <code>opacity: 0.99</code> on <code>.card</code>. Any <code>opacity</code> value less than <code>1</code> creates a new stacking context. Inside that context, the dropdown’s <code>z-index: 200</code> is compared only against other descendants of <code>.card</code>—not against elements outside it. The <code>.card</code> stacking context as a whole is compared to <code>.overlay</code> using <code>.card</code>’s z-index, which is <code>auto</code>. <code>auto</code> loses to <code>z-index: 10</code>, so the entire card (including the dropdown) is painted behind the overlay.</p>
 <p>Shows: how <code>opacity</code>, <code>transform</code>, <code>filter</code>, and a few other properties create new stacking contexts that trap child z-indices inside them.</p>
 <p>To find it: remove <code>opacity: 0.99</code> from <code>.card</code> in DevTools. The dropdown will jump in front of the overlay immediately. If you need transparency, apply it only to the card’s background color using <code>rgba()</code> rather than the <code>opacity</code> property, which affects all descendants.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="set-consistent-font-sizes-with-relative-units" class="level2" data-number="9.23">
-<h2 data-number="9.23" class="anchored" data-anchor-id="set-consistent-font-sizes-with-relative-units"><span class="header-section-number">9.23</span> Set consistent font sizes with relative units</h2>
+<h2 data-number="9.23" id="set-consistent-font-sizes-with-relative-units"><span class="header-section-number">9.23</span> Set consistent font sizes with relative units</h2>
 <p>Open the page. Each nested box uses <code>font-size: 1.5em</code>. Should they all be the same size?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -1460,27 +898,15 @@ ul.task-list li input[type="checkbox"] {
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-23-contents" aria-controls="callout-23" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-23" class="callout-23-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is using <code>em</code> where <code>rem</code> is needed. An <code>em</code> is relative to the element’s own computed font size—which is itself resolved from the parent’s font size. Each level of nesting multiplies: 16px × 1.5 = 24px, then 24px × 1.5 = 36px, then 36px × 1.5 = 54px. The text grows exponentially rather than staying constant.</p>
 <p>Shows: the difference between <code>em</code> (relative to the element’s font size, which cascades) and <code>rem</code> (relative to the root element’s font size, which stays fixed).</p>
 <p>To find it: in DevTools, check the computed <code>font-size</code> for each nested element. Each will be 1.5 times the previous. Replace <code>em</code> with <code>rem</code> in all three rules so every element resolves against the root 16px rather than its parent.</p>
+</blockquote>
 </div>
-</div>
-</div>
-</section>
-<section id="highlight-every-other-row-in-a-table" class="level2" data-number="9.24">
-<h2 data-number="9.24" class="anchored" data-anchor-id="highlight-every-other-row-in-a-table"><span class="header-section-number">9.24</span> Highlight every other row in a table</h2>
+<h2 data-number="9.24" id="highlight-every-other-row-in-a-table"><span class="header-section-number">9.24</span> Highlight every other row in a table</h2>
 <p>Open the page. The blue shading should appear on rows 2 and 4 of the data (Banana and Date). Which rows are actually shaded?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -1524,520 +950,16 @@ ul.task-list li input[type="checkbox"] {
   &lt;/table&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-24-contents" aria-controls="callout-24" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Show explanation
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-24" class="callout-24-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<div>
+<blockquote>
+<p><strong>Show explanation</strong></p>
 <p>The bug is that <code>tr:nth-child(even)</code> counts all <code>&lt;tr&gt;</code> elements in the table, including the header row inside <code>&lt;thead&gt;</code>. The header is child 1, so the even-numbered children are header+1 (Apple, child 2), Cherry (child 4), which makes Apple and Cherry shaded instead of Banana and Date.</p>
 <p>Shows: how <code>:nth-child</code> counts all siblings of the same parent, not just elements of the same type, and how <code>&lt;thead&gt;</code> and <code>&lt;tbody&gt;</code> affect the count.</p>
 <p>To find it: add <code>outline: 2px solid red</code> to <code>thead tr</code> in DevTools and count the rows. Fix the selector by scoping it to the body rows: <code>tbody tr:nth-child(even)</code>. Because <code>&lt;tbody&gt;</code> contains only the data rows, the count starts fresh at Apple (child 1), making Banana (child 2) and Date (child 4) the even-numbered rows.</p>
+</blockquote>
 </div>
-</div>
-</div>
+
+</main>
 
 
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
-  window.document.addEventListener("DOMContentLoaded", function (event) {
-    const icon = "";
-    const anchorJS = new window.AnchorJS();
-    anchorJS.options = {
-      placement: 'right',
-      icon: icon
-    };
-    anchorJS.add('.anchored');
-    const isCodeAnnotation = (el) => {
-      for (const clz of el.classList) {
-        if (clz.startsWith('code-annotation-')) {                     
-          return true;
-        }
-      }
-      return false;
-    }
-    const onCopySuccess = function(e) {
-      // button target
-      const button = e.trigger;
-      // don't keep focus
-      button.blur();
-      // flash "checked"
-      button.classList.add('code-copy-button-checked');
-      var currentTitle = button.getAttribute("title");
-      button.setAttribute("title", "Copied!");
-      let tooltip;
-      if (window.bootstrap) {
-        button.setAttribute("data-bs-toggle", "tooltip");
-        button.setAttribute("data-bs-placement", "left");
-        button.setAttribute("data-bs-title", "Copied!");
-        tooltip = new bootstrap.Tooltip(button, 
-          { trigger: "manual", 
-            customClass: "code-copy-button-tooltip",
-            offset: [0, -8]});
-        tooltip.show();    
-      }
-      setTimeout(function() {
-        if (tooltip) {
-          tooltip.hide();
-          button.removeAttribute("data-bs-title");
-          button.removeAttribute("data-bs-toggle");
-          button.removeAttribute("data-bs-placement");
-        }
-        button.setAttribute("title", currentTitle);
-        button.classList.remove('code-copy-button-checked');
-      }, 1000);
-      // clear code selection
-      e.clearSelection();
-    }
-    const getTextToCopy = function(trigger) {
-      const outerScaffold = trigger.parentElement.cloneNode(true);
-      const codeEl = outerScaffold.querySelector('code');
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-      text: getTextToCopy
-    });
-    clipboard.on('success', onCopySuccess);
-    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-        text: getTextToCopy,
-        container: window.document.getElementById('quarto-embedded-source-code-modal')
-      });
-      clipboardModal.on('success', onCopySuccess);
-    }
-      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
-      var isInternal = (href) => {
-          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-      }
-      // Inspect non-navigation links and adorn them if external
-      window.quartoDecorateExternalLinks = function (root) {
-     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-      for (var i=0; i<links.length; i++) {
-        const link = links[i];
-        if (!isInternal(link.href)) {
-          // undo the damage that might have been done by quarto-nav.js in the case of
-          // links that we want to consider external
-          if (link.dataset.originalHref !== undefined) {
-            link.href = link.dataset.originalHref;
-          }
-          if (!link.classList.contains('no-external-icon')) {
-          }
-        }
-      }
-      };
-      window.quartoDecorateExternalLinks(window.document);
-    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
-    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
-    const hideOnEscAndFocusOut = {
-      name: 'hideOnEscAndFocusOut',
-      defaultValue: true,
-      fn(instance) {
-        const dismiss = () => {
-          // A show scheduled by the trigger delay would otherwise reopen it
-          instance.clearDelayTimeouts();
-          instance.hide();
-        };
-        const onKeyDown = (event) => {
-          if (event.key !== 'Escape') {
-            return;
-          }
-          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
-          // except an open reveal.js slide menu, which Esc should close too.
-          // The menu handles keys only when its keyboard option is on.
-          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
-            window.Reveal.getConfig().menu?.keyboard !== false;
-          if (!menuHandlesEsc) {
-            event.stopPropagation();
-          }
-          if (instance.popper.contains(window.document.activeElement)) {
-            // Disabled while refocusing so the focus trigger does not reopen it
-            instance.disable();
-            instance.reference.focus();
-            instance.enable();
-          }
-          dismiss();
-        };
-        const onFocusOut = (event) => {
-          const target = event.relatedTarget;
-          if (target && !instance.reference.contains(target) &&
-              !instance.popper.contains(target)) {
-            dismiss();
-          }
-        };
-        // On the trigger too: a click trigger (code-annotations: select) has no
-        // blur handling. Attached for the instance's lifetime so leaving the
-        // trigger also cancels a show still pending on the trigger delay.
-        instance.reference.addEventListener('focusout', onFocusOut);
-        return {
-          onShow() {
-            window.document.addEventListener('keydown', onKeyDown, true);
-            instance.popper.addEventListener('focusout', onFocusOut);
-          },
-          onHide() {
-            window.document.removeEventListener('keydown', onKeyDown, true);
-            instance.popper.removeEventListener('focusout', onFocusOut);
-          },
-          onDestroy() {
-            instance.reference.removeEventListener('focusout', onFocusOut);
-          },
-        };
-      },
-    };
-    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-      const config = {
-        allowHTML: true,
-        maxWidth: 500,
-        delay: 100,
-        arrow: false,
-        appendTo: function(el) {
-            return el.parentElement;
-        },
-        interactive: true,
-        interactiveBorder: 10,
-        theme: 'quarto',
-        placement: 'bottom-start',
-        plugins: [hideOnEscAndFocusOut],
-      };
-      if (contentFn) {
-        config.content = contentFn;
-      }
-      if (onTriggerFn) {
-        config.onTrigger = onTriggerFn;
-      }
-      if (onUntriggerFn) {
-        config.onUntrigger = onUntriggerFn;
-      }
-      window.tippy(el, config); 
-    }
-    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-    for (var i=0; i<noterefs.length; i++) {
-      const ref = noterefs[i];
-      tippyHover(ref, function() {
-        // use id or data attribute instead here
-        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-        try { href = new URL(href).hash; } catch {}
-        const id = href.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note) {
-          return note.innerHTML;
-        } else {
-          return "";
-        }
-      });
-    }
-    const xrefs = window.document.querySelectorAll('a.quarto-xref');
-    const processXRef = (id, note) => {
-      // Strip column container classes
-      const stripColumnClz = (el) => {
-        el.classList.remove("page-full", "page-columns");
-        if (el.children) {
-          for (const child of el.children) {
-            stripColumnClz(child);
-          }
-        }
-      }
-      stripColumnClz(note)
-      if (id === null || id.startsWith('sec-')) {
-        // Special case sections, only their first couple elements
-        const container = document.createElement("div");
-        if (note.children && note.children.length > 2) {
-          container.appendChild(note.children[0].cloneNode(true));
-          for (let i = 1; i < note.children.length; i++) {
-            const child = note.children[i];
-            if (child.tagName === "P" && child.innerText === "") {
-              continue;
-            } else {
-              container.appendChild(child.cloneNode(true));
-              break;
-            }
-          }
-          if (window.Quarto?.typesetMath) {
-            window.Quarto.typesetMath(container);
-          }
-          return container.innerHTML
-        } else {
-          if (window.Quarto?.typesetMath) {
-            window.Quarto.typesetMath(note);
-          }
-          return note.innerHTML;
-        }
-      } else {
-        // Remove any anchor links if they are present
-        const anchorLink = note.querySelector('a.anchorjs-link');
-        if (anchorLink) {
-          anchorLink.remove();
-        }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
-        }
-        if (note.classList.contains("callout")) {
-          return note.outerHTML;
-        } else {
-          return note.innerHTML;
-        }
-      }
-    }
-    for (var i=0; i<xrefs.length; i++) {
-      const xref = xrefs[i];
-      tippyHover(xref, undefined, function(instance) {
-        instance.disable();
-        let url = xref.getAttribute('href');
-        let hash = undefined; 
-        if (url.startsWith('#')) {
-          hash = url;
-        } else {
-          try { hash = new URL(url).hash; } catch {}
-        }
-        if (hash) {
-          const id = hash.replace(/^#\/?/, "");
-          const note = window.document.getElementById(id);
-          if (note !== null) {
-            try {
-              const html = processXRef(id, note.cloneNode(true));
-              instance.setContent(html);
-            } finally {
-              instance.enable();
-              instance.show();
-            }
-          } else {
-            // See if we can fetch this
-            fetch(url.split('#')[0])
-            .then(res => res.text())
-            .then(html => {
-              const parser = new DOMParser();
-              const htmlDoc = parser.parseFromString(html, "text/html");
-              const note = htmlDoc.getElementById(id);
-              if (note !== null) {
-                const html = processXRef(id, note);
-                instance.setContent(html);
-              } 
-            }).finally(() => {
-              instance.enable();
-              instance.show();
-            });
-          }
-        } else {
-          // See if we can fetch a full url (with no hash to target)
-          // This is a special case and we should probably do some content thinning / targeting
-          fetch(url)
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.querySelector('main.content');
-            if (note !== null) {
-              // This should only happen for chapter cross references
-              // (since there is no id in the URL)
-              // remove the first header
-              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-                note.children[0].remove();
-              }
-              const html = processXRef(null, note);
-              instance.setContent(html);
-            } 
-          }).finally(() => {
-            instance.enable();
-            instance.show();
-          });
-        }
-      }, function(instance) {
-      });
-    }
-        let selectedAnnoteEl;
-        const selectorForAnnotation = ( cell, annotation) => {
-          let cellAttr = 'data-code-cell="' + cell + '"';
-          let lineAttr = 'data-code-annotation="' +  annotation + '"';
-          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-          return selector;
-        }
-        const selectCodeLines = (annoteEl) => {
-          const doc = window.document;
-          const targetCell = annoteEl.getAttribute("data-target-cell");
-          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-          const lineIds = lines.map((line) => {
-            return targetCell + "-" + line;
-          })
-          // Each band is positioned against its own containing block, which is
-          // not the offsetParent of the lines, so place it from client rects.
-          const placeBand = (band, firstEl, lastEl, codeBlock) => {
-            const container = band.offsetParent;
-            if (container === null) {
-              return;
-            }
-            const containerRect = container.getBoundingClientRect();
-            // Reveal.js scales slides with a transform, so convert client
-            // pixels back to the CSS pixels of the container.
-            const scale = containerRect.height / container.offsetHeight || 1;
-            const firstRect = firstEl.getBoundingClientRect();
-            const lastRect = lastEl.getBoundingClientRect();
-            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
-            const height = (lastRect.bottom - firstRect.top) / scale;
-            band.style.top = top - 2 + "px";
-            band.style.height = height + 4 + "px";
-            if (codeBlock) {
-              // Without the copy button wrapper, the containing block is wider
-              // than the code block, so span the code block explicitly.
-              const blockRect = codeBlock.getBoundingClientRect();
-              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
-              band.style.width = blockRect.width / scale + "px";
-            }
-          };
-          if (lineIds.length > 0) {
-            const el = window.document.getElementById(lineIds[0]);
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const parent = el.parentElement.parentElement;
-            // cook up a div (if necessary) and position it
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            placeBand(gutterDiv, el, lastEl);
-            selectedAnnoteEl = annoteEl;
-          }
-        };
-        const unselectCodeLines = () => {
-          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-          elementsIds.forEach((elId) => {
-            const div = window.document.getElementById(elId);
-            if (div) {
-              div.remove();
-            }
-          });
-          selectedAnnoteEl = undefined;
-        };
-          // Handle positioning of the toggle
-      window.addEventListener(
-        "resize",
-        throttle(() => {
-          elRect = undefined;
-          if (selectedAnnoteEl) {
-            selectCodeLines(selectedAnnoteEl);
-          }
-        }, 10)
-      );
-      function throttle(fn, ms) {
-      let throttle = false;
-      let timer;
-        return (...args) => {
-          if(!throttle) { // first call gets through
-              fn.apply(this, args);
-              throttle = true;
-          } else { // all the others get throttled
-              if(timer) clearTimeout(timer); // cancel #2
-              timer = setTimeout(() => {
-                fn.apply(this, args);
-                timer = throttle = false;
-              }, ms);
-          }
-        };
-      }
-        // Attach click handler to the DT
-        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-        for (const annoteDlNode of annoteDls) {
-          annoteDlNode.addEventListener('click', (event) => {
-            const clickedEl = event.target;
-            if (clickedEl !== selectedAnnoteEl) {
-              unselectCodeLines();
-              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-              if (activeEl) {
-                activeEl.classList.remove('code-annotation-active');
-              }
-              selectCodeLines(clickedEl);
-              clickedEl.classList.add('code-annotation-active');
-            } else {
-              // Unselect the line
-              unselectCodeLines();
-              clickedEl.classList.remove('code-annotation-active');
-            }
-          });
-        }
-    const findCites = (el) => {
-      const parentEl = el.parentElement;
-      if (parentEl) {
-        const cites = parentEl.dataset.cites;
-        if (cites) {
-          return {
-            el,
-            cites: cites.split(' ')
-          };
-        } else {
-          return findCites(el.parentElement)
-        }
-      } else {
-        return undefined;
-      }
-    };
-    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-    for (var i=0; i<bibliorefs.length; i++) {
-      const ref = bibliorefs[i];
-      const citeInfo = findCites(ref);
-      if (citeInfo) {
-        tippyHover(citeInfo.el, function() {
-          var popup = window.document.createElement('div');
-          citeInfo.cites.forEach(function(cite) {
-            var citeDiv = window.document.createElement('div');
-            citeDiv.classList.add('hanging-indent');
-            citeDiv.classList.add('csl-entry');
-            var biblioDiv = window.document.getElementById('ref-' + cite);
-            if (biblioDiv) {
-              citeDiv.innerHTML = biblioDiv.innerHTML;
-            }
-            popup.appendChild(citeDiv);
-          });
-          return popup.innerHTML;
-        });
-      }
-    }
-  });
-  </script>
-  <script type="application/javascript">
-  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
-  </script>
-<nav class="page-navigation" aria-label="Page">
-  <div class="nav-page nav-page-previous">
-      <a href="../jsbrowser/index.html" class="pagination-link" aria-label="JavaScript Fundamentals and the Browser">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">JavaScript Fundamentals and the Browser</span></span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-      <a href="../web/index.html" class="pagination-link" aria-label="HTTP and APIs">
-        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">HTTP and APIs</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
-  </div>
-</nav>
-</div> <!-- /content -->
-
-
-
-
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/gvwilson/unbreak/edit/main/css/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/gvwilson/unbreak/blob/main/css/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/gvwilson/unbreak/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+</body></html>
