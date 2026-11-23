@@ -61,14 +61,14 @@
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Totals match."</span>)</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Totals differ!"</span>)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is using <code>==</code> on floats computed by different routes, so the comparison returns <code>False</code> even when the values should be equal.</p>
 <p>Shows: floating-point representation errors and how to use <code>math.isclose</code>.</p>
 <p>To find it: print both values with 20 decimal places using <code>f"{val:.20f}"</code>. You will see that one ends in <code>...000001</code> rather than matching the other exactly, revealing the rounding difference that makes <code>==</code> return <code>False</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="3.2" id="scrape-titles-from-a-list-of-urls"><span class="header-section-number">3.2</span> Scrape titles from a list of URLs</h2>
 <p>Run the scraper with the provided URL list, which includes one malformed URL. Does it process all the valid URLs? Check whether anything is silently discarded.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> urllib.parse <span class="im">import</span> urlparse</span>
@@ -101,14 +101,14 @@
 <span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Got </span><span class="sc">{</span><span class="bu">len</span>(results)<span class="sc">}</span><span class="ss"> titles (expected </span><span class="sc">{</span>valid<span class="sc">}</span><span class="ss">):"</span>)</span>
 <span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> results:</span>
 <span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>t<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is wrapping the fetch-and-parse loop in <code>try/except Exception: pass</code> to tolerate network timeouts. The <code>ValueError</code> raised by the URL parser is also caught and discarded, so the scraper silently stops processing after the first malformed URL.</p>
 <p>Shows: how overly broad exception handlers swallow unrelated bugs, and how to use <code>logging.exception</code> to record errors instead of ignoring them.</p>
 <p>To find it: replace <code>pass</code> in the <code>except</code> block with <code>logging.exception("caught")</code>. Run the script again and read the log output. You will see a <code>ValueError</code> from the URL parser printed for the malformed URL, proving the <code>except</code> block was swallowing the wrong exception type.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="3.3" id="find-the-top-scorer-in-a-csv-file"><span class="header-section-number">3.3</span> Find the top scorer in a CSV file</h2>
 <p>Run the script with the provided CSV file and read the traceback. Which line in the file triggers the error? Examine that line carefully.</p>
 <p><code class="sourceCode python"><span class="im">import</span> sys
@@ -135,14 +135,14 @@ Bob Smith,87
 Martinez, Carlos,92
 Wong, Jennifer,88
 Diana Prince,79</code></p>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that names containing a comma (e.g., “Smith, John”) cause <code>line.split(',')</code> to produce three fields instead of two, so the index used for the score points at the wrong element and the script crashes with an <code>IndexError</code>.</p>
 <p>Shows: why hand-rolled CSV parsing fails on real data and when to use the <code>csv</code> module.</p>
 <p>To find it: open the CSV in a text editor and find the row that triggers the <code>IndexError</code>. Count the commas on that line — there are two, not one. The extra comma sits inside a quoted name field that <code>line.split(',')</code> does not recognize as quoted.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="3.4" id="process-a-pipeline-of-records-twice"><span class="header-section-number">3.4</span> Process a pipeline of records twice</h2>
 <p>Run the script and look at both outputs. Does each one produce the values you expected?</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> positive_numbers(data):</span>
@@ -159,14 +159,14 @@ Diana Prince,79</code></p>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Mean:  </span><span class="sc">{</span>total <span class="op">/</span> count<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Cannot compute mean: generator was exhausted before count was taken"</span>)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that generators are exhausted after one pass, so the second use of the generator in the same expression produces no results.</p>
 <p>Shows: that generators are single-use iterators and when to use lists instead.</p>
 <p>To find it: print <code>type(pipeline)</code> to confirm it is a generator. Then assign <code>results = list(pipeline)</code> and print <code>results</code> a second time — the second access returns an empty list, proving the generator was exhausted on the first pass.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="3.5" id="cache-results-of-an-expensive-calculation"><span class="header-section-number">3.5</span> Cache results of an expensive calculation</h2>
 <p>Call the cached function twice with the same positional argument but a different keyword argument each time. Do both calls return the correct result?</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> memoize(func):</span>
@@ -186,14 +186,14 @@ Diana Prince,79</code></p>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"power(3)            = </span><span class="sc">{</span>power(<span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"power(3, exponent=3)= </span><span class="sc">{</span>power(<span class="dv">3</span>, exponent<span class="op">=</span><span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"power(3, 3)         = </span><span class="sc">{</span>power(<span class="dv">3</span>, <span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that the cache key does not include all function arguments (e.g., ignores keyword arguments), so the decorator returns the same result for different inputs.</p>
 <p>Shows: how to construct correct cache keys and test with varied inputs.</p>
 <p>To find it: call the cached function twice with the same positional argument but different keyword arguments — e.g., <code>f(1, multiplier=2)</code> then <code>f(1, multiplier=3)</code>. If both return the same value, add <code>print(key)</code> inside the decorator to show the key is identical for both calls.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="3.6" id="write-results-to-disk-when-processing-fails"><span class="header-section-number">3.6</span> Write results to disk when processing fails</h2>
 <p>Run the script so that it raises an exception part-way through writing. Then open the output file. Does it contain complete data?</p>
 <p><code class="sourceCode python"><span class="im">import</span> os
@@ -224,14 +224,14 @@ Diana Prince,79</code></p>
 second line
 fourth line after blank
 fifth line</code></p>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is using <code>open()</code> without a <code>with</code> statement. When an unhandled exception occurs midway through, the output file is left partially written because the write buffer is never flushed and <code>close()</code> is never called.</p>
 <p>Shows: why context managers guarantee file cleanup even when exceptions occur, and how to use <code>with open(…) as f</code> to prevent data loss.</p>
 <p>To find it: run the script so that it raises an exception midway through writing, then open the output file in a text editor. Count the records. If the count is less than expected, the buffer was never flushed — <code>close()</code> was never called because the exception skipped it.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="3.7" id="build-a-list-of-functions-in-a-loop"><span class="header-section-number">3.7</span> Build a list of functions in a loop</h2>
 <p>Call each function in the list produced by <code>make_multipliers()</code>. Do they multiply by different numbers?</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_multipliers():</span>
@@ -242,14 +242,14 @@ fifth line</code></p>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> multipliers</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>funcs <span class="op">=</span> make_multipliers()</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([f(<span class="dv">10</span>) <span class="cf">for</span> f <span class="kw">in</span> funcs])  <span class="co"># expect [0, 10, 20, 30, 40], get [40, 40, 40, 40, 40]</span></span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is late binding. Each lambda captures the <em>variable</em> <code>i</code>, not the value it had when the lambda was created. By the time any lambda is called, the loop has finished and <code>i</code> is 4, so every lambda multiplies by 4.</p>
 <p>Shows: that closures capture variables, not values, and why a loop that creates functions needs a way to freeze the current value (e.g.&nbsp;a default argument <code>lambda x, i=i: x * i</code>).</p>
 <p>To find it: print what each function returns — they all return the same value. Capture the value with <code>lambda x, i=i: x * i</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="3.8" id="update-a-variable-in-an-enclosing-function"><span class="header-section-number">3.8</span> Update a variable in an enclosing function</h2>
 <p>Call the counter returned by <code>make_counter()</code>. Does it return 1?</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_counter():</span>
@@ -260,14 +260,14 @@ fifth line</code></p>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> increment</span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>counter <span class="op">=</span> make_counter()</span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(counter())  <span class="co"># expect 1, get UnboundLocalError</span></span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is assigning to <code>count</code> without declaring it <code>nonlocal</code>. Any assignment to a name inside a function makes that name local, so <code>count = count + 1</code> tries to read a local <code>count</code> before it exists and raises <code>UnboundLocalError</code>.</p>
 <p>Shows: Python’s scoping rules (LEGB) and that <code>nonlocal</code> (or <code>global</code>) is required to assign to a variable from an enclosing scope.</p>
 <p>To find it: the traceback says <code>UnboundLocalError: local variable 'count' referenced before assignment</code>. Add <code>nonlocal count</code> as the first line of <code>increment</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="3.9" id="preserve-a-functions-name-and-docstring"><span class="header-section-number">3.9</span> Preserve a function’s name and docstring</h2>
 <p>Inspect <code>add.__name__</code> and <code>add.__doc__</code> after decorating it. Do they match the original function?</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> logged(func):</span>
@@ -282,14 +282,14 @@ fifth line</code></p>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(add(<span class="dv">2</span>, <span class="dv">3</span>))       <span class="co"># calling add / 5</span></span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(add.<span class="va">__name__</span>)    <span class="co"># expect 'add', get 'wrapper'</span></span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(add.__doc__)     <span class="co"># expect 'Return a + b.', get None</span></span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is the missing <code>@functools.wraps(func)</code> on the wrapper. Without it, the decorator returns a function named <code>wrapper</code> with no docstring, so <code>help()</code>, <code>repr()</code>, and introspection tools report the wrong metadata.</p>
 <p>Shows: how decorators replace the original function object, and why <code>functools.wraps</code> is needed to copy <code>__name__</code>, <code>__doc__</code>, and other attributes to the wrapper.</p>
 <p>To find it: print <code>add.__name__</code> — it shows <code>wrapper</code>, not <code>add</code>. Add <code>@functools.wraps(func)</code> above the wrapper function.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="3.10" id="pair-up-two-lists-of-different-lengths"><span class="header-section-number">3.10</span> Pair up two lists of different lengths</h2>
 <p>Pair a list of three names with a list of two scores. Does every name get a score?</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pair(names, scores):</span>
@@ -297,14 +297,14 @@ fifth line</code></p>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> [<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Carol"</span>]</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> [<span class="dv">90</span>, <span class="dv">85</span>]</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pair(names, scores))  <span class="co"># expect 3 pairs, get [('Alice', 90), ('Bob', 85)]</span></span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that <code>zip</code> stops at the shorter iterable. When the two lists have different lengths, <code>zip</code> silently drops the extra items from the longer one, so the last name is missing from the result.</p>
 <p>Shows: that <code>zip</code> truncates to the shortest input, and when mismatched lengths matter use <code>itertools.zip_longest</code> (with a fill value) instead.</p>
 <p>To find it: compare <code>len(names)</code> and <code>len(scores)</code> to the number of pairs returned. The count is 2, not 3. Use <code>itertools.zip_longest(names, scores)</code> to keep all names.</p>
-</blockquote>
-</div>
+</details>
 
 </main>
 

@@ -59,14 +59,14 @@ Alice,New York,95
 Bob,"Los Angeles, CA",87
 Carol,Chicago,92
 Dave,"Austin, TX",88</code></p>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is using <code>line.split(',')</code> instead of the <code>csv</code> module, so rows that contain commas inside quoted fields are split incorrectly.</p>
 <p>Shows: why hand-rolled parsers fail on real-world data and when to use standard library tools.</p>
 <p>To find it: print <code>len(fields)</code> for each row as you parse. When it prints <code>3</code> instead of <code>2</code>, find that row in the CSV and count the commas — the extra one is inside a quoted field that <code>line.split(',')</code> does not recognize as quoted.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="6.2" id="benchmark-an-image-processing-function"><span class="header-section-number">6.2</span> Benchmark an image processing function</h2>
 <p>Run the benchmarking function several times and examine the elapsed time values. Do any of them look unusual?</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
@@ -91,14 +91,14 @@ Dave,"Austin, TX",88</code></p>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        elapsed, result <span class="op">=</span> measure(work)</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"After clock step: </span><span class="sc">{</span>elapsed<span class="sc">:.4f}</span><span class="ss">s  result=</span><span class="sc">{</span>result<span class="sc">!r}</span><span class="ss">"</span>)</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"(time.monotonic() would never produce a negative duration)"</span>)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is using <code>time.time()</code> without accounting for system clock adjustments, so the function reports negative durations when the clock is set back.</p>
 <p>Shows: the difference between wall time and monotonic time and when to use <code>time.monotonic</code>.</p>
 <p>To find it: print each start and end timestamp as a float alongside the computed elapsed time. A negative elapsed value proves the end timestamp was smaller than the start, which happens when the system clock is stepped backward by NTP or a VM snapshot restore.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="6.3" id="schedule-a-recurring-task-across-time-zones"><span class="header-section-number">6.3</span> Schedule a recurring task across time zones</h2>
 <p>Call the date arithmetic function with a date near a daylight saving transition. Compare the result from the naive datetime path with the result from the timezone-aware path.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime, timedelta</span>
@@ -133,14 +133,14 @@ Dave,"Austin, TX",88</code></p>
 <span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>              <span class="ss">f"(86400 = 24h; 82800 = 23h)"</span>)</span>
 <span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">ImportError</span>:</span>
 <span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Install Python 3.9+ for zoneinfo demonstration"</span>)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is adding a <code>timedelta</code> to a naive datetime, so the function produces results that are off by one day around daylight saving time transitions.</p>
 <p>Shows: the difference between naive and timezone-aware datetimes.</p>
 <p>To find it: call the function with <code>datetime(2024, 3, 10)</code> — the Sunday US clocks spring forward — and add one day. Print the naive result and the timezone-aware result side by side. The naive version may report the wrong date because it adds exactly 86,400 seconds without accounting for the 23-hour day.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="6.4" id="scrape-prices-from-a-product-page"><span class="header-section-number">6.4</span> Scrape prices from a product page</h2>
 <p>Run the script with the provided HTML file and check whether it finds all the expected elements. What happens when an element is not found?</p>
 <p><code class="sourceCode python"><span class="im">import</span> re
@@ -176,14 +176,14 @@ Dave,"Austin, TX",88</code></p>
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></p>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that the HTML structure varies and the selector matches zero elements without raising an error, so the script fails silently on some pages.</p>
 <p>Shows: how to handle missing data in HTML parsing and use assertions to catch unexpected input.</p>
 <p>To find it: print <code>len(soup.select(selector))</code> before accessing the first element. Seeing <code>0</code> tells you the selector matched nothing. Then print the first hundred characters of <code>str(soup)</code> to confirm whether the expected element is actually present in the HTML.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="6.5" id="extract-email-addresses-from-a-text-file"><span class="header-section-number">6.5</span> Extract email addresses from a text file</h2>
 <p>Test the regular expression against a few valid email addresses and a few strings that look like email addresses but are not. Does it reject the invalid ones?</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
@@ -205,14 +205,14 @@ Dave,"Austin, TX",88</code></p>
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        matched <span class="op">=</span> <span class="bu">bool</span>(found)</span>
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        status <span class="op">=</span> <span class="st">"OK  "</span> <span class="cf">if</span> matched <span class="op">==</span> should_match <span class="cf">else</span> <span class="st">"FAIL"</span></span>
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>status<span class="sc">}</span><span class="ss">  </span><span class="sc">{</span>text<span class="sc">!r:35s}</span><span class="ss"> -&gt; </span><span class="sc">{</span>found<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is a pattern that is too permissive (e.g., missing anchors or character class constraints), so the regular expression also matches invalid strings.</p>
 <p>Shows: how to test regular expressions with both valid and invalid inputs.</p>
 <p>To find it: test the regular expression against known-invalid strings such as <code>"not_an_email"</code> or <code>"two@@signs.com"</code>. If <code>re.fullmatch</code> returns a match object instead of <code>None</code> for either, the pattern is too permissive.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="6.6" id="write-a-test-for-a-data-validation-function"><span class="header-section-number">6.6</span> Write a test for a data validation function</h2>
 <p>Run the test suite. Does it pass? Now deliberately break the function the test is testing. Does the test still pass?</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> average(numbers):</span>
@@ -233,14 +233,14 @@ Dave,"Austin, TX",88</code></p>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"FAIL </span><span class="sc">{</span>test<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"average([2, 4, 6, 8]) = </span><span class="sc">{</span>average([<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>])<span class="sc">}</span><span class="ss">  (expected 5.0)"</span>)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that the test calls the function but never asserts anything about the result, so it always passes even when the function is broken.</p>
 <p>Shows: that a test with no assertions is not a test and how to write assertions correctly.</p>
 <p>To find it: modify the function under test to return an obviously wrong value, such as <code>return None</code>. Run the test suite again. If the test still passes, it contains no assertion that can detect the wrong return value.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="6.7" id="test-a-function-that-modifies-a-global-registry"><span class="header-section-number">6.7</span> Test a function that modifies a global registry</h2>
 <p>Run each test on its own. Then run both together. Do you get the same results both ways?</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Module-level registry — shared state that persists between tests</span></span>
@@ -266,14 +266,14 @@ Dave,"Austin, TX",88</code></p>
 <span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"PASS </span><span class="sc">{</span>test<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">AssertionError</span> <span class="im">as</span> e:</span>
 <span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"FAIL </span><span class="sc">{</span>test<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that one test modifies a module-level variable that another test depends on, so the suite passes in isolation but fails when run together.</p>
 <p>Shows: test isolation, teardown, and the risks of shared global state.</p>
 <p>To find it: run <code>pytest test.py::test_first -v</code> alone, then run <code>pytest test.py::test_second -v</code> alone. If each passes in isolation but one fails when both run together, the failing test depends on state left by the other.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="6.8" id="load-a-reference-data-file-in-a-test"><span class="header-section-number">6.8</span> Load a reference data file in a test</h2>
 <p>Run the script from a different working directory than the one where the script file is saved. Does it find its configuration file?</p>
 <p><code class="sourceCode python"><span class="im">import</span> json
@@ -291,14 +291,14 @@ Dave,"Austin, TX",88</code></p>
     "max_retries": 3,
     "output_dir": "results"
 }</code></p>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is using a hardcoded absolute path instead of a path relative to the script’s location, so the function behaves differently on different machines.</p>
 <p>Shows: the difference between <code>__file__</code>-relative and working-directory-relative paths.</p>
 <p>To find it: run the script from a different directory — e.g., <code>cd /tmp &amp;&amp; python /full/path/to/script.py</code>. It will fail to open the config file. Print <code>os.getcwd()</code> inside the script to confirm that <code>open("config.json")</code> resolves relative to <code>/tmp</code>, not to the script’s own directory.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="6.9" id="save-a-record-with-a-timestamp-to-a-file"><span class="header-section-number">6.9</span> Save a record with a timestamp to a file</h2>
 <p>Run the script and read the error message. Which value in the data structure cannot be serialized?</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
@@ -315,14 +315,14 @@ Dave,"Austin, TX",88</code></p>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Report dict: </span><span class="sc">{</span>report<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Serializing to JSON..."</span>)</span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(json.dumps(report))</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that the data contains <code>datetime</code> objects, which are not JSON-serializable, so the program raises an error when writing output.</p>
 <p>Shows: how to identify serialization errors and write custom JSON encoders.</p>
 <p>To find it: read the <code>TypeError</code> message — <code>Object of type datetime is not JSON serializable</code>. Then search the data structure being serialized for any <code>datetime</code> object: <code>print(type(record['timestamp']))</code> will show <code>&lt;class 'datetime.datetime'&gt;</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="6.10" id="add-diagnostic-output-to-a-data-pipeline"><span class="header-section-number">6.10</span> Add diagnostic output to a data pipeline</h2>
 <p>Run the script and then look at the log file. Are the messages you expected to see present?</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> logging</span>
@@ -346,14 +346,14 @@ Dave,"Austin, TX",88</code></p>
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Output: </span><span class="sc">{</span>output<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"(no debug messages shown — logger.debug() calls are silenced by WARNING level)"</span>)</span>
 <span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Effective log level: </span><span class="sc">{</span>logging<span class="sc">.</span>getLevelName(logger.getEffectiveLevel())<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that the log level is set to <code>WARNING</code> but the calls use <code>logger.debug()</code>, so the messages never appear in the log file.</p>
 <p>Shows: how Python’s logging hierarchy works and how to verify the effective log level.</p>
 <p>To find it: add <code>print(logger.getEffectiveLevel())</code> near the top of the script. The output <code>30</code> means the effective level is <code>WARNING</code> (30), and <code>DEBUG</code> messages require level <code>10</code>. Either lower the level to <code>DEBUG</code> or upgrade the calls to <code>logger.warning()</code>.</p>
-</blockquote>
-</div>
+</details>
 
 </main>
 

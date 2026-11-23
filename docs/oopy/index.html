@@ -64,14 +64,14 @@
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.width <span class="op">*</span> <span class="va">self</span>.height</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> Rectangle(<span class="dv">4</span>, <span class="dv">6</span>)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(r.area())</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is the missing <code>self</code> parameter in <code>area</code>. When you call <code>r.area()</code>, Python automatically passes the instance <code>r</code> as the first positional argument. A method without <code>self</code> declares zero parameters, so Python sees one argument for zero parameters and raises <code>TypeError: area() takes 0 positional arguments but 1 was given</code>.</p>
 <p>Shows: that every instance method must declare <code>self</code> as its first parameter so Python has somewhere to put the instance it passes automatically.</p>
 <p>To find it: the traceback says the error is in the call <code>r.area()</code> and mentions “0 positional arguments but 1 was given”. Change <code>def area():</code> to <code>def area(self):</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.2" id="get-a-value-back-from-a-method"><span class="header-section-number">4.2</span> Get a value back from a method</h2>
 <p>Create a <code>Greeter</code> and print the result of calling <code>greet</code>. Does the output say <code>"Hello, world!"</code>?</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Greeter:</span>
@@ -81,14 +81,14 @@
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Hello, </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>name<span class="sc">}</span><span class="ss">!"</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> Greeter(<span class="st">"world"</span>)</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(g.greet)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is the missing parentheses. <code>g.greet</code> without <code>()</code> evaluates to the bound method object itself—a callable—rather than calling it and returning its string. The <code>print</code> then shows something like <code>&lt;bound method Greeter.greet of ...&gt;</code>, which is the text representation of the method, not the greeting.</p>
 <p>Shows: that methods, like all callables, must be called with <code>()</code> to run and produce a return value.</p>
 <p>To find it: the output will contain the word <code>bound method</code> instead of <code>Hello</code>. Change <code>g.greet</code> to <code>g.greet()</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.3" id="make-__init__-set-up-an-object"><span class="header-section-number">4.3</span> Make <code>__init__</code> set up an object</h2>
 <p>Create a <code>Config</code> object and print its <code>debug</code> attribute. Does it print <code>True</code>?</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Config:</span>
@@ -97,14 +97,14 @@
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> Config(<span class="va">True</span>)</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(c.debug)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is <code>return self</code> inside <code>__init__</code>. Python’s object creation protocol requires <code>__init__</code> to return <code>None</code>. Any other return value raises <code>TypeError: __init__() should return None (not 'Config')</code>. The object is created before <code>__init__</code> runs, so there is no need to return it—<code>Config(True)</code> already produces the new instance.</p>
 <p>Shows: the contract for <code>__init__</code>: it initializes an already-created object and must not return anything.</p>
 <p>To find it: the traceback says <code>TypeError: __init__() should return None</code>. Remove the <code>return self</code> line.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.4" id="spell-an-attribute-name-consistently"><span class="header-section-number">4.4</span> Spell an attribute name consistently</h2>
 <p>Create a <code>Student</code> and call <code>greet()</code>. Does it print the student’s name?</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Student:</span>
@@ -114,14 +114,14 @@
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Hi, I am </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>name<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> Student(<span class="st">"Alice"</span>)</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s.greet())</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is a typo: <code>self.nane = name</code> in <code>__init__</code> stores the value under the misspelled key <code>nane</code>. When <code>greet</code> reads <code>self.name</code>, Python looks for the correctly spelled attribute, finds nothing, and raises <code>AttributeError</code>. Python treats each spelling as a distinct attribute and never connects them.</p>
 <p>Shows: how attribute-name typos produce <code>AttributeError</code> at the point of reading, not at the point of writing, which can make the bug appear to be in the wrong place.</p>
 <p>To find it: print <code>vars(s)</code> after creating the student. The dictionary will contain <code>nane</code> but not <code>name</code>. Fix the spelling in <code>__init__</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.5" id="access-the-computed-area-of-a-circle"><span class="header-section-number">4.5</span> Access the computed area of a circle</h2>
 <p>Create a <code>Circle</code> with radius 5 and print its area. Does it print a number close to 78.5?</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
@@ -133,14 +133,14 @@
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> math.pi <span class="op">*</span> <span class="va">self</span>.radius <span class="op">**</span> <span class="dv">2</span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> Circle(<span class="dv">5</span>)</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(c.area())</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is the parentheses in <code>c.area()</code>. Because <code>area</code> is decorated with <code>@property</code>, accessing <code>c.area</code> already calls the function and returns the computed float. Appending <code>()</code> then tries to call that float as if it were a function, raising <code>TypeError: 'float' object is not callable</code>.</p>
 <p>Shows: that <code>@property</code> turns a method into an attribute-style access—you read it like data, not call it like a function.</p>
 <p>To find it: the traceback says <code>TypeError: 'float' object is not callable</code>, pointing to the line with <code>c.area()</code>. Remove the parentheses: <code>c.area</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.6" id="add-a-vector-and-a-tuple-in-either-order"><span class="header-section-number">4.6</span> Add a vector and a tuple in either order</h2>
 <p>Create a <code>Vector(1, 2)</code> and add it to <code>(3, 4)</code> — and also add <code>(3, 4)</code> to the vector. Do both additions work?</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Vector:</span>
@@ -155,14 +155,14 @@
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> Vector(<span class="dv">1</span>, <span class="dv">2</span>)</span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(v <span class="op">+</span> (<span class="dv">3</span>, <span class="dv">4</span>))   <span class="co"># Vector(4, 6)</span></span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((<span class="dv">3</span>, <span class="dv">4</span>) <span class="op">+</span> v)   <span class="co"># expect Vector(4, 6), get TypeError</span></span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is defining <code>__add__</code> but not <code>__radd__</code>. When Python evaluates <code>vector + (3, 4)</code>, it calls <code>vector.__add__((3, 4))</code>, which works. But for <code>(3, 4) + vector</code>, the left operand is a tuple with no idea how to add a <code>Vector</code>. Python then tries the vector’s reflected method <code>__radd__</code>, which is not defined, so it raises <code>TypeError</code>.</p>
 <p>Shows: that binary operators are not automatically commutative for user-defined types, and that <code>__radd__</code> (reflected add) handles the case where the custom object is on the right-hand side.</p>
 <p>To find it: the traceback says <code>TypeError: unsupported operand type(s) for +: 'tuple' and 'Vector'</code>. Add a <code>__radd__</code> method (often implemented by delegating to <code>__add__</code>).</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.7" id="check-whether-a-status-matches-a-target"><span class="header-section-number">4.7</span> Check whether a status matches a target</h2>
 <p>Create a <code>Status("ok")</code> and call <code>is_ok()</code>. Does it return <code>True</code>?</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Status:</span>
@@ -172,14 +172,14 @@
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span> <span class="kw">is</span> Status(<span class="st">"ok"</span>)</span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> Status(<span class="st">"ok"</span>)</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s.is_ok())  <span class="co"># expect True, get False</span></span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is using <code>is</code> to compare objects. <code>is</code> tests whether two names refer to the exact same object in memory—identity, not equality. <code>Status("ok")</code> inside <code>is_ok</code> creates a brand-new object, which is a different object from <code>self</code>, so <code>self is Status("ok")</code> is always <code>False</code>. The fix is <code>self.code == "ok"</code>, which compares values.</p>
 <p>Shows: the difference between <code>is</code> (identity) and <code>==</code> (equality), and why <code>is</code> should be reserved for comparisons against singletons like <code>None</code>, <code>True</code>, and <code>False</code>.</p>
 <p>To find it: print <code>id(self)</code> and <code>id(Status("ok"))</code> inside <code>is_ok</code>. The numbers will differ. Replace <code>is</code> with <code>==</code> and compare the <code>code</code> attributes directly.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.8" id="create-a-person-with-the-right-details"><span class="header-section-number">4.8</span> Create a person with the right details</h2>
 <p>Create a <code>Person</code> and call <code>introduce()</code>. Does the output contain the correct name and age?</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Person:</span>
@@ -191,14 +191,14 @@
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"I am </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>first<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>last<span class="sc">}</span><span class="ss">, age </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>age<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> Person(<span class="st">"Alice"</span>, <span class="dv">30</span>, <span class="st">"Smith"</span>)</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(p.introduce())</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is the argument order. <code>Person.__init__</code> expects <code>first, last, age</code>, but the call passes <code>"Alice", 30, "Smith"</code>—putting the age in the <code>last</code> position and the last name in the <code>age</code> position. Python has no way to detect the mismatch because all three arguments are accepted without error, and <code>introduce</code> happily uses whatever values ended up in <code>self.last</code> and <code>self.age</code>.</p>
 <p>Shows: how positional argument order is enforced by position, not by name, and how using keyword arguments (e.g., <code>Person(first="Alice", last="Smith", age=30)</code>) prevents this class of mistake.</p>
 <p>To find it: compare the output of <code>introduce()</code> against what you expect. The name and age will be swapped. Reorder the arguments or switch to keyword arguments.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.9" id="record-a-score-before-reporting-it"><span class="header-section-number">4.9</span> Record a score before reporting it</h2>
 <p>Create a <code>Scoreboard</code> for <code>"Alice"</code> and immediately call <code>report()</code>. Does it print a score?</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Scoreboard:</span>
@@ -210,14 +210,14 @@
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>player<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>score<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>board <span class="op">=</span> Scoreboard(<span class="st">"Alice"</span>)</span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(board.report())  <span class="co"># AttributeError: 'Scoreboard' object has no attribute 'score'</span></span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that <code>self.score</code> is only created inside <code>record()</code>, not in <code>__init__</code>. If <code>report()</code> is called before <code>record()</code> has ever run, <code>self.score</code> does not exist and <code>report</code> raises <code>AttributeError: 'Scoreboard' object has no attribute 'score'</code>.</p>
 <p>Shows: that all instance attributes an object may need should be initialized in <code>__init__</code> so the object is in a consistent state from the moment it is created.</p>
 <p>To find it: add <code>print(vars(board))</code> after creating the <code>Scoreboard</code>. The dictionary will not contain <code>score</code>. Add <code>self.score = 0</code> to <code>__init__</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.10" id="show-a-card-as-text"><span class="header-section-number">4.10</span> Show a card as text</h2>
 <p>Create a <code>Card</code> and print its <code>repr</code>. Does the output show the rank and suit?</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Card:</span>
@@ -228,14 +228,14 @@
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>rank<span class="sc">}</span><span class="ss"> of </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>suit<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> Card(<span class="st">"Ace"</span>, <span class="st">"Spades"</span>)</span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">repr</span>(c))</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is the missing <code>return</code>. The f-string <code>f"{self.rank} of {self.suit}"</code> is evaluated and the resulting string is immediately discarded. <code>__repr__</code> then returns <code>None</code> implicitly. Python raises <code>TypeError: __repr__ returned non-string (type NoneType)</code>.</p>
 <p>Shows: that constructing a value and returning it are two separate steps—building a string with an f-string does nothing unless the result is returned or assigned.</p>
 <p>To find it: the traceback says <code>TypeError: __repr__ returned non-string</code>. Add <code>return</code> before the f-string.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.11" id="store-data-in-an-instance"><span class="header-section-number">4.11</span> Store data in an instance</h2>
 <p>Create a <code>Point</code> with <code>x=3</code> and <code>y=4</code> and call <code>distance()</code>. Does it return 5.0?</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Point:</span>
@@ -246,14 +246,14 @@
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (<span class="va">self</span>.x <span class="op">**</span> <span class="dv">2</span> <span class="op">+</span> <span class="va">self</span>.y <span class="op">**</span> <span class="dv">2</span>) <span class="op">**</span> <span class="fl">0.5</span></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> Point(<span class="dv">3</span>, <span class="dv">4</span>)</span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(p.distance())</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is <code>x = x</code> and <code>y = y</code> inside <code>__init__</code>. Those lines rebind the local parameter names to themselves and do nothing else. Without <code>self.x = x</code> and <code>self.y = y</code>, the values are discarded the moment <code>__init__</code> returns, leaving the object with no <code>x</code> or <code>y</code> attribute. Calling <code>self.x</code> in <code>distance</code> then raises <code>AttributeError</code>.</p>
 <p>Shows: that instance attributes must be assigned through <code>self</code>, and that a bare assignment inside a method creates a local variable, not an attribute.</p>
 <p>To find it: add <code>print(vars(p))</code> after creating the point. The dictionary will be empty, revealing that no attributes were stored.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.12" id="copy-an-object-with-nested-data"><span class="header-section-number">4.12</span> Copy an object with nested data</h2>
 <p>Create a <code>Playlist</code> with a list of songs, make a copy with <code>copy.copy</code>, and add a song to the copy. Does the original’s song list stay unchanged?</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> copy</span>
@@ -264,14 +264,14 @@
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>clone <span class="op">=</span> copy.copy(original)</span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>clone.songs.append(<span class="st">"gamma"</span>)</span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(original.songs)  <span class="co"># expect ['alpha', 'beta'], get ['alpha', 'beta', 'gamma']</span></span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is using <code>copy.copy</code>, which performs a shallow copy. The new <code>Playlist</code> is a different object, but its <code>songs</code> attribute still points to the <em>same</em> list object as the original. Appending to the copy’s list therefore mutates the original’s list too.</p>
 <p>Shows: the difference between shallow copy (<code>copy.copy</code>, copies the container but shares nested objects) and deep copy (<code>copy.deepcopy</code>, recursively copies nested objects).</p>
 <p>To find it: print <code>id(original.songs)</code> and <code>id(clone.songs)</code>. They are the same number, proving both point to one list. Replace <code>copy.copy</code> with <code>copy.deepcopy</code> to copy the list too.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.13" id="use-a-custom-context-manager"><span class="header-section-number">4.13</span> Use a custom context manager</h2>
 <p>Use a <code>Timer</code> inside a <code>with</code> block and then call <code>elapsed()</code> on the bound variable. Does it work?</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
@@ -285,14 +285,14 @@
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> Timer() <span class="im">as</span> t:</span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(t.elapsed())  <span class="co"># expect a number, get AttributeError: 'NoneType' object has no attribute 'elapsed'</span></span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that <code>__enter__</code> never returns <code>self</code>. The value returned by <code>__enter__</code> is what the <code>as</code> target in <code>with Timer() as t</code> binds to. With no <code>return</code> statement, <code>__enter__</code> returns <code>None</code>, so <code>t</code> is <code>None</code> and calling <code>t.elapsed()</code> raises <code>AttributeError</code>.</p>
 <p>Shows: the context-manager protocol, and that <code>__enter__</code> must return the resource (usually <code>self</code>) that the <code>as</code> clause should bind.</p>
 <p>To find it: print <code>t</code> inside the <code>with</code> block — it will be <code>None</code>. Add <code>return self</code> at the end of <code>__enter__</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.14" id="instantiate-a-class-with-an-abstract-method"><span class="header-section-number">4.14</span> Instantiate a class with an abstract method</h2>
 <p>Create a <code>Dog</code> from an <code>Animal</code> base class that declares an abstract <code>speak</code> method. Does <code>Dog("Rex")</code> succeed?</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> abc <span class="im">import</span> ABC, abstractmethod</span>
@@ -304,14 +304,14 @@
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name):</span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.name <span class="op">=</span> name</span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> Dog(<span class="st">"Rex"</span>)  <span class="co"># expect a Dog, get TypeError: Can't instantiate abstract class Dog</span></span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that <code>Dog</code> does not implement the abstract method <code>speak</code>. A class inheriting from <code>ABC</code> with an <code>@abstractmethod</code> cannot be instantiated until every abstract method is implemented in a concrete subclass. Because <code>Dog</code> leaves <code>speak</code> unimplemented, <code>Dog("Rex")</code> raises <code>TypeError: Can't instantiate abstract class Dog with abstract method speak</code>.</p>
 <p>Shows: how abstract base classes enforce a contract, and that a subclass must implement every abstract method before it can be instantiated.</p>
 <p>To find it: the traceback names the abstract method and the class. Add a <code>speak</code> method to <code>Dog</code> that returns the appropriate sound.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.15" id="display-an-object-as-a-string"><span class="header-section-number">4.15</span> Display an object as a string</h2>
 <p>Create a <code>Temperature</code> of 100 degrees and print it. Does the output look like a sensible string?</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Temperature:</span>
@@ -321,14 +321,14 @@
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.celsius</span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> Temperature(<span class="dv">100</span>)</span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(t)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is returning <code>self.celsius</code> (an integer) from <code>__str__</code>. Python requires <code>__str__</code> to return a <code>str</code> object. When it gets anything else, it raises <code>TypeError: __str__ returned non-string</code>. The value is never printed.</p>
 <p>Shows: that special methods must return the exact type Python expects, and that returning the wrong type produces a <code>TypeError</code> that mentions the method by name.</p>
 <p>To find it: the traceback says <code>TypeError: __str__ returned non-string (type int)</code>. Fix it by returning <code>str(self.celsius)</code> or <code>f"{self.celsius} C"</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.16" id="count-how-many-widgets-exist"><span class="header-section-number">4.16</span> Count how many widgets exist</h2>
 <p>Create two <code>Widget</code> objects and call <code>Widget.how_many()</code>. Does it return 2?</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Widget:</span>
@@ -341,14 +341,14 @@
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>w1 <span class="op">=</span> Widget()</span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>w2 <span class="op">=</span> Widget()</span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(Widget.how_many())</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is <code>@staticmethod</code>. A static method receives no implicit first argument, so <code>cls</code> is undefined inside <code>how_many</code> and raises <code>NameError</code>. The fix is <code>@classmethod</code>, which passes the class itself as the first argument, conventionally named <code>cls</code>.</p>
 <p>Shows: the distinction between <code>@staticmethod</code> (no implicit arguments) and <code>@classmethod</code> (receives the class as <code>cls</code>), and when each decorator is appropriate.</p>
 <p>To find it: the traceback says <code>NameError: name 'cls' is not defined</code>. Replace <code>@staticmethod</code> with <code>@classmethod</code> and add <code>cls</code> as the first parameter of <code>how_many</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.17" id="update-the-radius-of-a-circle"><span class="header-section-number">4.17</span> Update the radius of a circle</h2>
 <p>Create a <code>Circle</code> with radius 5, update the radius to 10, and print the area. Does the area reflect the new radius?</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
@@ -363,17 +363,17 @@
 <span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> Circle(<span class="dv">5</span>)</span>
 <span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>c.radius <span class="op">=</span> <span class="dv">10</span></span>
 <span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(c.area())</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that <code>radius</code> is a read-only property. A <code>@property</code> decorator with no corresponding <code>@radius.setter</code> creates a getter only. Assigning <code>c.radius = 10</code> raises <code>AttributeError: can't set attribute</code> before <code>area()</code> is ever reached.</p>
 <p>Shows: that a <code>@property</code> alone is read-only, and that a companion setter must be defined explicitly for assignments to work.</p>
 <p>To find it: the traceback pinpoints the assignment line. Add a setter:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="at">@radius.setter</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> radius(<span class="va">self</span>, value):</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>._radius <span class="op">=</span> value</span></code></pre></div>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.18" id="accept-any-animal-in-a-function"><span class="header-section-number">4.18</span> Accept any animal in a function</h2>
 <p>Call <code>make_sound</code> with a <code>Dog</code> object. Does it print <code>"Woof"</code>, or does it raise an error?</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Animal:</span>
@@ -388,14 +388,14 @@
 <span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"not an Animal"</span>)</span>
 <span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> Dog()</span>
 <span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(make_sound(d))</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is <code>type(creature) == Animal</code>. The <code>type()</code> function returns the exact runtime type of an object. A <code>Dog</code> instance has type <code>Dog</code>, not <code>Animal</code>, so the comparison is <code>False</code> and the function raises <code>ValueError</code>—even though <code>Dog</code> is a subclass of <code>Animal</code>. <code>isinstance(creature, Animal)</code> returns <code>True</code> for any instance of <code>Animal</code> or any of its subclasses.</p>
 <p>Shows: that <code>type()</code> checks for an exact match while <code>isinstance()</code> respects the inheritance hierarchy, and that <code>isinstance</code> is almost always the right choice.</p>
 <p>To find it: print <code>type(d)</code> and <code>type(d) == Animal</code> before calling the function. The output <code>False</code> makes the bug obvious. Replace <code>type(creature) == Animal</code> with <code>isinstance(creature, Animal)</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.19" id="read-a-private-attribute-from-outside-a-class"><span class="header-section-number">4.19</span> Read a private attribute from outside a class</h2>
 <p>Create a <code>BankAccount</code>, deposit some money, and print the balance by accessing <code>account.__balance</code> directly. Does it print the correct total?</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> BankAccount:</span>
@@ -408,14 +408,14 @@
 <span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>account <span class="op">=</span> BankAccount(<span class="dv">100</span>)</span>
 <span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>account.deposit(<span class="dv">50</span>)</span>
 <span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(account.__balance)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is accessing <code>account.__balance</code> from outside the class. Python rewrites any identifier starting with two underscores (but not ending with two) to <code>_ClassName__attribute</code> at compile time. Inside the class, <code>self.__balance</code> is automatically translated to <code>self._BankAccount__balance</code>. Outside the class, writing <code>account.__balance</code> is not translated, so Python looks for a literal attribute named <code>__balance</code>, finds nothing, and raises <code>AttributeError</code>.</p>
 <p>Shows: Python’s name-mangling mechanism for double-underscore attributes and how to access them from outside if necessary.</p>
 <p>To find it: print <code>dir(account)</code> and look for <code>_BankAccount__balance</code> in the output. Use the public <code>get_balance()</code> method instead, or access the mangled name directly as <code>account._BankAccount__balance</code> for debugging.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.20" id="use-points-as-dictionary-keys"><span class="header-section-number">4.20</span> Use points as dictionary keys</h2>
 <p>Create two equal <code>Point</code> objects and check whether the second is in a set containing the first. Does <code>p2 in seen</code> return <code>True</code>?</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Point:</span>
@@ -428,16 +428,16 @@
 <span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>p2 <span class="op">=</span> Point(<span class="dv">1</span>, <span class="dv">2</span>)</span>
 <span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>seen <span class="op">=</span> {p1}</span>
 <span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(p2 <span class="kw">in</span> seen)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is defining <code>__eq__</code> without also defining <code>__hash__</code>. Python’s data model specifies that any class defining <code>__eq__</code> must also define <code>__hash__</code>, or Python sets <code>__hash__ = None</code> automatically. An object with <code>__hash__ = None</code> is unhashable: it cannot be placed in a <code>set</code> or used as a <code>dict</code> key, raising <code>TypeError: unhashable type: 'Point'</code>.</p>
 <p>Shows: the connection between <code>__eq__</code> and <code>__hash__</code>, and why both must be defined together when value equality is needed.</p>
 <p>To find it: the traceback mentions <code>TypeError: unhashable type</code>. Add a <code>__hash__</code> method that returns a hash based on the same fields used in <code>__eq__</code>:</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">__hash__</span>(<span class="va">self</span>):</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">hash</span>((<span class="va">self</span>.x, <span class="va">self</span>.y))</span></code></pre></div>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.21" id="check-whether-a-collection-is-empty"><span class="header-section-number">4.21</span> Check whether a collection is empty</h2>
 <p>Create an empty <code>Cart</code> and test it with <code>if cart:</code>. Does Python treat it as empty or as having items?</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Cart:</span>
@@ -452,14 +452,14 @@
 <span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"cart has items"</span>)  <span class="co"># expect no output, but prints this</span></span>
 <span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
 <span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"cart is empty"</span>)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that <code>__len__</code> always returns 1. Python’s truthiness protocol calls <code>__bool__</code> if defined, otherwise <code>__len__</code>, and an object is falsy only if <code>__len__</code> returns 0. Because this <code>__len__</code> returns 1 even for an empty cart, <code>if cart:</code> is always true.</p>
 <p>Shows: Python’s truthiness protocol (<code>__bool__</code>, then <code>__len__</code>), and why a custom container’s emptiness check depends on those methods returning the real size.</p>
 <p>To find it: print <code>len(cart)</code> — it prints 1 even though the cart is empty. Change <code>__len__</code> to return <code>len(self._items)</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.22" id="build-a-query-with-method-chaining"><span class="header-section-number">4.22</span> Build a query with method chaining</h2>
 <p>Build a <code>QueryBuilder</code>, chain <code>.filter()</code> and <code>.limit()</code>, and call <code>.build()</code>. Does it return a dictionary with both values?</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> QueryBuilder:</span>
@@ -475,14 +475,14 @@
 <span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> {<span class="st">"filters"</span>: <span class="va">self</span>.filters, <span class="st">"limit"</span>: <span class="va">self</span>.limit_val}</span>
 <span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> QueryBuilder().<span class="bu">filter</span>(<span class="st">"age &gt; 18"</span>).limit(<span class="dv">10</span>).build()</span>
 <span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(query)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is the missing <code>return self</code> in <code>filter</code>. Every method in a fluent interface must return the object it was called on so the next method has something to call. Without <code>return self</code>, <code>filter</code> returns <code>None</code>. Calling <code>.limit(10)</code> on <code>None</code> raises <code>AttributeError: 'NoneType' object has no attribute 'limit'</code>.</p>
 <p>Shows: how method chaining works and the discipline required to make every step return <code>self</code>.</p>
 <p>To find it: the traceback says the error is on the chained line, pointing at <code>.limit</code>. The call before it—<code>filter</code>—is the culprit. Add <code>return self</code> at the end of <code>filter</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.23" id="add-a-prefix-to-log-messages"><span class="header-section-number">4.23</span> Add a prefix to log messages</h2>
 <p>Create an <code>AppLogger</code> and call <code>run()</code>. Does it print a log message, or does it raise an error?</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Logger:</span>
@@ -495,14 +495,14 @@
 <span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.log(<span class="st">"Starting up"</span>)</span>
 <span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> AppLogger()</span>
 <span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>app.run()</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is <code>self.log = "application"</code> inside <code>__init__</code>. That statement creates an instance attribute named <code>log</code> that holds the string <code>"application"</code>. When Python later looks up <code>self.log</code> in <code>run()</code>, it finds the instance attribute first and ignores the inherited <code>log()</code> method. Calling the string with <code>self.log("Starting up")</code> raises <code>TypeError: 'str' object is not callable</code>.</p>
 <p>Shows: how instance attributes shadow methods of the same name, and why attribute names must not collide with method names inherited from parent classes.</p>
 <p>To find it: print <code>type(self.log)</code> inside <code>run()</code> before the call. It will show <code>&lt;class 'str'&gt;</code>. Rename the attribute—for example, <code>self.prefix = "application"</code>—and update any references to it.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.24" id="get-the-number-of-items-in-a-dataset"><span class="header-section-number">4.24</span> Get the number of items in a dataset</h2>
 <p>Create a <code>DataSet</code> with three numbers and call <code>len()</code> on it. Does it return the integer 3?</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> DataSet:</span>
@@ -512,14 +512,14 @@
 <span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">len</span>(<span class="va">self</span>.data) <span class="op">/</span> <span class="dv">1</span></span>
 <span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>ds <span class="op">=</span> DataSet([<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>])</span>
 <span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(ds))</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is the <code>/</code> operator in <code>__len__</code>. In Python 3, <code>/</code> always performs true (floating-point) division and always returns a <code>float</code>, even when both operands are integers and the result is a whole number. <code>len()</code> requires an integer return value and raises <code>TypeError: 'float' object cannot be interpreted as an integer</code> when it gets a float.</p>
 <p>Shows: the difference between <code>/</code> (true division, returns float) and <code>//</code> (integer division, returns int), and that <code>__len__</code> has a strict return-type contract.</p>
 <p>To find it: the traceback says <code>TypeError</code> and names <code>__len__</code>. Replace <code>/</code> with <code>//</code>, or just write <code>return len(self.data)</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.25" id="add-a-third-coordinate-to-a-point"><span class="header-section-number">4.25</span> Add a third coordinate to a point</h2>
 <p>Create a <code>Point</code> with <code>x=3</code> and <code>y=4</code>, add <code>z=0</code>, and print all three coordinates. Does it work?</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Point:</span>
@@ -530,14 +530,14 @@
 <span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> Point(<span class="dv">3</span>, <span class="dv">4</span>)</span>
 <span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>p.z <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(p.x, p.y, p.z)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that <code>__slots__</code> lists only <code>x</code> and <code>y</code>. When <code>__slots__</code> is defined, Python removes the instance <code>__dict__</code> and allows only the named attributes. Assigning <code>p.z = 0</code> raises <code>AttributeError: 'Point' object has no attribute 'z'</code> because <code>z</code> is not in the slot list.</p>
 <p>Shows: what <code>__slots__</code> does (restricts attributes, saves memory, improves attribute access speed) and the trade-off it imposes (no dynamic attributes unless <code>__dict__</code> is also included in <code>__slots__</code>).</p>
 <p>To find it: the traceback points directly at <code>p.z = 0</code>. Either add <code>"z"</code> to <code>__slots__</code>, or remove <code>__slots__</code> entirely if dynamic attributes are needed.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.26" id="track-items-added-to-each-account"><span class="header-section-number">4.26</span> Track items added to each account</h2>
 <p>Create two <code>BankAccount</code> objects, add transactions to each, and print each account’s history. Does each account show only its own transactions?</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> BankAccount:</span>
@@ -556,14 +556,14 @@
 <span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    alice.withdraw(<span class="dv">30</span>)</span>
 <span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Alice's history: </span><span class="sc">{</span>alice<span class="sc">.</span>history<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Bob's history:   </span><span class="sc">{</span>bob<span class="sc">.</span>history<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that <code>history = []</code> is defined at class level, so all instances share the same list object instead of each having their own, and every account’s transactions appear in every other account.</p>
 <p>Shows: the difference between shared mutable class attributes and per-instance attributes initialized in <code>__init__</code>.</p>
 <p>To find it: create two accounts, add one transaction to the first and a different one to the second, then print <code>alice.history</code> and <code>bob.history</code>. If both lists contain both transactions, confirm the sharing with <code>print(BankAccount.history is alice.history)</code> — it will print <code>True</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="4.27" id="initialize-a-subclass-with-its-parents-attributes"><span class="header-section-number">4.27</span> Initialize a subclass with its parent’s attributes</h2>
 <p>Create a <code>Dog</code> named <code>"Rex"</code> and call <code>speak()</code>. Does it print a sentence with both the name and the sound?</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Animal:</span>
@@ -585,14 +585,14 @@
 <span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>    dog.learn_trick(<span class="st">"shake"</span>)</span>
 <span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Tricks: </span><span class="sc">{</span>dog<span class="sc">.</span>tricks<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(dog.speak())</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is forgetting <code>super().__init__()</code>, so the parent’s <code>__init__</code> is never called and required attributes are missing when a subclass method tries to use them.</p>
 <p>Shows: Python’s method resolution order and how to use <code>super()</code> correctly.</p>
 <p>To find it: instantiate the subclass and immediately try to access a parent-defined attribute. The <code>AttributeError</code> names the missing attribute. Search the subclass <code>__init__</code> for a call to <code>super().__init__()</code> — its absence is the cause.</p>
-</blockquote>
-</div>
+</details>
 
 </main>
 

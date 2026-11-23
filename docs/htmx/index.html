@@ -61,14 +61,14 @@
   &lt;div id="panel"&gt;Waiting for data...&lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is <code>hx-swap="outerHTML"</code> combined with <code>hx-target="#panel"</code>. The first click replaces the entire <code>&lt;div id="panel"&gt;</code> element with the server’s response <code>&lt;p&gt;Result: 42&lt;/p&gt;</code>. That <code>&lt;p&gt;</code> has no <code>id</code> attribute, so after the swap <code>#panel</code> no longer exists in the DOM. The second click finds no target and silently does nothing.</p>
 <p>Shows: the difference between <code>innerHTML</code> (replace the contents of the target, leaving the element itself in place) and <code>outerHTML</code> (replace the target element entirely).</p>
 <p>To find it: open DevTools, click Load once, then inspect the DOM. If the <code>&lt;div id="panel"&gt;</code> is gone and a bare <code>&lt;p&gt;</code> has taken its place, <code>outerHTML</code> swapped out the target itself. Change <code>hx-swap="outerHTML"</code> to <code>hx-swap="innerHTML"</code> so the element stays in the DOM and the next click can still find it.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="11.2" id="show-search-results-on-a-page"><span class="header-section-number">11.2</span> Show search results on a page</h2>
 <p>Start the server, open the page, and click Search. Where do the results appear?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -87,14 +87,14 @@
   &lt;div id="results"&gt;Results will appear here.&lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is the missing <code>hx-target</code> attribute. When no target is specified, HTMX defaults to swapping the response into the element that triggered the request — the button itself. The button’s label is replaced by the results HTML, and the <code>&lt;div id="results"&gt;</code> below it stays empty.</p>
 <p>Shows: HTMX’s default target behavior and how to use <code>hx-target</code> to direct a response to the correct element.</p>
 <p>To find it: inspect the button in DevTools after clicking. If its content has changed to a list of results, the response was swapped into the wrong element. Add <code>hx-target="#results"</code> to the button so the response lands in the dedicated container.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="11.3" id="display-a-loading-message-during-a-slow-fetch"><span class="header-section-number">11.3</span> Display a loading message during a slow fetch</h2>
 <p>Start the server, click Fetch, and watch the page during the two-second delay. Does any loading message appear?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -121,14 +121,14 @@
   &lt;div id="output"&gt;&lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is <code>hx-indicator="#spinner"</code> pointing to an element that does not exist. The <code>&lt;span&gt;</code> on the page has <code>id="loading"</code>, not <code>id="spinner"</code>. HTMX looks for <code>#spinner</code> at request time, finds nothing, and never toggles visibility.</p>
 <p>Shows: how <code>hx-indicator</code> works (HTMX adds <code>htmx-request</code> to the element during the request, which the CSS rule converts to <code>display: inline</code>) and why element IDs must match exactly.</p>
 <p>To find it: open DevTools and search the DOM for an element with <code>id="spinner"</code>. If none exists, the indicator selector is wrong. Change <code>hx-indicator="#spinner"</code> to <code>hx-indicator="#loading"</code> to match the actual element.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="11.4" id="filter-a-list-as-the-user-types"><span class="header-section-number">11.4</span> Filter a list as the user types</h2>
 <p>Start the server and watch its terminal output while you type a five-letter word one character at a time. How many requests arrive for each character?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -153,14 +153,14 @@
   &lt;div id="suggestions"&gt;&lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is <code>hx-trigger="input"</code>, which fires a new request on every single keystroke. Typing “apple” sends five requests in rapid succession. Each one may cancel the previous before the user finishes typing, and each one adds server load for a query that will be superseded immediately.</p>
 <p>Shows: HTMX trigger modifiers and why a debounce delay matters for search-as-you-type.</p>
 <p>To find it: watch the server log. If a request fires for every character, the trigger has no debounce. Change <code>hx-trigger="input"</code> to <code>hx-trigger="input changed delay:500ms"</code> to wait until the user pauses before sending.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="11.5" id="search-using-a-text-input-and-a-button"><span class="header-section-number">11.5</span> Search using a text input and a button</h2>
 <p>Start the server. Type a word and press Enter. Then type the same word and click Search. Do both produce the same result?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -185,14 +185,14 @@
   &lt;div id="output"&gt;Results appear here.&lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is placing <code>hx-get</code> on the button rather than on the <code>&lt;form&gt;</code> element. Clicking the button triggers HTMX and does a partial-page update. Pressing Enter in the text field activates the form’s native submit action (because no HTMX attribute intercepts it), which sends a GET request to <code>/submit</code> and reloads the whole page.</p>
 <p>Shows: where HTMX attributes belong when a form is involved, and how the browser’s native form submission can bypass HTMX.</p>
 <p>To find it: press Enter in the input and observe whether the page reloads. If it does, the form’s native <code>action</code> attribute is firing. Move <code>hx-get</code>, <code>hx-target</code>, and <code>hx-include</code> from the button to the <code>&lt;form&gt;</code> element so that both Enter and button-click go through HTMX.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="11.6" id="remove-a-record-with-a-button-click"><span class="header-section-number">11.6</span> Remove a record with a button click</h2>
 <p>Start the server and watch its terminal output while clicking Delete. Which HTTP method does the server log for each request?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -220,14 +220,14 @@
   &lt;div id="status"&gt;&lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is using <code>hx-get</code> for an operation that deletes data. The HTTP specification defines GET as safe and idempotent: it must not change server state, and anything that caches or prefetches URLs (a browser, a CDN, a search engine crawler) may issue it without the user’s knowledge. Using GET for deletion means a prefetcher could silently delete records.</p>
 <p>Shows: HTTP method semantics — GET for reading, DELETE (or POST) for removing — and why HTMX provides <code>hx-delete</code>, <code>hx-post</code>, and <code>hx-patch</code> as distinct attributes.</p>
 <p>To find it: check the server log after clicking Delete. If it shows <code>GET</code> instead of <code>DELETE</code>, the wrong attribute is being used. Replace <code>hx-get="/api/delete?id=1"</code> with <code>hx-delete="/api/items/1"</code> and update the server to handle the <code>DELETE</code> method.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="11.7" id="send-additional-parameters-with-a-request"><span class="header-section-number">11.7</span> Send additional parameters with a request</h2>
 <p>Start the server, click Subscribe, and read the server output. Does the server report receiving a <code>plan</code> field?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -248,14 +248,14 @@
   &lt;div id="output"&gt;&lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is using single quotes inside <code>hx-vals</code>. The <code>hx-vals</code> attribute must contain valid JSON, and JSON requires double quotes for both keys and string values. HTMX calls <code>JSON.parse</code> on the attribute value; when that fails it discards the extra fields and sends the request without them. No error appears in the page.</p>
 <p>Shows: JSON syntax (double quotes only) and how to use <code>hx-vals</code> to attach literal values to a request.</p>
 <p>To find it: open the browser console and look for a JSON parse error after clicking. Change the attribute to use double quotes and single-quote the outer HTML attribute: <code>hx-vals='{"plan": "premium", "version": 2}'</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="11.8" id="update-two-page-areas-from-a-single-request"><span class="header-section-number">11.8</span> Update two page areas from a single request</h2>
 <p>Start the server, click the button, and watch the notification area at the bottom. Does it update?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -275,14 +275,14 @@
   &lt;div id="notifications"&gt;Notifications: (none)&lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is an ID mismatch between the server’s out-of-band fragment and the element on the page. The server returns <code>&lt;div id="notification" hx-swap-oob="true"&gt;</code>, but the page has <code>&lt;div id="notifications"&gt;</code> (plural). HTMX looks for an element whose <code>id</code> matches exactly, finds none, and silently discards the OOB fragment.</p>
 <p>Shows: how out-of-band swaps work (<code>hx-swap-oob</code> targets an existing page element by <code>id</code>) and why typos in IDs fail without any visible error.</p>
 <p>To find it: search the server response in DevTools’ Network tab for the OOB fragment. Compare its <code>id</code> attribute to the <code>id</code> on the element you expect to update. Fix whichever is wrong so the two match.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="11.9" id="keep-the-url-bar-in-sync-with-displayed-content"><span class="header-section-number">11.9</span> Keep the URL bar in sync with displayed content</h2>
 <p>Start the server, click View Items, then reload the page. What does the browser display after the reload?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -303,14 +303,14 @@
   &lt;div id="content"&gt;Click the button to load items.&lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is <code>hx-push-url="true"</code> on a request that targets an API endpoint. After the click the URL bar shows <code>/api/items</code>. Reloading the page sends a fresh GET request to <code>/api/items</code>, which returns a bare <code>&lt;ul&gt;</code> fragment — no <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, or <code>&lt;body&gt;</code>. The browser displays raw HTML tags or a blank page.</p>
 <p>Shows: what <code>hx-push-url</code> does (it changes the browser’s URL history entry) and why the pushed URL must correspond to a real page that returns a full HTML document.</p>
 <p>To find it: after clicking, copy the URL from the address bar and paste it into a new tab. If you see a fragment instead of a page, the URL should not have been pushed. Use <code>hx-push-url="/items"</code> where <code>/items</code> returns a complete page, or remove <code>hx-push-url</code> entirely if history support is not needed.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="11.10" id="add-htmx-to-a-page-with-existing-links"><span class="header-section-number">11.10</span> Add HTMX to a page with existing links</h2>
 <p>Start the server, open <code>http://localhost:8000/boost</code>, and click “Download CSV”. Does the file download, or does something else happen?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -334,14 +334,14 @@
   &lt;p&gt;Main page content.&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is <code>hx-boost="true"</code> on a <code>&lt;nav&gt;</code> that contains a download link. <code>hx-boost</code> converts every link click in the container into an HTMX <code>GET</code> request that swaps the response body into the current page. When the download link is clicked, HTMX fetches <code>/download</code> via XHR. The browser’s built-in download behavior only triggers during direct navigation, not XHR, so <code>Content-Disposition: attachment</code> is ignored and the raw CSV text is swapped into the page instead of saved as a file.</p>
 <p>Shows: what <code>hx-boost</code> does to link clicks and that some links must remain as plain navigation to work correctly.</p>
 <p>To find it: add <code>hx-boost="false"</code> to the download link itself, which opts that element out of the boosted container. HTMX respects this override and lets the browser handle the click normally.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="11.11" id="search-using-fields-from-a-form"><span class="header-section-number">11.11</span> Search using fields from a form</h2>
 <p>Start the server, type a category, click Search, and read the server output. Which fields did the server receive?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -368,14 +368,14 @@
   &lt;/form&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is <code>hx-include="input"</code>, which is a CSS selector matching every <code>&lt;input&gt;</code> element on the entire page. The hidden <code>admin_token</code> field in the second form is included and sent to the server alongside <code>category</code>, even though it belongs to a completely different form that should never be submitted here.</p>
 <p>Shows: how <code>hx-include</code> selectors work and why an overly broad selector can leak data you did not intend to send.</p>
 <p>To find it: look at the server log. If it shows fields you did not expect, the selector is too broad. Replace <code>hx-include="input"</code> with <code>hx-include="#search-form input"</code> (or <code>hx-include="closest form"</code> if the button is inside the form) to include only the intended fields.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="11.12" id="refresh-a-list-when-a-new-item-is-added"><span class="header-section-number">11.12</span> Refresh a list when a new item is added</h2>
 <p>Start the server, add several items using the form, and watch the list below the form. Does it update after each addition?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -402,16 +402,16 @@
   &lt;/ul&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is on the server side. The <code>&lt;ul&gt;</code> listens for an <code>itemAdded</code> event dispatched from the body (<code>hx-trigger="load, itemAdded from:body"</code>). HTMX fires that event when it receives a response that includes the header <code>HX-Trigger: itemAdded</code>. The server’s <code>POST /api/add-item</code> handler does not send that header, so the event never fires and the list only loads once (on page load) and never again.</p>
 <p>Shows: the <code>HX-Trigger</code> response header as a server-to-client signaling mechanism, and how HTMX can coordinate multiple page elements without JavaScript.</p>
 <p>To find it: inspect the response headers for <code>POST /api/add-item</code> in DevTools’ Network tab. If <code>HX-Trigger</code> is absent, the server is not sending the signal. Add the header to the response:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="va">self</span>.send_header(<span class="st">"HX-Trigger"</span>, <span class="st">"itemAdded"</span>)</span></code></pre></div>
 <p>The list will then re-fetch itself automatically after every successful addition.</p>
-</blockquote>
-</div>
+</details>
 
 </main>
 

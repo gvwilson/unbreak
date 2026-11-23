@@ -52,6 +52,7 @@ Run the script with the provided CSV file and read the traceback. Which line in 
 file triggers the error? Examine that line carefully.
 
 {{< inc interpy/commas.py >}}
+
 {{< inc interpy/commas.csv >}}
 
 <details>
@@ -119,6 +120,7 @@ Run the script so that it raises an exception part-way through writing. Then ope
 the output file. Does it contain complete data?
 
 {{< inc interpy/unclosed.py >}}
+
 {{< inc interpy/unclosed.txt >}}
 
 <details>

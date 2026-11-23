@@ -6,6 +6,7 @@ Run this script and look at the order of the numbers it prints. Is the smallest
 number first? What order would you expect?
 
 {{< inc shell/numericsort.sh >}}
+
 {{< inc shell/numericsort.txt >}}
 
 <details>
@@ -70,6 +71,7 @@ Run this script and check the count it reports. Then look at the species column 
 `species.csv`. How many distinct species are there, and does the count match?
 
 {{< inc shell/uniqsorted.sh >}}
+
 {{< inc shell/species.csv >}}
 
 <details>
@@ -138,6 +140,7 @@ Run this script and note which rows are printed. Are they from the beginning or
 end of the file?
 
 {{< inc shell/headtail.sh >}}
+
 {{< inc shell/headtail.txt >}}
 
 <details>
@@ -162,6 +165,7 @@ Read the comment at the top of the script. Map out the expected directory struct
 on paper. How many levels up does `../..` go? Is that where `shared/` lives?
 
 {{< inc shell/dotdot.sh >}}
+
 {{< inc shell/measurements.txt >}}
 
 <details>
@@ -186,6 +190,7 @@ Run this script and look at the numbers it prints. Do they match the number of
 lines (records) in the file?
 
 {{< inc shell/wcflag.sh >}}
+
 {{< inc shell/wcflag.txt >}}
 
 <details>
@@ -231,6 +236,7 @@ Run this script and examine the output. Does each output line contain just the
 family name, or does it contain the whole row?
 
 {{< inc shell/cutdelim.sh >}}
+
 {{< inc shell/cutdelim.txt >}}
 
 <details>
@@ -253,6 +259,7 @@ Run this script and read the output. Do the lines shown contain the word you
 were searching for?
 
 {{< inc shell/grepinvert.sh >}}
+
 {{< inc shell/grepinvert.txt >}}
 
 <details>
@@ -301,8 +308,11 @@ Run this script and read the resulting `report.txt`. Does the report begin with
 the introduction, or with a different section?
 
 {{< inc shell/catorder.sh >}}
+
 {{< inc shell/section1.txt >}}
+
 {{< inc shell/section2.txt >}}
+
 {{< inc shell/section3.txt >}}
 
 <details>
@@ -373,6 +383,7 @@ Run this script and count the data rows in the output. Then count the data rows
 in the original file. Are they the same?
 
 {{< inc shell/headcount.sh >}}
+
 {{< inc shell/headcount.csv >}}
 
 <details>

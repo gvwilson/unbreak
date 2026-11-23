@@ -29,6 +29,7 @@ Run this script with the provided input file and examine the average it prints. 
 the value look like a reasonable average of exam scores?
 
 {{< inc basicpy/catadd.py >}}
+
 {{< inc basicpy/catadd.txt >}}
 
 <details>
@@ -118,6 +119,7 @@ Then trace through the loop by hand with a short example—track what the "previ
 line" variable holds at each step.
 
 {{< inc basicpy/indent.py >}}
+
 {{< inc basicpy/indent.txt >}}
 
 <details>
@@ -163,6 +165,7 @@ Which line raises the error, and what does the error message tell you about what
 is missing?
 
 {{< inc basicpy/nokey.py >}}
+
 {{< inc basicpy/nokey.txt >}}
 
 <details>
@@ -187,6 +190,7 @@ Run this script with a user ID taken directly from the JSON file. Does it grant
 access? Use `type()` to examine the types of the two values being compared.
 
 {{< inc basicpy/streq.py >}}
+
 {{< inc basicpy/streq.json >}}
 
 <details>
@@ -252,6 +256,7 @@ fails to match its expected string. Does the `repr()` output reveal anything tha
 was not visible before?
 
 {{< inc basicpy/trailing.py >}}
+
 {{< inc basicpy/trailing.txt >}}
 
 <details>

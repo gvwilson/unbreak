@@ -140,6 +140,7 @@ fetch request succeed, or do you see an error? Compare this with running the sam
 request from the command line.
 
 {{< inc jsbrowser/cors_server.py >}}
+
 {{< inc jsbrowser/cors.html >}}
 
 <details>
@@ -166,6 +167,7 @@ take effect? Try checking the network tab in DevTools to see which version of th
 file the browser is serving.
 
 {{< inc jsbrowser/caching.js >}}
+
 {{< inc jsbrowser/caching.html >}}
 
 <details>
@@ -191,7 +193,9 @@ Can you identify the exact source location of the problem from the information
 shown?
 
 {{< inc jsbrowser/sourcemap_original.js >}}
+
 {{< inc jsbrowser/sourcemap.min.js >}}
+
 {{< inc jsbrowser/sourcemap.html >}}
 
 <details>

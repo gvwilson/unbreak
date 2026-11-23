@@ -61,14 +61,14 @@
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is placing <code>x-data="{ visible: false }"</code> on an inner <code>&lt;span&gt;</code> while putting <code>x-show="visible"</code> and <code>@click</code> on the outer <code>&lt;div&gt;</code>. Alpine directives can only read data from <code>x-data</code> defined on the same element or one of its ancestors. A child’s <code>x-data</code> is invisible to its parent’s directives, so <code>visible</code> is undefined in the outer scope and nothing happens.</p>
 <p>Shows: Alpine’s scope model — <code>x-data</code> creates a component boundary; everything inside it shares that scope, but nothing outside it does.</p>
 <p>To find it: open DevTools, click Toggle, and watch the console for an “undefined” reference. Move <code>x-data="{ visible: false }"</code> from the <code>&lt;span&gt;</code> to the outer <code>&lt;div&gt;</code> so that <code>x-show</code> and <code>@click</code> can both see the reactive property.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="12.2" id="submit-a-name-and-show-a-confirmation"><span class="header-section-number">12.2</span> Submit a name and show a confirmation</h2>
 <p>Type a name and click Submit. Does the confirmation appear, or does the page reload?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -91,14 +91,14 @@
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is <code>@submit</code> without the <code>.prevent</code> modifier. Without <code>.prevent</code>, Alpine runs <code>submitted = true</code> and then lets the browser’s default form submission proceed. The browser reloads the page, which destroys the Alpine component and all its state before the confirmation can ever be shown.</p>
 <p>Shows: event modifier syntax in Alpine (<code>@submit.prevent</code>) and why <code>preventDefault()</code> is essential whenever a form has a <code>type="submit"</code> button.</p>
 <p>To find it: watch the address bar after clicking Submit. If it appends <code>?name=...</code> and refreshes, the native action is firing. Change <code>@submit</code> to <code>@submit.prevent</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="12.3" id="show-content-only-after-alpine-loads"><span class="header-section-number">12.3</span> Show content only after Alpine loads</h2>
 <p>Reload the page with network throttling enabled in DevTools (Network tab, set to “Slow 3G”). Is the counter area blank for a moment before the count appears?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -121,15 +121,15 @@
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that <code>x-cloak</code> is applied to the element, but the CSS rule that hides it is missing. Alpine removes the <code>x-cloak</code> attribute after it initializes the component, so the intended pattern is: CSS hides the element initially, then Alpine removes <code>x-cloak</code> to reveal it. Without the rule, the element is visible from the start and shows blank or partially-initialized content before Alpine processes it.</p>
 <p>Shows: how <code>x-cloak</code> works and why it requires both the attribute <em>and</em> the CSS rule:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[</span><span class="ss">x-cloak</span><span class="ex">]</span> { <span class="kw">display</span><span class="ch">:</span> <span class="dv">none</span><span class="op">;</span> }</span></code></pre></div>
 <p>To find it: inspect the element and search for <code>x-cloak</code> in the Styles panel. If no rule targets <code>[x-cloak]</code>, add one in a <code>&lt;style&gt;</code> block in <code>&lt;head&gt;</code>, before the Alpine script tag.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="12.4" id="display-a-greeting-from-component-state"><span class="header-section-number">12.4</span> Display a greeting from component state</h2>
 <p>Open the page. Does any text appear in the paragraph?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -148,14 +148,14 @@
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is <code>x-data="'hello'"</code>. Alpine evaluates the attribute value as a JavaScript expression, which here produces the string <code>"hello"</code>. Alpine wraps whatever <code>x-data</code> returns in a reactive proxy, but <code>"hello".message</code> is <code>undefined</code>, so <code>x-text="message"</code> sets the paragraph to an empty string.</p>
 <p>Shows: that <code>x-data</code> must receive a JavaScript <em>object literal</em> (<code>{ key: value }</code>) to create named reactive properties. A string, number, or array works as a data source only if you access its built-in properties.</p>
 <p>To find it: open DevTools and inspect the element. Check what <code>x-data</code> evaluates to. Replace <code>x-data="'hello'"</code> with <code>x-data="{ message: 'hello' }"</code> so that <code>message</code> is a named, reactive property.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="12.5" id="show-and-hide-an-error-message"><span class="header-section-number">12.5</span> Show and hide an error message</h2>
 <p>Open the page and click “Trigger Error” several times. Does the error message appear and disappear?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -177,14 +177,14 @@
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is putting <code>x-if</code> on a <code>&lt;div&gt;</code> instead of a <code>&lt;template&gt;</code> element. Alpine requires <code>x-if</code> to be on a <code>&lt;template&gt;</code> tag, because <code>&lt;template&gt;</code> has no rendered output of its own — it is a pure placeholder. When <code>x-if</code> appears on any other element, Alpine silently ignores it and the content is always shown.</p>
 <p>Shows: the distinction between <code>x-if</code> (which adds and removes elements from the DOM entirely, and requires <code>&lt;template&gt;</code>) and <code>x-show</code> (which toggles <code>display: none</code> on any element).</p>
 <p>To find it: open the console. Alpine logs a warning when <code>x-if</code> is misused. Replace <code>&lt;div x-if="hasError"&gt;</code> with <code>&lt;template x-if="hasError"&gt;&lt;div&gt;...&lt;/div&gt;&lt;/template&gt;</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="12.6" id="mirror-text-input-in-real-time"><span class="header-section-number">12.6</span> Mirror text input in real time</h2>
 <p>Open the page and type in the input field. Does the paragraph below update as you type?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -204,14 +204,14 @@
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is using <code>x-bind:value</code> instead of <code>x-model</code>. <code>x-bind:value</code> only sets the input’s <code>value</code> attribute from the reactive property — it does not listen for changes. When the user types, the input’s visual content changes, but no event updates <code>message</code> in the Alpine component. The binding runs only one way: state to input.</p>
 <p>Shows: the difference between <code>x-bind:value</code> (one-way, state → element) and <code>x-model</code> (two-way, state ↔︎ element). <code>x-model</code> is shorthand for <code>x-bind:value</code> <em>plus</em> <code>@input="message = $event.target.value"</code>.</p>
 <p>To find it: type in the input and check <code>message</code> in the Alpine devtools or the console. If it stays empty, the input is not sending updates back. Replace <code>x-bind:value="message"</code> with <code>x-model="message"</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="12.7" id="show-an-input-and-move-focus-to-it"><span class="header-section-number">12.7</span> Show an input and move focus to it</h2>
 <p>Open the page and click “Edit”. Does the cursor appear inside the input field?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -231,14 +231,14 @@
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is calling <code>$refs.field.focus()</code> in the same synchronous tick as the <code>x-show</code> update. When <code>editing = true</code> runs, Alpine schedules the DOM update for the next microtask — the element is still hidden when <code>focus()</code> is called immediately after. Browsers refuse to focus hidden elements, so the call silently does nothing.</p>
 <p>Shows: Alpine’s batched, asynchronous DOM updates and <code>$nextTick</code>, which delays a callback until after Alpine has finished applying all pending changes to the DOM.</p>
 <p>To find it: add <code>console.log($refs.field.style.display)</code> before the focus call. If it logs <code>"none"</code>, the element is still hidden. Change the click handler to <code>editing = true; $nextTick(() =&gt; $refs.field.focus())</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="12.8" id="load-data-from-the-server-on-startup"><span class="header-section-number">12.8</span> Load data from the server on startup</h2>
 <p>Start the server, open the page, and wait a moment. Does a greeting appear, or does the paragraph show the fallback message?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -265,15 +265,15 @@
   &lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that <code>loadGreeting</code> is a named global function. Inside a named function, bare identifiers like <code>greeting</code> refer to the surrounding JavaScript scope — in this case, the global (<code>window</code>) scope. Alpine evaluates <code>x-init="loadGreeting()"</code> in its component scope, but once execution enters the named function body, that scope is gone. The assignment <code>greeting = data.message</code> creates or updates <code>window.greeting</code>, not the component’s reactive <code>greeting</code> property, so Alpine never sees the change.</p>
 <p>Shows: how Alpine’s scope injection works only inside expression strings — not inside called function bodies — and why <code>x-init</code> expressions that use component properties should be written inline or receive <code>this</code> explicitly.</p>
 <p>To find it: add <code>console.log(window.greeting)</code> inside <code>loadGreeting</code> after the fetch. If it shows the message, the assignment hit the global scope. Fix the handler by writing it inline so Alpine’s scope applies:</p>
 <pre><code>x-init="async () =&gt; { const r = await fetch('/api/greeting'); greeting = (await r.json()).message; }"</code></pre>
-</blockquote>
-</div>
+</details>
 <h2 data-number="12.9" id="display-a-count-from-a-shared-store"><span class="header-section-number">12.9</span> Display a count from a shared store</h2>
 <p>Open the page and check the browser console. Does a number appear next to “Items in cart”?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -299,14 +299,14 @@
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that <code>Alpine.store('cart', { count: 0 })</code> is never called, so <code>$store.cart</code> is <code>undefined</code>. When the template tries to read <code>$store.cart.count</code>, JavaScript throws <code>TypeError: Cannot read properties of undefined</code>, the component fails to render, and the console shows an error.</p>
 <p>Shows: that <code>Alpine.store</code> must be registered before Alpine initializes the components that use it. The correct place to register a store is inside the <code>alpine:init</code> event listener, which fires before Alpine processes any components.</p>
 <p>To find it: open the console and read the error. Uncomment the <code>Alpine.store('cart', { count: 0 })</code> line inside the <code>alpine:init</code> listener.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="12.10" id="remove-items-from-a-list"><span class="header-section-number">12.10</span> Remove items from a list</h2>
 <p>Open the page, type something in the second row’s input, then click Delete next to the first item. Which row’s typed text disappears?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -334,14 +334,14 @@
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is the missing <code>:key</code> binding on <code>x-for</code>. Without a key, Alpine matches old DOM nodes to new data items purely by position. After the first item is removed, every remaining item shifts up by one position. Alpine reuses the existing DOM nodes in order rather than creating new ones, which means the <code>&lt;input&gt;</code> that belonged to the second item stays in place but is now labeled as the first item. Any typed content appears to have moved to the wrong row.</p>
 <p>Shows: why <code>:key</code> matters and how Alpine uses it to match DOM nodes to data items by identity rather than by index, allowing it to move or remove the correct node.</p>
 <p>To find it: type in the second input, delete the first item, and watch which input retains the typed value. Add <code>:key="item"</code> to the <code>&lt;template&gt;</code> tag (or use a unique id if items can repeat) so Alpine tracks each DOM node correctly.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="12.11" id="increment-a-counter-using-an-external-object"><span class="header-section-number">12.11</span> Increment a counter using an external object</h2>
 <p>Open the page and click Increment several times. Does the counter change?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -364,14 +364,14 @@
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is <code>config.count++</code>. When Alpine sees <code>x-data="config"</code>, it copies the properties of <code>config</code> into a new reactive proxy and uses that proxy to drive the template. Clicking the button updates <code>config.count</code> on the original plain object, which is no longer connected to Alpine’s proxy. The proxy still holds the old value, so the display never changes.</p>
 <p>Shows: that <code>x-data</code> takes a snapshot of its argument’s properties at initialization time. Mutations to the original object after that point are invisible to Alpine. Reactive updates must go through the proxy — meaning you use the bare property name (<code>count++</code>) inside an Alpine expression, not a reference to the external object.</p>
 <p>To find it: add <code>console.log(config.count)</code> to the click handler. If it increments but the display doesn’t, the external object and the proxy have diverged. Change <code>config.count++</code> to <code>count++</code>.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="12.12" id="close-a-panel-by-pressing-escape"><span class="header-section-number">12.12</span> Close a panel by pressing Escape</h2>
 <p>Open the page, click somewhere inside the panel, and press Escape. Does the panel close?</p>
 <pre><code>&lt;!DOCTYPE html&gt;
@@ -395,9 +395,10 @@
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is placing <code>@keydown.escape</code> on a <code>&lt;div&gt;</code> that has no <code>tabindex</code> attribute. Keyboard events are dispatched only to elements that can receive focus. Plain <code>&lt;div&gt;</code> elements are not focusable by default, so they never appear in the keyboard event path and the <code>@keydown</code> listener never fires, no matter how many times you press Escape.</p>
 <p>Shows: the connection between focusability and keyboard events, and two ways Alpine provides to listen for window-level keyboard events:</p>
 <ul>
@@ -405,8 +406,7 @@
 <li>Replace <code>@keydown.escape</code> with <code>@keydown.window.escape</code>, which attaches the listener to the window so it fires regardless of which element has focus.</li>
 </ul>
 <p>To find it: open DevTools, click inside the panel, and check the Elements panel to see if the <code>&lt;div&gt;</code> is focused (a blue outline or the <code>:focus</code> pseudo-class). If it isn’t focusable, keyboard events skip it.</p>
-</blockquote>
-</div>
+</details>
 
 </main>
 

@@ -6,6 +6,7 @@ Run the parser with the provided CSV file. Do all rows produce the correct numbe
 of fields? Pay particular attention to rows that contain commas.
 
 {{< inc diot/quotecsv.py >}}
+
 {{< inc diot/quotecsv.csv >}}
 
 <details>
@@ -72,6 +73,7 @@ Run the script with the provided HTML file and check whether it finds all the
 expected elements. What happens when an element is not found?
 
 {{< inc diot/missparse.py >}}
+
 {{< inc diot/missparse.html >}}
 
 <details>
@@ -157,6 +159,7 @@ Run the script from a different working directory than the one where the script
 file is saved. Does it find its configuration file?
 
 {{< inc diot/abspath.py >}}
+
 {{< inc diot/abspath.json >}}
 
 <details>

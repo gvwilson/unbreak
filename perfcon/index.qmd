@@ -6,6 +6,7 @@ Run the word-frequency function on the provided text file and time how long it
 takes. Then run `cProfile` on it to see which lines consume the most time.
 
 {{< inc perfcon/repscans.py >}}
+
 {{< inc perfcon/repscans.txt >}}
 
 <details>
@@ -96,7 +97,9 @@ the mock is actually being called. Then look at the return value of the function
 under test.
 
 {{< inc perfcon/mockpatch_source.py >}}
+
 {{< inc perfcon/mockpatch_user.py >}}
+
 {{< inc perfcon/mockpatch.py >}}
 
 <details>

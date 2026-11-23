@@ -33,178 +33,181 @@
 <h1 class="title">Performance, Concurrency, and System Interaction</h1>
 <h2 data-number="7.1" id="find-the-most-common-word-in-a-text"><span class="header-section-number">7.1</span> Find the most common word in a text</h2>
 <p>Run the word-frequency function on the provided text file and time how long it takes. Then run <code>cProfile</code> on it to see which lines consume the most time.</p>
-<p><code class="sourceCode python"><span class="im">import</span> sys
-<span class="im">import</span> time
-<span class="kw">def</span> most_common_slow(text):
-    <span class="co">"""Return the most common word using a repeated full-text scan per word."""</span>
-    words <span class="op">=</span> text.split()
-    unique <span class="op">=</span> <span class="bu">set</span>(words)
-    best_word, best_count <span class="op">=</span> <span class="va">None</span>, <span class="dv">0</span>
-    <span class="cf">for</span> word <span class="kw">in</span> unique:
-        count <span class="op">=</span> text.count(word)
-        <span class="cf">if</span> count <span class="op">&gt;</span> best_count:
-            best_count, best_word <span class="op">=</span> count, word
-    <span class="cf">return</span> best_word, best_count
-<span class="kw">def</span> generate_text(num_words<span class="op">=</span><span class="dv">50_000</span>, vocab_size<span class="op">=</span><span class="dv">500</span>):
-    <span class="co">"""Generate a reproducible text with a known vocabulary for timing tests."""</span>
-    <span class="im">import</span> random
-    random.seed(<span class="dv">42</span>)
-    vocab <span class="op">=</span> [<span class="ss">f"word</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(vocab_size)]
-    <span class="cf">return</span> <span class="st">" "</span>.join(random.choice(vocab) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(num_words))
-<span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:
-    <span class="cf">if</span> <span class="bu">len</span>(sys.argv) <span class="op">&gt;</span> <span class="dv">1</span>:
-        <span class="cf">with</span> <span class="bu">open</span>(sys.argv[<span class="dv">1</span>]) <span class="im">as</span> f:
-            text <span class="op">=</span> f.read()
-        <span class="bu">print</span>(<span class="ss">f"Loaded </span><span class="sc">{</span><span class="bu">len</span>(text.split())<span class="sc">}</span><span class="ss"> words from </span><span class="sc">{</span>sys<span class="sc">.</span>argv[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)
-    <span class="cf">else</span>:
-        <span class="bu">print</span>(<span class="st">"No file given; generating 50,000-word test text…"</span>)
-        text <span class="op">=</span> generate_text()
-    start <span class="op">=</span> time.perf_counter()
-    word, count <span class="op">=</span> most_common_slow(text)
-    elapsed <span class="op">=</span> time.perf_counter() <span class="op">-</span> start
-    <span class="bu">print</span>(<span class="ss">f"Most common: </span><span class="sc">{</span>word<span class="sc">!r}</span><span class="ss"> (</span><span class="sc">{</span>count<span class="sc">}</span><span class="ss"> times)"</span>)
-    <span class="bu">print</span>(<span class="ss">f"Slow method: </span><span class="sc">{</span>elapsed<span class="sc">:.3f}</span><span class="ss">s"</span>)
-    <span class="bu">print</span>()
-    <span class="bu">print</span>(<span class="st">"Fix: replace the loop with collections.Counter(text.split()).most_common(1)"</span>)</code> <code>the quick brown fox jumps over the lazy dog the fox was very quick
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> most_common_slow(text):</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return the most common word using a repeated full-text scan per word."""</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> text.split()</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    unique <span class="op">=</span> <span class="bu">set</span>(words)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    best_word, best_count <span class="op">=</span> <span class="va">None</span>, <span class="dv">0</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> word <span class="kw">in</span> unique:</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        count <span class="op">=</span> text.count(word)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> count <span class="op">&gt;</span> best_count:</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>            best_count, best_word <span class="op">=</span> count, word</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> best_word, best_count</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_text(num_words<span class="op">=</span><span class="dv">50_000</span>, vocab_size<span class="op">=</span><span class="dv">500</span>):</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Generate a reproducible text with a known vocabulary for timing tests."""</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> random</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    random.seed(<span class="dv">42</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    vocab <span class="op">=</span> [<span class="ss">f"word</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(vocab_size)]</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">" "</span>.join(random.choice(vocab) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(num_words))</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(sys.argv) <span class="op">&gt;</span> <span class="dv">1</span>:</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(sys.argv[<span class="dv">1</span>]) <span class="im">as</span> f:</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>            text <span class="op">=</span> f.read()</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Loaded </span><span class="sc">{</span><span class="bu">len</span>(text.split())<span class="sc">}</span><span class="ss"> words from </span><span class="sc">{</span>sys<span class="sc">.</span>argv[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"No file given; generating 50,000-word test text…"</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        text <span class="op">=</span> generate_text()</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    start <span class="op">=</span> time.perf_counter()</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    word, count <span class="op">=</span> most_common_slow(text)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    elapsed <span class="op">=</span> time.perf_counter() <span class="op">-</span> start</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Most common: </span><span class="sc">{</span>word<span class="sc">!r}</span><span class="ss"> (</span><span class="sc">{</span>count<span class="sc">}</span><span class="ss"> times)"</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Slow method: </span><span class="sc">{</span>elapsed<span class="sc">:.3f}</span><span class="ss">s"</span>)</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Fix: replace the loop with collections.Counter(text.split()).most_common(1)"</span>)</span></code></pre></div>
+<pre><code>the quick brown fox jumps over the lazy dog the fox was very quick
 and the dog was very lazy the brown fox leaped high over the sleeping dog
 a quick brown fox is quicker than a lazy brown dog or so they say
 the dog slept under the tree while the fox ran quickly through the field
-over and over the fox jumped and the dog slept on and on</code></p>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+over and over the fox jumped and the dog slept on and on</code></pre>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is calling <code>text.count(word)</code> for every unique word, re-scanning the entire text each time. On a file of 50,000 words it takes several seconds, while a single pass with <code>collections.Counter</code> is nearly instant.</p>
 <p>Shows: how to identify repeated-scan inefficiency with <code>cProfile</code> and how choosing the right data structure eliminates the need for multiple passes.</p>
 <p>To find it: run <code>python -m cProfile -s cumulative script.py | head -20</code> and look for <code>str.count</code> near the top of the cumulative-time column. Each call re-scans the entire string; multiplying the call count by the string length shows why this is slow.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="7.2" id="run-an-external-tool-and-capture-its-output"><span class="header-section-number">7.2</span> Run an external tool and capture its output</h2>
 <p>Run this script. Does it return promptly, or does it hang?</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> subprocess</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count_words(text):</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Count words in text by passing it to a child Python process."""</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    proc <span class="op">=</span> subprocess.Popen(</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        [sys.executable, <span class="st">"-c"</span>, <span class="st">"import sys; print(len(sys.stdin.read().split()))"</span>],</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        stdout<span class="op">=</span>subprocess.PIPE,</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        stdout, _ <span class="op">=</span> proc.communicate(timeout<span class="op">=</span><span class="dv">3</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">int</span>(stdout.strip())</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> subprocess.TimeoutExpired:</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        proc.kill()</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        proc.wait()</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    sample <span class="op">=</span> <span class="st">"the quick brown fox jumps over the lazy dog"</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Text: </span><span class="sc">{</span>sample<span class="sc">!r}</span><span class="ss">"</span>)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Expected word count: </span><span class="sc">{</span><span class="bu">len</span>(sample.split())<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Calling count_words()… (will time out in 3 s if stdin is not piped)"</span>)</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> count_words(sample)</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> result <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Timed out — child was waiting for stdin that was never provided"</span>)</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Word count: </span><span class="sc">{</span>result<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> subprocess</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count_words(text):</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Count words in text by passing it to a child Python process."""</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    proc <span class="op">=</span> subprocess.Popen(</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        [sys.executable, <span class="st">"-c"</span>, <span class="st">"import sys; print(len(sys.stdin.read().split()))"</span>],</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        stdout<span class="op">=</span>subprocess.PIPE,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        stdout, _ <span class="op">=</span> proc.communicate(timeout<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">int</span>(stdout.strip())</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> subprocess.TimeoutExpired:</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        proc.kill()</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        proc.wait()</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    sample <span class="op">=</span> <span class="st">"the quick brown fox jumps over the lazy dog"</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Text: </span><span class="sc">{</span>sample<span class="sc">!r}</span><span class="ss">"</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Expected word count: </span><span class="sc">{</span><span class="bu">len</span>(sample.split())<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Calling count_words()… (will time out in 3 s if stdin is not piped)"</span>)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> count_words(sample)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> result <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Timed out — child was waiting for stdin that was never provided"</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Word count: </span><span class="sc">{</span>result<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that the subprocess is waiting for input on stdin that the parent never provides, so the script hangs and never returns.</p>
 <p>Shows: how subprocess I/O streams work and how to use <code>communicate()</code> safely.</p>
 <p>To find it: run the script and wait ten seconds. If it does not return, kill it with Ctrl-C. Then check the <code>Popen</code> call: if <code>stdin</code> is not set to <code>subprocess.DEVNULL</code> or <code>subprocess.PIPE</code> paired with <code>communicate()</code>, the child inherits the terminal and blocks waiting for input that never arrives.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="7.3" id="count-requests-handled-by-concurrent-workers"><span class="header-section-number">7.3</span> Count requests handled by concurrent workers</h2>
 <p>Run this script several times and record the final counter value each time. Is the value always the same? Is it always the value you expect?</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> threading</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>THREADS <span class="op">=</span> <span class="dv">5</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>INCREMENTS <span class="op">=</span> <span class="dv">100_000</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>counter <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> increment():</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> counter</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(INCREMENTS):</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        counter <span class="op">=</span> counter <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    threads <span class="op">=</span> [threading.Thread(target<span class="op">=</span>increment) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(THREADS)]</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> threads:</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        t.start()</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> threads:</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        t.join()</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    expected <span class="op">=</span> THREADS <span class="op">*</span> INCREMENTS</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Expected: </span><span class="sc">{</span>expected<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Got:      </span><span class="sc">{</span>counter<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> counter <span class="op">!=</span> expected:</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Lost </span><span class="sc">{</span>expected <span class="op">-</span> counter<span class="sc">}</span><span class="ss"> increments to the race condition"</span>)</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"(got lucky this run — try again or increase INCREMENTS)"</span>)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> threading</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>THREADS <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>INCREMENTS <span class="op">=</span> <span class="dv">100_000</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>counter <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> increment():</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> counter</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(INCREMENTS):</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        counter <span class="op">=</span> counter <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    threads <span class="op">=</span> [threading.Thread(target<span class="op">=</span>increment) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(THREADS)]</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> threads:</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        t.start()</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> threads:</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        t.join()</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    expected <span class="op">=</span> THREADS <span class="op">*</span> INCREMENTS</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Expected: </span><span class="sc">{</span>expected<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Got:      </span><span class="sc">{</span>counter<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> counter <span class="op">!=</span> expected:</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Lost </span><span class="sc">{</span>expected <span class="op">-</span> counter<span class="sc">}</span><span class="ss"> increments to the race condition"</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"(got lucky this run — try again or increase INCREMENTS)"</span>)</span></code></pre></div>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is a race condition caused by unsynchronized read-modify-write, so multiple threads updating a shared counter produce wrong totals.</p>
 <p>Shows: what a race condition is, why it is hard to reproduce, and how to use <code>threading.Lock</code> to fix it.</p>
 <p>To find it: run the script five times in a row and record each final counter value. If the values differ across runs, the counter is not being updated atomically. Print the expected value (number of threads multiplied by increments per thread) alongside each observed value to make the discrepancy concrete.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="7.4" id="share-a-lookup-table-across-worker-processes"><span class="header-section-number">7.4</span> Share a lookup table across worker processes</h2>
 <p>Run this script and compare the contents of the shared list before and after the worker processes run. Did the workers modify the list you passed in?</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> multiprocessing</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> []</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> collect(value):</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    results.append(value)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    processes <span class="op">=</span> [</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        multiprocessing.Process(target<span class="op">=</span>collect, args<span class="op">=</span>(i,))</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> p <span class="kw">in</span> processes:</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        p.start()</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> p <span class="kw">in</span> processes:</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        p.join()</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"results: </span><span class="sc">{</span>results<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"expected: [0, 1, 2, 3, 4] in some order"</span>)</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Each child process gets its own copy of memory."</span>)</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Fix: use multiprocessing.Manager().list() or return values via a Queue."</span>)</span></code></pre></div>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> multiprocessing</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> []</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> collect(value):</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    results.append(value)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    processes <span class="op">=</span> [</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        multiprocessing.Process(target<span class="op">=</span>collect, args<span class="op">=</span>(i,))</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> p <span class="kw">in</span> processes:</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        p.start()</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> p <span class="kw">in</span> processes:</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        p.join()</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"results: </span><span class="sc">{</span>results<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"expected: [0, 1, 2, 3, 4] in some order"</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Each child process gets its own copy of memory."</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Fix: use multiprocessing.Manager().list() or return values via a Queue."</span>)</span></code></pre></div>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is that each process has its own copy of memory, so changes made inside child processes are not visible in the parent’s shared list.</p>
 <p>Shows: the difference between threading and multiprocessing memory models.</p>
 <p>To find it: print <code>id(shared_list)</code> inside the worker function and inside the parent process. If the two addresses differ, each process has its own copy of the list and modifications inside workers are invisible to the parent.</p>
-</blockquote>
-</div>
+</details>
 <h2 data-number="7.5" id="mock-a-function-where-it-is-imported"><span class="header-section-number">7.5</span> Mock a function where it is imported</h2>
 <p>Run the test. Does it pass? Add a print statement inside the mock to check whether the mock is actually being called. Then look at the return value of the function under test.</p>
-<p><code class="sourceCode python"><span class="kw">def</span> fetch_data():
-    <span class="co">"""Return records from the data store."""</span>
-    <span class="cf">return</span> [<span class="st">"alpha"</span>, <span class="st">"beta"</span>, <span class="st">"gamma"</span>]</code> <code class="sourceCode python"><span class="im">from</span> mockpatch_source <span class="im">import</span> fetch_data
-<span class="kw">def</span> process():
-    <span class="co">"""Fetch records and return them uppercased."""</span>
-    <span class="cf">return</span> [item.upper() <span class="cf">for</span> item <span class="kw">in</span> fetch_data()]</code> <code class="sourceCode python"><span class="im">from</span> unittest.mock <span class="im">import</span> patch
-<span class="im">import</span> mockpatch_user
-<span class="kw">def</span> test_process():
-    <span class="cf">with</span> patch(<span class="st">"mockpatch_source.fetch_data"</span>, return_value<span class="op">=</span>[<span class="st">"mock"</span>, <span class="st">"data"</span>]):
-        result <span class="op">=</span> mockpatch_user.process()
-    <span class="bu">print</span>(<span class="ss">f"Result:   </span><span class="sc">{</span>result<span class="sc">}</span><span class="ss">"</span>)
-    <span class="bu">print</span>(<span class="st">"Expected: ['MOCK', 'DATA']"</span>)
-    <span class="cf">assert</span> result <span class="op">==</span> [<span class="st">"MOCK"</span>, <span class="st">"DATA"</span>], (
-        <span class="ss">f"Mock had no effect — got </span><span class="sc">{</span>result<span class="sc">!r}</span><span class="ch">\n</span><span class="ss">"</span>
-        <span class="st">"Fix: patch 'mockpatch_user.fetch_data' (where it is used), "</span>
-        <span class="st">"not 'mockpatch_source.fetch_data' (where it is defined)"</span>
-    )
-<span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:
-    <span class="cf">try</span>:
-        test_process()
-        <span class="bu">print</span>(<span class="st">"PASS"</span>)
-    <span class="cf">except</span> <span class="pp">AssertionError</span> <span class="im">as</span> e:
-        <span class="bu">print</span>(<span class="ss">f"FAIL: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</code></p>
-<div>
-<blockquote>
-<p><strong>Show explanation</strong></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fetch_data():</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return records from the data store."""</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [<span class="st">"alpha"</span>, <span class="st">"beta"</span>, <span class="st">"gamma"</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mockpatch_source <span class="im">import</span> fetch_data</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> process():</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Fetch records and return them uppercased."""</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [item.upper() <span class="cf">for</span> item <span class="kw">in</span> fetch_data()]</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> unittest.mock <span class="im">import</span> patch</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> mockpatch_user</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_process():</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> patch(<span class="st">"mockpatch_source.fetch_data"</span>, return_value<span class="op">=</span>[<span class="st">"mock"</span>, <span class="st">"data"</span>]):</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> mockpatch_user.process()</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Result:   </span><span class="sc">{</span>result<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Expected: ['MOCK', 'DATA']"</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result <span class="op">==</span> [<span class="st">"MOCK"</span>, <span class="st">"DATA"</span>], (</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"Mock had no effect — got </span><span class="sc">{</span>result<span class="sc">!r}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Fix: patch 'mockpatch_user.fetch_data' (where it is used), "</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"not 'mockpatch_source.fetch_data' (where it is defined)"</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        test_process()</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"PASS"</span>)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">AssertionError</span> <span class="im">as</span> e:</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"FAIL: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div>
+<details>
+<summary>
+Show explanation
+</summary>
 <p>The bug is patching where the function is defined instead of where it is imported, so <code>unittest.mock.patch</code> has no effect on the code under test.</p>
 <p>Shows: how Python’s import system works and where mocks must be applied.</p>
 <p>To find it: add <code>print("mock was called")</code> as the first line of the mock function. Run the test. If the print never appears, the mock is not intercepting the real call. Then check where <code>fetch_data</code> was imported in the module under test — the patch must name that module, not the one where <code>fetch_data</code> is defined.</p>
-</blockquote>
-</div>
+</details>
 
 </main>
 

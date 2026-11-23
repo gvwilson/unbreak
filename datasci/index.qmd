@@ -6,6 +6,7 @@ Run the script and count the rows returned. Then count by hand how many rows in 
 CSV should satisfy the condition. Do the two counts agree?
 
 {{< inc datasci/filterboundary.py >}}
+
 {{< inc datasci/filterboundary.csv >}}
 
 <details>
@@ -28,6 +29,7 @@ Run the script and look at the row count and the first few rows of the DataFrame
 Do they match the data you expected to load?
 
 {{< inc datasci/multilinecsv.py >}}
+
 {{< inc datasci/multilinecsv.csv >}}
 
 <details>
@@ -73,6 +75,7 @@ Run the script and check the schema of the DataFrame. What type does Polars assi
 to the `date` column? How many rows does the filter return?
 
 {{< inc datasci/datestring.py >}}
+
 {{< inc datasci/datestring.csv >}}
 
 <details>
@@ -96,6 +99,7 @@ Run the script and compare the output totals to the values in the CSV file. Do t
 per-region totals make sense?
 
 {{< inc datasci/aggorder.py >}}
+
 {{< inc datasci/aggorder.csv >}}
 
 <details>
@@ -142,7 +146,9 @@ Run the script and examine the column names and values in the combined DataFrame
 Are the columns what you expected?
 
 {{< inc datasci/wrongdelim.py >}}
+
 {{< inc datasci/wrongdelim_a.csv >}}
+
 {{< inc datasci/wrongdelim_b.csv >}}
 
 <details>
@@ -166,6 +172,7 @@ Run the script and look at the mean. Then inspect the raw data. Are there any
 values in the column that seem unusually large?
 
 {{< inc datasci/sentinel.py >}}
+
 {{< inc datasci/sentinel.csv >}}
 
 <details>
@@ -189,6 +196,7 @@ Run the script and count the number of groups produced. Is it more than you
 expected? Call `.unique()` on the grouping column and examine what you see.
 
 {{< inc datasci/whitespace.py >}}
+
 {{< inc datasci/whitespace.csv >}}
 
 <details>
@@ -213,6 +221,7 @@ Run the script and count the null values in the `rolling_mean` column. Is the
 number of null rows what you expected for a 7-day window?
 
 {{< inc datasci/rolling.py >}}
+
 {{< inc datasci/rolling.csv >}}
 
 <details>
@@ -391,6 +400,7 @@ Run the script on a large file and watch how memory usage changes as the script
 runs. Does memory stay roughly constant, or does it grow?
 
 {{< inc datasci/chunkaccum.py >}}
+
 {{< inc datasci/chunkaccum.csv >}}
 
 <details>
