@@ -1,423 +1,1207 @@
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
-<html lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Testing</title>
-<meta content="Unbreaking Software" name="description"/>
-<link href="../_static/favicon.ico" rel="icon" type="image/x-icon"/>
-<link href="../_static/pygments.css" rel="stylesheet" type="text/css"/>
-<link href="../_static/chota.css" rel="stylesheet" type="text/css"/>
-<link href="../_static/mccole.css" rel="stylesheet" type="text/css"/>
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>19&nbsp; Testing – Unbreaking Software</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../finale/index.html" rel="next">
+<link href="../sql/index.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-01a495efc5497ac6e3f5457e7ed18e65.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../mccole/book.css">
 </head>
-<body>
-<a class="skip-link" href="#main-content">Skip to main content</a>
-<nav aria-label="Site navigation" class="nav">
-<div class="nav-left">
-<a class="brand" href="../">Unbreak</a>
-<div class="dropdown">
-<button aria-controls="nav-lessons" aria-haspopup="true">Lessons</button>
-<ul class="dropdown-content" id="nav-lessons">
-<li><a href="../intro/">Introduction</a></li>
-<li><a href="../basicpy/">Basic Python</a></li>
-<li><a href="../interpy/">Intermediate Python</a></li>
-<li><a href="../oopy/">Object-Oriented Python</a></li>
-<li><a href="../regexp/">Regular Expressions</a></li>
-<li><a href="../diot/">Data, I/O, and Testing</a></li>
-<li><a href="../perfcon/">Performance and Concurrency</a></li>
-<li><a href="../jsbrowser/">JavaScript Fundamentals</a></li>
-<li><a href="../css/">CSS</a></li>
-<li><a href="../web/">HTTP and APIs</a></li>
-<li><a href="../htmx/">HTMX</a></li>
-<li><a href="../alpine/">Alpine.js</a></li>
-<li><a href="../fastapi/">FastAPI</a></li>
-<li><a href="../datasci/">Data Science</a></li>
-<li><a href="../dataviz/">Data Visualization</a></li>
-<li><a href="../polars/">Polars</a></li>
-<li><a href="../shell/">The Unix Shell</a></li>
-<li><a href="../sql/">SQL</a></li>
-<li><a class="active" href="../testing/">Testing</a></li>
-<li><a href="../finale/">Conclusion</a></li>
-</ul>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../testing/index.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Testing</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Unbreaking Software</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/gvwilson/unbreak" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
-<div class="dropdown">
-<button aria-controls="nav-appendices" aria-haspopup="true">Appendices</button>
-<ul class="dropdown-content" id="nav-appendices">
-<li><a href="../license/">License</a></li>
-<li><a href="../conduct/">Code of Conduct</a></li>
-<li><a href="../contributing/">Contributing</a></li>
-<li><a href="../bibliography/">Bibliography</a></li>
-<li><a href="../glossary/">Glossary</a></li>
-<li><a href="../complex/">Complex Examples</a></li>
-</ul>
-</div>
-<a href="https://github.com/gvwilson/unbreak">Repository</a>
-</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basicpy/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Basic Python</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../interpy/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Intermediate Python</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../oopy/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Object-Oriented Python</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../regexp/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Regular Expressions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../diot/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data, I/O, and Testing</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../perfcon/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Performance, Concurrency, and System Interaction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../jsbrowser/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">JavaScript Fundamentals and the Browser</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../css/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">CSS</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../web/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">HTTP and APIs</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../htmx/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">HTMX</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../alpine/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Alpine.js</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fastapi/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">FastAPI</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../datasci/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Data Science</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dataviz/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Data Visualization</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../polars/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Polars</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../shell/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Unix Shell</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../sql/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">SQL</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../testing/index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Testing</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../finale/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Appendices</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../license/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">License</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../conduct/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Code of Conduct</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../contributing/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Contributing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bibliography/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Bibliography</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../glossary/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../complex/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Complex Examples</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
 </nav>
-<main id="main-content">
-<h1>Testing</h1>
-<h2 id="testing-discovery">Write a test that is actually discovered</h2>
-<p>Run <code>pytest test_discovery.py -v</code>. How many tests ran? Why does pytest
-report that no tests were collected?</p>
-<div data-inc="test_discovery.py" data-scrub="\s*# BUG.*"><span aria-label="Source: testing/test_discovery.py" class="inc-path" role="img" tabindex="0" title="testing/test_discovery.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">total</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#write-a-test-that-is-actually-discovered" id="toc-write-a-test-that-is-actually-discovered" class="nav-link active" data-scroll-target="#write-a-test-that-is-actually-discovered"><span class="header-section-number">19.1</span> Write a test that is actually discovered</a></li>
+  <li><a href="#test-that-a-doubling-function-returns-the-right-value" id="toc-test-that-a-doubling-function-returns-the-right-value" class="nav-link" data-scroll-target="#test-that-a-doubling-function-returns-the-right-value"><span class="header-section-number">19.2</span> Test that a doubling function returns the right value</a></li>
+  <li><a href="#test-that-a-result-contains-no-nan" id="toc-test-that-a-result-contains-no-nan" class="nav-link" data-scroll-target="#test-that-a-result-contains-no-nan"><span class="header-section-number">19.3</span> Test that a result contains no NaN</a></li>
+  <li><a href="#test-that-a-function-rejects-invalid-input" id="toc-test-that-a-function-rejects-invalid-input" class="nav-link" data-scroll-target="#test-that-a-function-rejects-invalid-input"><span class="header-section-number">19.4</span> Test that a function rejects invalid input</a></li>
+  <li><a href="#test-a-function-that-reads-from-a-temporary-file" id="toc-test-a-function-that-reads-from-a-temporary-file" class="nav-link" data-scroll-target="#test-a-function-that-reads-from-a-temporary-file"><span class="header-section-number">19.5</span> Test a function that reads from a temporary file</a></li>
+  <li><a href="#test-a-registry-that-stores-and-retrieves-entries" id="toc-test-a-registry-that-stores-and-retrieves-entries" class="nav-link" data-scroll-target="#test-a-registry-that-stores-and-retrieves-entries"><span class="header-section-number">19.6</span> Test a registry that stores and retrieves entries</a></li>
+  <li><a href="#share-a-list-fixture-across-multiple-tests" id="toc-share-a-list-fixture-across-multiple-tests" class="nav-link" data-scroll-target="#share-a-list-fixture-across-multiple-tests"><span class="header-section-number">19.7</span> Share a list fixture across multiple tests</a></li>
+  <li><a href="#test-that-a-function-raises-an-error-on-bad-input" id="toc-test-that-a-function-raises-an-error-on-bad-input" class="nav-link" data-scroll-target="#test-that-a-function-raises-an-error-on-bad-input"><span class="header-section-number">19.8</span> Test that a function raises an error on bad input</a></li>
+  <li><a href="#test-a-function-with-an-unreachable-assertion" id="toc-test-a-function-with-an-unreachable-assertion" class="nav-link" data-scroll-target="#test-a-function-with-an-unreachable-assertion"><span class="header-section-number">19.9</span> Test a function with an unreachable assertion</a></li>
+  <li><a href="#test-that-the-right-error-message-is-raised" id="toc-test-that-the-right-error-message-is-raised" class="nav-link" data-scroll-target="#test-that-the-right-error-message-is-raised"><span class="header-section-number">19.10</span> Test that the right error message is raised</a></li>
+  <li><a href="#test-a-function-that-writes-json-to-a-file" id="toc-test-a-function-that-writes-json-to-a-file" class="nav-link" data-scroll-target="#test-a-function-that-writes-json-to-a-file"><span class="header-section-number">19.11</span> Test a function that writes JSON to a file</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/gvwilson/unbreak/edit/main/testing/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/gvwilson/unbreak/blob/main/testing/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/gvwilson/unbreak/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
 
-
-<span class="k">def</span><span class="w"> </span><span class="nf">check_total</span><span class="p">():</span>
-    <span class="k">assert</span> <span class="n">total</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span> <span class="o">==</span> <span class="mi">6</span>
-    <span class="k">assert</span> <span class="n">total</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span> <span class="o">==</span> <span class="mi">10</span>
-</code></pre></div>
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Testing</span></h1>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is the test function name <code>check_total</code>. pytest only collects
-functions whose names start with <code>test_</code>, so <code>check_total</code> is silently
-ignored and the run reports "no tests ran".</p>
-<p>Shows: pytest's test-discovery rule and why a misspelled test name
-means the function is never exercised.</p>
-<p>To find it: run <code>pytest test_discovery.py --collect-only</code>. It lists no
-tests. Rename <code>check_total</code> to <code>test_total</code> and rerun to confirm the
-function is now collected.</p>
-</details>
-<h2 id="testing-tupleassert">Test that a doubling function returns the right value</h2>
-<p>Run <code>pytest test_tupleassert.py -v</code>. Does the test pass? What value
-does <code>double(4)</code> actually return? Check the pytest warning in the
-output.</p>
-<div data-inc="test_tupleassert.py" data-scrub="\s*# BUG.*"><span aria-label="Source: testing/test_tupleassert.py" class="inc-path" role="img" tabindex="0" title="testing/test_tupleassert.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">double</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">3</span>  <span class="c1"># deliberate wrong implementation</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">test_double</span><span class="p">():</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">double</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-    <span class="n">expected</span> <span class="o">=</span> <span class="mi">8</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span>
-</code></pre></div>
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="write-a-test-that-is-actually-discovered" class="level2" data-number="19.1">
+<h2 data-number="19.1" class="anchored" data-anchor-id="write-a-test-that-is-actually-discovered"><span class="header-section-number">19.1</span> Write a test that is actually discovered</h2>
+<p>Run <code>pytest test_discovery.py -v</code>. How many tests ran? Why does pytest report that no tests were collected?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> total(values):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sum</span>(values)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> check_total():</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> total([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]) <span class="op">==</span> <span class="dv">6</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> total([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>]) <span class="op">==</span> <span class="dv">10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is <code>assert (result, expected)</code>, which creates a two-element
-tuple. A non-empty tuple is always truthy, so the assertion never
-fails regardless of whether <code>result == expected</code>. The correct form is
-<code>assert result == expected</code> without the enclosing parentheses.</p>
-<p>Shows: how easy it is to write an assertion that looks plausible but
-is logically vacuous, and why pytest's warning about this pattern
-should not be ignored.</p>
-<p>To find it: read the pytest output carefully. It includes a warning
-that a non-empty tuple is always truthy. Remove the outer parentheses
-so the assertion becomes <code>assert result == expected</code>, then rerun to
-confirm the test can now fail.</p>
-</details>
-<h2 id="testing-nan">Test that a result contains no NaN</h2>
-<p>Run <code>pytest test_nan.py -v</code>. Does the test pass? The result list
-contains a <code>NaN</code> — should it have failed?</p>
-<div data-inc="test_nan.py" data-scrub="\s*# BUG.*"><span aria-label="Source: testing/test_nan.py" class="inc-path" role="img" tabindex="0" title="testing/test_nan.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">normalize</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
-    <span class="n">mean</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">v</span> <span class="o">-</span> <span class="n">mean</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">test_has_no_nan</span><span class="p">():</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"nan"</span><span class="p">)]</span>
-    <span class="k">assert</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"nan"</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span>
-</code></pre></div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is using <code>float("nan") not in result</code>. <code>NaN</code> is not equal to
-anything, including itself, so the <code>in</code> test (which uses <code>==</code>) is
-always <code>False</code>, and the assertion passes even though the list contains
-a <code>NaN</code>.</p>
-<p>Shows: that <code>NaN</code> comparisons are always <code>False</code>, and how to detect
-<code>NaN</code> with <code>math.isnan</code>.</p>
-<p>To find it: print <code>float("nan") == float("nan")</code> — it prints <code>False</code>.
-Replace the assertion with <code>assert not any(math.isnan(x) for x in result)</code>.</p>
-</details>
-<h2 id="testing-broadexc">Test that a function rejects invalid input</h2>
-<p>Run <code>pytest test_broadexc.py -v</code>. Does the test pass? What exception
-does <code>parse_count(None)</code> actually raise? Is that the exception the
-test intended to check?</p>
-<div data-inc="test_broadexc.py" data-scrub="\s*# BUG.*"><span aria-label="Source: testing/test_broadexc.py" class="inc-path" role="img" tabindex="0" title="testing/test_broadexc.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">parse_count</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">test_parse_count_rejects_none</span><span class="p">():</span>
-    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-        <span class="n">parse_count</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-</code></pre></div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is using <code>pytest.raises(Exception)</code>, which accepts any
-exception, including <code>TypeError</code>. The test passes even though
-<code>parse_count</code> raises a <code>TypeError</code> rather than the expected
-<code>ValueError</code>, masking a bug in the function.</p>
-<p>Shows: how to use a specific exception type in <code>pytest.raises</code> and why
-catching the base <code>Exception</code> class in tests hides incorrect
-behaviour.</p>
-<p>To find it: add <code>assert isinstance(exc.value, ValueError)</code> after the
-<code>with pytest.raises(Exception) as exc:</code> block. If that assertion
-fails, the function is raising a different exception type than
-intended.</p>
-</details>
-<h2 id="testing-noyield">Test a function that reads from a temporary file</h2>
-<p>Run <code>pytest test_noyield.py -v</code>. The test fails. After it fails, check
-whether the temp file still exists. Then change <code>return path</code> to
-<code>yield path</code> and add <code>os.remove(path)</code> after the yield. Run again and
-check the filesystem.</p>
-<div data-inc="test_noyield.py" data-scrub="\s*# BUG.*"><span aria-label="Source: testing/test_noyield.py" class="inc-path" role="img" tabindex="0" title="testing/test_noyield.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
-
-
-<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">temp_file</span><span class="p">():</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mktemp</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">path</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">test_write_and_read</span><span class="p">(</span><span class="n">temp_file</span><span class="p">):</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">temp_file</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">temp_file</span><span class="p">)</span>
-    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"test failed partway through"</span><span class="p">)</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is using <code>return</code> in a fixture that needs to perform
-cleanup. With <code>return</code>, there is no way to run code after the test
-finishes, so the temp file is left on disk whenever the test
-fails. With <code>yield</code>, pytest runs the code after the <code>yield</code> as
-teardown even if the test raises an exception.</p>
-<p>Shows: the difference between <code>return</code> and <code>yield</code> in pytest fixtures
-and why <code>yield</code> is necessary for reliable cleanup.</p>
-<p>To find it: after the test fails, list the files in the working
-directory. If the temp file is still present, cleanup did not
-run. Change <code>return path</code> to <code>yield path</code> in the fixture and add
-<code>os.remove(path)</code> after the <code>yield</code>, then rerun to confirm the file is
-removed.</p>
-</details>
-<h2 id="testing-orderdep">Test a registry that stores and retrieves entries</h2>
-<p>Run <code>pytest test_orderdep.py -v</code>. Both tests pass. Now run
-<code>pytest test_orderdep.py::test_lookup -v</code> to run only the second
-test. What happens?</p>
-<div data-inc="test_orderdep.py" data-scrub="\s*# BUG.*"><span aria-label="Source: testing/test_orderdep.py" class="inc-path" role="img" tabindex="0" title="testing/test_orderdep.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="n">_registry</span> <span class="o">=</span> <span class="p">{}</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">register</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-    <span class="n">_registry</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">_registry</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">test_register</span><span class="p">():</span>
-    <span class="n">register</span><span class="p">(</span><span class="s2">"threshold"</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">lookup</span><span class="p">(</span><span class="s2">"threshold"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">test_lookup</span><span class="p">():</span>
-    <span class="k">assert</span> <span class="n">lookup</span><span class="p">(</span><span class="s2">"threshold"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is that <code>test_lookup</code> relies on <code>test_register</code> having
-populated <code>_registry</code> first. When <code>test_lookup</code> runs alone or in a
-different order, <code>_registry</code> is empty and the test raises a
-<code>KeyError</code>.</p>
-<p>Shows: why each test must set up its own state independently rather
-than relying on side effects from other tests, and how to use fixtures
-to provide shared setup.</p>
-<p>To find it: run <code>pytest test_orderdep.py::test_lookup -v</code> alone
-without running <code>test_register</code> first. If it fails with a <code>KeyError</code>,
-the test depends on state left by another test.</p>
-</details>
-<h2 id="testing-scopemut">Share a list fixture across multiple tests</h2>
-<p>Run <code>pytest test_scopemut.py -v</code>. Which test fails? Reverse the order
-of the two tests and run again. Does the other test now fail?</p>
-<div data-inc="test_scopemut.py" data-scrub="\s*# BUG.*"><span aria-label="Source: testing/test_scopemut.py" class="inc-path" role="img" tabindex="0" title="testing/test_scopemut.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
-
-
-<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">"session"</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">user_list</span><span class="p">():</span>
-    <span class="k">return</span> <span class="p">[]</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">test_add_user</span><span class="p">(</span><span class="n">user_list</span><span class="p">):</span>
-    <span class="n">user_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"Alice"</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">user_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">test_list_starts_empty</span><span class="p">(</span><span class="n">user_list</span><span class="p">):</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">user_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is <code>scope="session"</code> on a fixture that returns a mutable
-list. A session-scoped fixture is created once and reused across every
-test in the run, so mutations made by one test are visible to all
-later tests.</p>
-<p>Shows: the difference between fixture scopes, why mutable objects
-should use function scope (the default) rather than session scope, and
-how fixture scope bugs often appear only when tests are run in a
-particular order.</p>
-<p>To find it: reverse the order of the tests in the file and run
-again. If a different test now fails, the tests are sharing state
-through the fixture. Check the fixture for a <code>scope=</code> argument:
-<code>"session"</code> means one instance is shared across the entire run.</p>
-</details>
-<h2 id="testing-deadassert">Test that a function raises an error on bad input</h2>
-<p>Run <code>pytest test_deadassert.py -v</code>. The test passes. Add a
-<code>print("reached")</code> on the line after <code>result = parse_positive(0)</code>. Run
-again. Is the print executed?</p>
-<div data-inc="test_deadassert.py" data-scrub="\s*# BUG.*"><span aria-label="Source: testing/test_deadassert.py" class="inc-path" role="img" tabindex="0" title="testing/test_deadassert.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">parse_positive</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> is not positive"</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">value</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">test_parse_positive_rejects_zero</span><span class="p">():</span>
-    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">parse_positive</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is placing an assertion inside a <code>with pytest.raises()</code> block
-after the line that raises. Once <code>parse_positive(0)</code> raises
-<code>ValueError</code>, execution jumps to the end of the <code>with</code> block and the
-assertion is never reached. The test passes because the exception was
-raised as expected, but the assertion that was supposed to check a
-return value is silently skipped.</p>
-<p>Shows: that assertions on return values must be placed after the
-<code>with pytest.raises()</code> block, not inside it.</p>
-<p>To find it: add <code>print("reached")</code> on the line immediately after the
-raising call, inside the <code>with</code> block. Run the test: if the print
-never appears, execution never reached that line. Move the assertion
-to after the <code>with</code> block.</p>
-</details>
-<h2 id="testing-unreachable">Test a function with an unreachable assertion</h2>
-<p>Run <code>pytest test_unreachable.py -v</code>. Does the test pass? Does it
-actually exercise all three branches of <code>classify</code>?</p>
-<div data-inc="test_unreachable.py" data-scrub="\s*# BUG.*"><span aria-label="Source: testing/test_unreachable.py" class="inc-path" role="img" tabindex="0" title="testing/test_unreachable.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">classify</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">"negative"</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">"zero"</span>
-    <span class="k">return</span> <span class="s2">"positive"</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">test_classify</span><span class="p">():</span>
-    <span class="k">assert</span> <span class="n">classify</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"negative"</span>
-    <span class="k">return</span>
-    <span class="k">assert</span> <span class="n">classify</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"zero"</span>
-    <span class="k">assert</span> <span class="n">classify</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"positive"</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is a bare <code>return</code> in the middle of <code>test_classify</code>. It exits
-the test before the assertions for the <code>"zero"</code> and <code>"positive"</code> cases
-run, so only the first branch is ever checked and the test always
-passes.</p>
-<p>Shows: how an early <code>return</code> silently truncates a test and why
-coverage tools flag branches that no assertion ever reaches.</p>
-<p>To find it: add <code>print("after return")</code> on the line after the <code>return</code>.
-It never prints. Remove the <code>return</code> so every assertion runs.</p>
-</details>
-<h2 id="testing-raisematch">Test that the right error message is raised</h2>
-<p>Run <code>pytest test_raisematch.py -v</code>. Does the test pass? Which
-<code>ValueError</code> message did <code>parse_count("abc")</code> actually raise — the one
-the test intended?</p>
-<div data-inc="test_raisematch.py" data-scrub="\s*# BUG.*"><span aria-label="Source: testing/test_raisematch.py" class="inc-path" role="img" tabindex="0" title="testing/test_raisematch.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">parse_count</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"count cannot be None"</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"count must be an integer"</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">test_parse_count_rejects_none</span><span class="p">():</span>
-    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
-        <span class="n">parse_count</span><span class="p">(</span><span class="s2">"abc"</span><span class="p">)</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is <code>pytest.raises(ValueError)</code> without a <code>match=</code> argument. It
-checks only the exception type, not the message, so a <code>ValueError</code>
-raised for a different reason ("count must be an integer") passes a
-test that intended to check "count cannot be None".</p>
-<p>Shows: that <code>match=</code> pins a test to the specific message, and why
-checking the type alone can let the wrong failure through.</p>
-<p>To find it: print the caught exception with
-<code>with pytest.raises(ValueError) as exc: ...; print(exc.value)</code>. Add
-<code>match="cannot be None"</code> and rerun to confirm the test now fails for
-the wrong input.</p>
-</details>
-<h2 id="testing-tmpfile">Test a function that writes JSON to a file</h2>
-<p>Run <code>pytest test_tmpfile.py -v</code>. The test passes. After it finishes,
-list the files in your working directory. What file was left behind?</p>
-<div data-inc="test_tmpfile.py" data-scrub="\s*# BUG.*"><span aria-label="Source: testing/test_tmpfile.py" class="inc-path" role="img" tabindex="0" title="testing/test_tmpfile.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">summarize</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">"count"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">),</span> <span class="s2">"total"</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">values</span><span class="p">)}</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">test_summarize</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">):</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">]</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">summarize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"output.json"</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"output.json"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">saved</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">saved</span><span class="p">[</span><span class="s2">"count"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span>
-    <span class="k">assert</span> <span class="n">saved</span><span class="p">[</span><span class="s2">"total"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">60</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is opening <code>"output.json"</code> as a plain filename, which creates
-the file in the current working directory. The file is not deleted
-when the test finishes, so subsequent runs may read stale data, and
-different tests that use the same filename can interfere with each
-other.</p>
-<p>Shows: how to use the <code>tmp_path</code> fixture, which provides a per-test
-temporary directory that pytest removes automatically after each run.</p>
-<p>To find it: list the files in the working directory after the test
-suite finishes.  If <code>output.json</code> is present, the test wrote to the
-current directory rather than a temporary one. Use the <code>tmp_path</code>
-fixture to get a per-test directory that pytest cleans up
-automatically.</p>
-</details>
-</main>
-<footer aria-label="Page navigation">
-<div class="row">
-<div class="col-3 left">
-<span aria-hidden="true">⇐</span> <a href="../sql/">SQL</a>
-</div>
-<div class="col-6 center">
-<a href="../">Unbreak</a>
-	  ©
-	  <a href="../contributing/#contributors">the authors</a>
-</div>
-<div class="col-3 right">
-<a href="../finale/">Conclusion</a> <span aria-hidden="true">⇒</span>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is the test function name <code>check_total</code>. pytest only collects functions whose names start with <code>test_</code>, so <code>check_total</code> is silently ignored and the run reports “no tests ran”.</p>
+<p>Shows: pytest’s test-discovery rule and why a misspelled test name means the function is never exercised.</p>
+<p>To find it: run <code>pytest test_discovery.py --collect-only</code>. It lists no tests. Rename <code>check_total</code> to <code>test_total</code> and rerun to confirm the function is now collected.</p>
 </div>
 </div>
-</footer>
-</body>
-</html>
+</div>
+</section>
+<section id="test-that-a-doubling-function-returns-the-right-value" class="level2" data-number="19.2">
+<h2 data-number="19.2" class="anchored" data-anchor-id="test-that-a-doubling-function-returns-the-right-value"><span class="header-section-number">19.2</span> Test that a doubling function returns the right value</h2>
+<p>Run <code>pytest test_tupleassert.py -v</code>. Does the test pass? What value does <code>double(4)</code> actually return? Check the pytest warning in the output.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> double(x):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x <span class="op">*</span> <span class="dv">3</span>  <span class="co"># deliberate wrong implementation</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_double():</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> double(<span class="dv">4</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    expected <span class="op">=</span> <span class="dv">8</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> (result, expected)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is <code>assert (result, expected)</code>, which creates a two-element tuple. A non-empty tuple is always truthy, so the assertion never fails regardless of whether <code>result == expected</code>. The correct form is <code>assert result == expected</code> without the enclosing parentheses.</p>
+<p>Shows: how easy it is to write an assertion that looks plausible but is logically vacuous, and why pytest’s warning about this pattern should not be ignored.</p>
+<p>To find it: read the pytest output carefully. It includes a warning that a non-empty tuple is always truthy. Remove the outer parentheses so the assertion becomes <code>assert result == expected</code>, then rerun to confirm the test can now fail.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="test-that-a-result-contains-no-nan" class="level2" data-number="19.3">
+<h2 data-number="19.3" class="anchored" data-anchor-id="test-that-a-result-contains-no-nan"><span class="header-section-number">19.3</span> Test that a result contains no NaN</h2>
+<p>Run <code>pytest test_nan.py -v</code>. Does the test pass? The result list contains a <code>NaN</code> — should it have failed?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize(values):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    mean <span class="op">=</span> <span class="bu">sum</span>(values) <span class="op">/</span> <span class="bu">len</span>(values)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [v <span class="op">-</span> mean <span class="cf">for</span> v <span class="kw">in</span> values]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_has_no_nan():</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> [<span class="fl">0.0</span>, <span class="fl">0.0</span>, <span class="bu">float</span>(<span class="st">"nan"</span>)]</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">float</span>(<span class="st">"nan"</span>) <span class="kw">not</span> <span class="kw">in</span> result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is using <code>float("nan") not in result</code>. <code>NaN</code> is not equal to anything, including itself, so the <code>in</code> test (which uses <code>==</code>) is always <code>False</code>, and the assertion passes even though the list contains a <code>NaN</code>.</p>
+<p>Shows: that <code>NaN</code> comparisons are always <code>False</code>, and how to detect <code>NaN</code> with <code>math.isnan</code>.</p>
+<p>To find it: print <code>float("nan") == float("nan")</code> — it prints <code>False</code>. Replace the assertion with <code>assert not any(math.isnan(x) for x in result)</code>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="test-that-a-function-rejects-invalid-input" class="level2" data-number="19.4">
+<h2 data-number="19.4" class="anchored" data-anchor-id="test-that-a-function-rejects-invalid-input"><span class="header-section-number">19.4</span> Test that a function rejects invalid input</h2>
+<p>Run <code>pytest test_broadexc.py -v</code>. Does the test pass? What exception does <code>parse_count(None)</code> actually raise? Is that the exception the test intended to check?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> parse_count(value):</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">int</span>(value)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_parse_count_rejects_none():</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> pytest.raises(<span class="pp">Exception</span>):</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        parse_count(<span class="va">None</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is using <code>pytest.raises(Exception)</code>, which accepts any exception, including <code>TypeError</code>. The test passes even though <code>parse_count</code> raises a <code>TypeError</code> rather than the expected <code>ValueError</code>, masking a bug in the function.</p>
+<p>Shows: how to use a specific exception type in <code>pytest.raises</code> and why catching the base <code>Exception</code> class in tests hides incorrect behaviour.</p>
+<p>To find it: add <code>assert isinstance(exc.value, ValueError)</code> after the <code>with pytest.raises(Exception) as exc:</code> block. If that assertion fails, the function is raising a different exception type than intended.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="test-a-function-that-reads-from-a-temporary-file" class="level2" data-number="19.5">
+<h2 data-number="19.5" class="anchored" data-anchor-id="test-a-function-that-reads-from-a-temporary-file"><span class="header-section-number">19.5</span> Test a function that reads from a temporary file</h2>
+<p>Run <code>pytest test_noyield.py -v</code>. The test fails. After it fails, check whether the temp file still exists. Then change <code>return path</code> to <code>yield path</code> and add <code>os.remove(path)</code> after the yield. Run again and check the filesystem.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tempfile</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> temp_file():</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> tempfile.mktemp()</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> path</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_write_and_read(temp_file):</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(temp_file, <span class="st">"w"</span>) <span class="im">as</span> f:</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">"hello"</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> os.path.exists(temp_file)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"test failed partway through"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is using <code>return</code> in a fixture that needs to perform cleanup. With <code>return</code>, there is no way to run code after the test finishes, so the temp file is left on disk whenever the test fails. With <code>yield</code>, pytest runs the code after the <code>yield</code> as teardown even if the test raises an exception.</p>
+<p>Shows: the difference between <code>return</code> and <code>yield</code> in pytest fixtures and why <code>yield</code> is necessary for reliable cleanup.</p>
+<p>To find it: after the test fails, list the files in the working directory. If the temp file is still present, cleanup did not run. Change <code>return path</code> to <code>yield path</code> in the fixture and add <code>os.remove(path)</code> after the <code>yield</code>, then rerun to confirm the file is removed.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="test-a-registry-that-stores-and-retrieves-entries" class="level2" data-number="19.6">
+<h2 data-number="19.6" class="anchored" data-anchor-id="test-a-registry-that-stores-and-retrieves-entries"><span class="header-section-number">19.6</span> Test a registry that stores and retrieves entries</h2>
+<p>Run <code>pytest test_orderdep.py -v</code>. Both tests pass. Now run <code>pytest test_orderdep.py::test_lookup -v</code> to run only the second test. What happens?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>_registry <span class="op">=</span> {}</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> register(name, value):</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    _registry[name] <span class="op">=</span> value</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lookup(name):</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> _registry[name]</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_register():</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    register(<span class="st">"threshold"</span>, <span class="dv">10</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> lookup(<span class="st">"threshold"</span>) <span class="op">==</span> <span class="dv">10</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_lookup():</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> lookup(<span class="st">"threshold"</span>) <span class="op">==</span> <span class="dv">10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is that <code>test_lookup</code> relies on <code>test_register</code> having populated <code>_registry</code> first. When <code>test_lookup</code> runs alone or in a different order, <code>_registry</code> is empty and the test raises a <code>KeyError</code>.</p>
+<p>Shows: why each test must set up its own state independently rather than relying on side effects from other tests, and how to use fixtures to provide shared setup.</p>
+<p>To find it: run <code>pytest test_orderdep.py::test_lookup -v</code> alone without running <code>test_register</code> first. If it fails with a <code>KeyError</code>, the test depends on state left by another test.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="share-a-list-fixture-across-multiple-tests" class="level2" data-number="19.7">
+<h2 data-number="19.7" class="anchored" data-anchor-id="share-a-list-fixture-across-multiple-tests"><span class="header-section-number">19.7</span> Share a list fixture across multiple tests</h2>
+<p>Run <code>pytest test_scopemut.py -v</code>. Which test fails? Reverse the order of the two tests and run again. Does the other test now fail?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"session"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> user_list():</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> []</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_add_user(user_list):</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    user_list.append(<span class="st">"Alice"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">len</span>(user_list) <span class="op">==</span> <span class="dv">1</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_list_starts_empty(user_list):</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">len</span>(user_list) <span class="op">==</span> <span class="dv">0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is <code>scope="session"</code> on a fixture that returns a mutable list. A session-scoped fixture is created once and reused across every test in the run, so mutations made by one test are visible to all later tests.</p>
+<p>Shows: the difference between fixture scopes, why mutable objects should use function scope (the default) rather than session scope, and how fixture scope bugs often appear only when tests are run in a particular order.</p>
+<p>To find it: reverse the order of the tests in the file and run again. If a different test now fails, the tests are sharing state through the fixture. Check the fixture for a <code>scope=</code> argument: <code>"session"</code> means one instance is shared across the entire run.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="test-that-a-function-raises-an-error-on-bad-input" class="level2" data-number="19.8">
+<h2 data-number="19.8" class="anchored" data-anchor-id="test-that-a-function-raises-an-error-on-bad-input"><span class="header-section-number">19.8</span> Test that a function raises an error on bad input</h2>
+<p>Run <code>pytest test_deadassert.py -v</code>. The test passes. Add a <code>print("reached")</code> on the line after <code>result = parse_positive(0)</code>. Run again. Is the print executed?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> parse_positive(value):</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> value <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"</span><span class="sc">{</span>value<span class="sc">}</span><span class="ss"> is not positive"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> value</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_parse_positive_rejects_zero():</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> pytest.raises(<span class="pp">ValueError</span>):</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> parse_positive(<span class="dv">0</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> result <span class="kw">is</span> <span class="va">None</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is placing an assertion inside a <code>with pytest.raises()</code> block after the line that raises. Once <code>parse_positive(0)</code> raises <code>ValueError</code>, execution jumps to the end of the <code>with</code> block and the assertion is never reached. The test passes because the exception was raised as expected, but the assertion that was supposed to check a return value is silently skipped.</p>
+<p>Shows: that assertions on return values must be placed after the <code>with pytest.raises()</code> block, not inside it.</p>
+<p>To find it: add <code>print("reached")</code> on the line immediately after the raising call, inside the <code>with</code> block. Run the test: if the print never appears, execution never reached that line. Move the assertion to after the <code>with</code> block.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="test-a-function-with-an-unreachable-assertion" class="level2" data-number="19.9">
+<h2 data-number="19.9" class="anchored" data-anchor-id="test-a-function-with-an-unreachable-assertion"><span class="header-section-number">19.9</span> Test a function with an unreachable assertion</h2>
+<p>Run <code>pytest test_unreachable.py -v</code>. Does the test pass? Does it actually exercise all three branches of <code>classify</code>?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> classify(n):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"negative"</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"zero"</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"positive"</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_classify():</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> classify(<span class="op">-</span><span class="dv">5</span>) <span class="op">==</span> <span class="st">"negative"</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> classify(<span class="dv">0</span>) <span class="op">==</span> <span class="st">"zero"</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> classify(<span class="dv">5</span>) <span class="op">==</span> <span class="st">"positive"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is a bare <code>return</code> in the middle of <code>test_classify</code>. It exits the test before the assertions for the <code>"zero"</code> and <code>"positive"</code> cases run, so only the first branch is ever checked and the test always passes.</p>
+<p>Shows: how an early <code>return</code> silently truncates a test and why coverage tools flag branches that no assertion ever reaches.</p>
+<p>To find it: add <code>print("after return")</code> on the line after the <code>return</code>. It never prints. Remove the <code>return</code> so every assertion runs.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="test-that-the-right-error-message-is-raised" class="level2" data-number="19.10">
+<h2 data-number="19.10" class="anchored" data-anchor-id="test-that-the-right-error-message-is-raised"><span class="header-section-number">19.10</span> Test that the right error message is raised</h2>
+<p>Run <code>pytest test_raisematch.py -v</code>. Does the test pass? Which <code>ValueError</code> message did <code>parse_count("abc")</code> actually raise — the one the test intended?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> parse_count(value):</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> value <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"count cannot be None"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">str</span>(value).isdigit():</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"count must be an integer"</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">int</span>(value)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_parse_count_rejects_none():</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> pytest.raises(<span class="pp">ValueError</span>):</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        parse_count(<span class="st">"abc"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is <code>pytest.raises(ValueError)</code> without a <code>match=</code> argument. It checks only the exception type, not the message, so a <code>ValueError</code> raised for a different reason (“count must be an integer”) passes a test that intended to check “count cannot be None”.</p>
+<p>Shows: that <code>match=</code> pins a test to the specific message, and why checking the type alone can let the wrong failure through.</p>
+<p>To find it: print the caught exception with <code>with pytest.raises(ValueError) as exc: ...; print(exc.value)</code>. Add <code>match="cannot be None"</code> and rerun to confirm the test now fails for the wrong input.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="test-a-function-that-writes-json-to-a-file" class="level2" data-number="19.11">
+<h2 data-number="19.11" class="anchored" data-anchor-id="test-a-function-that-writes-json-to-a-file"><span class="header-section-number">19.11</span> Test a function that writes JSON to a file</h2>
+<p>Run <code>pytest test_tmpfile.py -v</code>. The test passes. After it finishes, list the files in your working directory. What file was left behind?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> summarize(values):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"count"</span>: <span class="bu">len</span>(values), <span class="st">"total"</span>: <span class="bu">sum</span>(values)}</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_summarize(tmp_path):</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> [<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>]</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> summarize(data)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> json</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(<span class="st">"output.json"</span>, <span class="st">"w"</span>) <span class="im">as</span> f:</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        json.dump(result, f)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(<span class="st">"output.json"</span>) <span class="im">as</span> f:</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>        saved <span class="op">=</span> json.load(f)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> saved[<span class="st">"count"</span>] <span class="op">==</span> <span class="dv">3</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> saved[<span class="st">"total"</span>] <span class="op">==</span> <span class="dv">60</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is opening <code>"output.json"</code> as a plain filename, which creates the file in the current working directory. The file is not deleted when the test finishes, so subsequent runs may read stale data, and different tests that use the same filename can interfere with each other.</p>
+<p>Shows: how to use the <code>tmp_path</code> fixture, which provides a per-test temporary directory that pytest removes automatically after each run.</p>
+<p>To find it: list the files in the working directory after the test suite finishes. If <code>output.json</code> is present, the test wrote to the current directory rather than a temporary one. Use the <code>tmp_path</code> fixture to get a per-test directory that pytest cleans up automatically.</p>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../sql/index.html" class="pagination-link" aria-label="SQL">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">SQL</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../finale/index.html" class="pagination-link" aria-label="Conclusion">
+        <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conclusion</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/gvwilson/unbreak/edit/main/testing/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/gvwilson/unbreak/blob/main/testing/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/gvwilson/unbreak/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

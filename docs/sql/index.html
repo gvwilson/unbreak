@@ -1,522 +1,1376 @@
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
-<html lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>SQL</title>
-<meta content="Unbreaking Software" name="description"/>
-<link href="../_static/favicon.ico" rel="icon" type="image/x-icon"/>
-<link href="../_static/pygments.css" rel="stylesheet" type="text/css"/>
-<link href="../_static/chota.css" rel="stylesheet" type="text/css"/>
-<link href="../_static/mccole.css" rel="stylesheet" type="text/css"/>
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>18&nbsp; SQL – Unbreaking Software</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../testing/index.html" rel="next">
+<link href="../shell/index.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-01a495efc5497ac6e3f5457e7ed18e65.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../mccole/book.css">
 </head>
-<body>
-<a class="skip-link" href="#main-content">Skip to main content</a>
-<nav aria-label="Site navigation" class="nav">
-<div class="nav-left">
-<a class="brand" href="../">Unbreak</a>
-<div class="dropdown">
-<button aria-controls="nav-lessons" aria-haspopup="true">Lessons</button>
-<ul class="dropdown-content" id="nav-lessons">
-<li><a href="../intro/">Introduction</a></li>
-<li><a href="../basicpy/">Basic Python</a></li>
-<li><a href="../interpy/">Intermediate Python</a></li>
-<li><a href="../oopy/">Object-Oriented Python</a></li>
-<li><a href="../regexp/">Regular Expressions</a></li>
-<li><a href="../diot/">Data, I/O, and Testing</a></li>
-<li><a href="../perfcon/">Performance and Concurrency</a></li>
-<li><a href="../jsbrowser/">JavaScript Fundamentals</a></li>
-<li><a href="../css/">CSS</a></li>
-<li><a href="../web/">HTTP and APIs</a></li>
-<li><a href="../htmx/">HTMX</a></li>
-<li><a href="../alpine/">Alpine.js</a></li>
-<li><a href="../fastapi/">FastAPI</a></li>
-<li><a href="../datasci/">Data Science</a></li>
-<li><a href="../dataviz/">Data Visualization</a></li>
-<li><a href="../polars/">Polars</a></li>
-<li><a href="../shell/">The Unix Shell</a></li>
-<li><a class="active" href="../sql/">SQL</a></li>
-<li><a href="../testing/">Testing</a></li>
-<li><a href="../finale/">Conclusion</a></li>
-</ul>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../sql/index.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">SQL</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Unbreaking Software</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/gvwilson/unbreak" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
-<div class="dropdown">
-<button aria-controls="nav-appendices" aria-haspopup="true">Appendices</button>
-<ul class="dropdown-content" id="nav-appendices">
-<li><a href="../license/">License</a></li>
-<li><a href="../conduct/">Code of Conduct</a></li>
-<li><a href="../contributing/">Contributing</a></li>
-<li><a href="../bibliography/">Bibliography</a></li>
-<li><a href="../glossary/">Glossary</a></li>
-<li><a href="../complex/">Complex Examples</a></li>
-</ul>
-</div>
-<a href="https://github.com/gvwilson/unbreak">Repository</a>
-</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basicpy/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Basic Python</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../interpy/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Intermediate Python</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../oopy/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Object-Oriented Python</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../regexp/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Regular Expressions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../diot/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data, I/O, and Testing</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../perfcon/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Performance, Concurrency, and System Interaction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../jsbrowser/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">JavaScript Fundamentals and the Browser</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../css/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">CSS</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../web/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">HTTP and APIs</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../htmx/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">HTMX</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../alpine/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Alpine.js</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fastapi/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">FastAPI</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../datasci/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Data Science</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dataviz/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Data Visualization</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../polars/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Polars</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../shell/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Unix Shell</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../sql/index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">SQL</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../testing/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Testing</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../finale/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Appendices</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../license/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">License</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../conduct/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Code of Conduct</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../contributing/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Contributing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bibliography/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Bibliography</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../glossary/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../complex/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Complex Examples</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
 </nav>
-<main id="main-content">
-<h1>SQL</h1>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sort-penguins-by-island-then-species" id="toc-sort-penguins-by-island-then-species" class="nav-link active" data-scroll-target="#sort-penguins-by-island-then-species"><span class="header-section-number">18.1</span> Sort penguins by island then species</a></li>
+  <li><a href="#retrieve-the-second-page-of-search-results" id="toc-retrieve-the-second-page-of-search-results" class="nav-link" data-scroll-target="#retrieve-the-second-page-of-search-results"><span class="header-section-number">18.2</span> Retrieve the second page of search results</a></li>
+  <li><a href="#show-body-mass-in-kilograms" id="toc-show-body-mass-in-kilograms" class="nav-link" data-scroll-target="#show-body-mass-in-kilograms"><span class="header-section-number">18.3</span> Show body mass in kilograms</a></li>
+  <li><a href="#list-distinct-species-in-the-penguins-dataset" id="toc-list-distinct-species-in-the-penguins-dataset" class="nav-link" data-scroll-target="#list-distinct-species-in-the-penguins-dataset"><span class="header-section-number">18.4</span> List distinct species in the penguins dataset</a></li>
+  <li><a href="#find-penguins-with-no-recorded-sex" id="toc-find-penguins-with-no-recorded-sex" class="nav-link" data-scroll-target="#find-penguins-with-no-recorded-sex"><span class="header-section-number">18.5</span> Find penguins with no recorded sex</a></li>
+  <li><a href="#filter-for-records-in-two-different-categories" id="toc-filter-for-records-in-two-different-categories" class="nav-link" data-scroll-target="#filter-for-records-in-two-different-categories"><span class="header-section-number">18.6</span> Filter for records in two different categories</a></li>
+  <li><a href="#find-all-female-penguins" id="toc-find-all-female-penguins" class="nav-link" data-scroll-target="#find-all-female-penguins"><span class="header-section-number">18.7</span> Find all female penguins</a></li>
+  <li><a href="#filter-on-a-calculated-column" id="toc-filter-on-a-calculated-column" class="nav-link" data-scroll-target="#filter-on-a-calculated-column"><span class="header-section-number">18.8</span> Filter on a calculated column</a></li>
+  <li><a href="#select-records-matching-one-of-two-conditions" id="toc-select-records-matching-one-of-two-conditions" class="nav-link" data-scroll-target="#select-records-matching-one-of-two-conditions"><span class="header-section-number">18.9</span> Select records matching one of two conditions</a></li>
+  <li><a href="#show-average-body-mass-per-species" id="toc-show-average-body-mass-per-species" class="nav-link" data-scroll-target="#show-average-body-mass-per-species"><span class="header-section-number">18.10</span> Show average body mass per species</a></li>
+  <li><a href="#keep-only-groups-above-a-minimum-size" id="toc-keep-only-groups-above-a-minimum-size" class="nav-link" data-scroll-target="#keep-only-groups-above-a-minimum-size"><span class="header-section-number">18.11</span> Keep only groups above a minimum size</a></li>
+  <li><a href="#show-the-five-heaviest-penguins" id="toc-show-the-five-heaviest-penguins" class="nav-link" data-scroll-target="#show-the-five-heaviest-penguins"><span class="header-section-number">18.12</span> Show the five heaviest penguins</a></li>
+  <li><a href="#count-the-penguin-rows" id="toc-count-the-penguin-rows" class="nav-link" data-scroll-target="#count-the-penguin-rows"><span class="header-section-number">18.13</span> Count the penguin rows</a></li>
+  <li><a href="#compute-the-average-body-mass" id="toc-compute-the-average-body-mass" class="nav-link" data-scroll-target="#compute-the-average-body-mass"><span class="header-section-number">18.14</span> Compute the average body mass</a></li>
+  <li><a href="#order-rows-that-contain-null-values" id="toc-order-rows-that-contain-null-values" class="nav-link" data-scroll-target="#order-rows-that-contain-null-values"><span class="header-section-number">18.15</span> Order rows that contain null values</a></li>
+  <li><a href="#list-every-person-and-their-total-credits" id="toc-list-every-person-and-their-total-credits" class="nav-link" data-scroll-target="#list-every-person-and-their-total-credits"><span class="header-section-number">18.16</span> List every person and their total credits</a></li>
+  <li><a href="#join-two-tables-to-combine-related-records" id="toc-join-two-tables-to-combine-related-records" class="nav-link" data-scroll-target="#join-two-tables-to-combine-related-records"><span class="header-section-number">18.17</span> Join two tables to combine related records</a></li>
+  <li><a href="#show-total-credits-per-person" id="toc-show-total-credits-per-person" class="nav-link" data-scroll-target="#show-total-credits-per-person"><span class="header-section-number">18.18</span> Show total credits per person</a></li>
+  <li><a href="#list-each-person-and-their-survey-count" id="toc-list-each-person-and-their-survey-count" class="nav-link" data-scroll-target="#list-each-person-and-their-survey-count"><span class="header-section-number">18.19</span> List each person and their survey count</a></li>
+  <li><a href="#list-each-person-and-their-supervisor" id="toc-list-each-person-and-their-supervisor" class="nav-link" data-scroll-target="#list-each-person-and-their-supervisor"><span class="header-section-number">18.20</span> List each person and their supervisor</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/gvwilson/unbreak/edit/main/sql/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/gvwilson/unbreak/blob/main/sql/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/gvwilson/unbreak/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">SQL</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
 <p><a href="./databases.zip">download databases</a></p>
-<h2 id="sql-sortcol">Sort penguins by island then species</h2>
-<p>Run this query and look at the first several rows. Is the output
-ordered by island first, or by species first?</p>
-<div data-inc="sortcol.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/sortcol.sql" class="inc-path" role="img" tabindex="0" title="sql/sortcol.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- Show the species, island, and sex of all penguins,</span>
-<span class="c1">-- sorted alphabetically by island and then by species within each island.</span>
-<span class="k">select</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">island</span><span class="p">,</span><span class="w"> </span><span class="n">sex</span>
-<span class="k">from</span><span class="w"> </span><span class="n">penguins</span>
-<span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">island</span><span class="p">;</span>
-</code></pre></div>
+<section id="sort-penguins-by-island-then-species" class="level2" data-number="18.1">
+<h2 data-number="18.1" class="anchored" data-anchor-id="sort-penguins-by-island-then-species"><span class="header-section-number">18.1</span> Sort penguins by island then species</h2>
+<p>Run this query and look at the first several rows. Is the output ordered by island first, or by species first?</p>
+<pre><code>-- Show the species, island, and sex of all penguins,
+-- sorted alphabetically by island and then by species within each island.
+select species, island, sex
+from penguins
+order by species, island;</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A query meant to sort penguins by island and then by species within
-each island produces species-first ordering instead; the bug is
-listing the columns in the wrong order in the <code>order by</code> clause.</p>
-<p>Shows: how <code>order by</code> applies columns from left to right and why
-column order in that clause matters.</p>
-<p>To find it: run the query and examine the first few rows. If all
-<code>'Adelie'</code> rows appear before any <code>'Chinstrap'</code> rows regardless of
-island, the sort is species-first. Compare the <code>order by</code> column
-sequence to the intended priority.</p>
-</details>
-<h2 id="sql-offsetpage">Retrieve the second page of search results</h2>
-<p>Run this query and note which rows are returned. Count from the
-beginning of the full table to check whether rows 11-15 are actually
-what you got.</p>
-<div data-inc="offsetpage.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/offsetpage.sql" class="inc-path" role="img" tabindex="0" title="sql/offsetpage.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- Retrieve rows 11 through 15 from the penguins table (the third page of 5).</span>
-<span class="k">select</span><span class="w"> </span><span class="o">*</span>
-<span class="k">from</span><span class="w"> </span><span class="n">penguins</span>
-<span class="k">limit</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="mi">11</span><span class="p">;</span>
-</code></pre></div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A query meant to retrieve the third page of five rows returns rows 12-16 instead
-of rows 11-15; the bug is using <code>offset 11</code> (which skips 11 rows) instead of
-<code>offset 10</code>.</p>
-<p>Shows: how <code>limit</code> and <code>offset</code> interact and how to calculate the
-correct offset for a given page number.</p>
-<p>To find it: add <code>rowid</code> to the <code>select</code> clause and run the query. If the first
-returned row has <code>rowid = 12</code> but the page should start at row 11, the offset is
-off by one. The formula is <code>(page_number - 1) * page_size</code>, so page 3 with
-page size 5 gives <code>offset 10</code>.</p>
-</details>
-<h2 id="sql-intdivision">Show body mass in kilograms</h2>
-<p>Run this query and compare the <code>mass_kg</code> column to the <code>body_mass_g</code> column.
-Do the kilogram values look right for a penguin that weighs, say, 3750 g?</p>
-<div data-inc="intdivision.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/intdivision.sql" class="inc-path" role="img" tabindex="0" title="sql/intdivision.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- Show body mass in kilograms for the first 10 penguins.</span>
-<span class="k">select</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">body_mass_g</span><span class="p">,</span>
-<span class="w">    </span><span class="n">body_mass_g</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1000</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">mass_kg</span>
-<span class="k">from</span><span class="w"> </span><span class="n">penguins</span>
-<span class="k">limit</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
-</code></pre></div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A query that converts body mass from grams to kilograms silently truncates the
-result because SQLite performs integer division when both operands are integers;
-the bug is dividing by <code>1000</code> instead of <code>1000.0</code>.</p>
-<p>Shows: how to force floating-point arithmetic in SQL and why checking
-computed columns against known values catches this class of error.</p>
-<p>To find it: run <code>select body_mass_g, body_mass_g / 1000 as mass_kg from penguins
-limit 5</code>. A penguin weighing 3750 g should show <code>3.75</code> kg; if it shows <code>3</code>, integer
-division is truncating the decimal. Change <code>1000</code> to <code>1000.0</code> and rerun.</p>
-</details>
-<h2 id="sql-distinctcols">List distinct species in the penguins dataset</h2>
-<p>Run this query and count the rows returned. How many distinct species are in the
-dataset? Does the row count match that number?</p>
-<div data-inc="distinctcols.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/distinctcols.sql" class="inc-path" role="img" tabindex="0" title="sql/distinctcols.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- List the distinct species found in the penguins dataset (one row per species).</span>
-<span class="k">select</span><span class="w"> </span><span class="k">distinct</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">sex</span>
-<span class="k">from</span><span class="w"> </span><span class="n">penguins</span><span class="p">;</span>
-</code></pre></div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A query meant to sort penguins by island and then by species within each island produces species-first ordering instead; the bug is listing the columns in the wrong order in the <code>order by</code> clause.</p>
+<p>Shows: how <code>order by</code> applies columns from left to right and why column order in that clause matters.</p>
+<p>To find it: run the query and examine the first few rows. If all <code>'Adelie'</code> rows appear before any <code>'Chinstrap'</code> rows regardless of island, the sort is species-first. Compare the <code>order by</code> column sequence to the intended priority.</p>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A query intended to list the distinct species in the dataset returns seven rows
-instead of three because <code>distinct</code> is applied to both <code>species</code> and <code>sex</code>,
-producing one row per unique (species, sex) combination; the bug is including <code>sex</code>
-in the <code>select</code> clause.</p>
-<p>Shows: that <code>distinct</code> operates on the entire set of selected columns,
-not on individual ones.</p>
-<p>To find it: run <code>select count(*) from (select distinct species from penguins)</code>. If
-that returns 3 but the original query returns 7, the extra column is what is
-producing the extra rows.</p>
-</details>
-<h2 id="sql-nullequal">Find penguins with no recorded sex</h2>
-<p>Run this query. How many rows does it return? Are there penguins in the table whose
-sex was not recorded?</p>
-<div data-inc="nullequal.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/nullequal.sql" class="inc-path" role="img" tabindex="0" title="sql/nullequal.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- Find all penguins whose sex was not recorded.</span>
-<span class="k">select</span><span class="w"> </span><span class="o">*</span>
-<span class="k">from</span><span class="w"> </span><span class="n">penguins</span>
-<span class="k">where</span><span class="w"> </span><span class="n">sex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">null</span><span class="p">;</span>
-</code></pre></div>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A query that tries to find penguins with no recorded sex returns zero rows because
-comparing any value to <code>null</code> with <code>=</code> produces <code>null</code> (not <code>true</code>) in SQL's
-ternary logic, so the <code>where</code> clause never passes; the bug is using <code>= null</code> instead
-of <code>is null</code>.</p>
-<p>Shows: SQL's three-valued logic and the two special tests <code>is null</code>
-and <code>is not null</code>.</p>
-<p>To find it: run <code>select count(*) from penguins where sex is null</code>. If that returns
-a nonzero count but <code>where sex = null</code> returns zero, the <code>=</code> test is failing because
-null comparisons always produce null, never <code>true</code>.</p>
-</details>
-<h2 id="sql-impossibleand">Filter for records in two different categories</h2>
-<p>Run this query. How many rows does it return? Choose a penguin you know is on
-Biscoe island from a previous query and check whether it appears here.</p>
-<div data-inc="impossibleand.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/impossibleand.sql" class="inc-path" role="img" tabindex="0" title="sql/impossibleand.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- Find all penguins from either Biscoe island or Dream island.</span>
-<span class="k">select</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">island</span><span class="p">,</span><span class="w"> </span><span class="n">sex</span>
-<span class="k">from</span><span class="w"> </span><span class="n">penguins</span>
-<span class="k">where</span><span class="w"> </span><span class="n">island</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Biscoe'</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">island</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Dream'</span><span class="p">;</span>
-</code></pre></div>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A query that should return penguins from either Biscoe or Dream island returns
-zero rows because <code>and</code> requires both conditions to be true at the same time, but
-a penguin can only be on one island; the bug is using <code>and</code> where <code>or</code> is needed.</p>
-<p>Shows: the difference between <code>and</code> and <code>or</code> and how to spot
-conditions that can never simultaneously be true.</p>
-<p>To find it: ask whether a single penguin can be on Biscoe island and Dream island
-at the same time. It cannot, so <code>AND</code> can never be true. Whenever a zero-row result
-is unexpected, check whether the conditions are mutually exclusive.</p>
-</details>
-<h2 id="sql-casevalue">Find all female penguins</h2>
-<p>Run this query and count the rows returned. Then run a query to find the distinct
-values stored in the <code>sex</code> column. Do any of them match the literal used in the
-<code>where</code> clause?</p>
-<div data-inc="casevalue.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/casevalue.sql" class="inc-path" role="img" tabindex="0" title="sql/casevalue.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- Find all female penguins.</span>
-<span class="k">select</span><span class="w"> </span><span class="o">*</span>
-<span class="k">from</span><span class="w"> </span><span class="n">penguins</span>
-<span class="k">where</span><span class="w"> </span><span class="n">sex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'female'</span><span class="p">;</span>
-</code></pre></div>
+</section>
+<section id="retrieve-the-second-page-of-search-results" class="level2" data-number="18.2">
+<h2 data-number="18.2" class="anchored" data-anchor-id="retrieve-the-second-page-of-search-results"><span class="header-section-number">18.2</span> Retrieve the second page of search results</h2>
+<p>Run this query and note which rows are returned. Count from the beginning of the full table to check whether rows 11-15 are actually what you got.</p>
+<pre><code>-- Retrieve rows 11 through 15 from the penguins table (the third page of 5).
+select *
+from penguins
+limit 5 offset 11;</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A query that should return all female penguins returns zero rows because the <code>sex</code>
-column stores the value <code>'FEMALE'</code> in uppercase but the query filters on
-<code>'female'</code> in lowercase; SQLite string comparisons are case-sensitive for non-ASCII
-characters.</p>
-<p>Shows: how to inspect the actual stored values before writing a filter
-and how to use functions like <code>upper()</code> or <code>lower()</code> to normalise
-comparisons.</p>
-<p>To find it: run <code>select distinct sex from penguins</code> before writing the filter. If
-the results show <code>'FEMALE'</code> in uppercase, a <code>where sex = 'female'</code> will return zero
-rows because the literal does not match.</p>
-</details>
-<h2 id="sql-wherealiased">Filter on a calculated column</h2>
-<p>Run this query. Does it raise an error or return wrong results? Add a second
-<code>select</code> that uses the full expression <code>body_mass_g / 1000.0</code> in the <code>where</code>
-clause and compare the two queries' output.</p>
-<div data-inc="wherealiased.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/wherealiased.sql" class="inc-path" role="img" tabindex="0" title="sql/wherealiased.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- Find all penguins heavier than 4 kg, displaying mass in kilograms.</span>
-<span class="k">select</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">body_mass_g</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1000.0</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">mass_kg</span>
-<span class="k">from</span><span class="w"> </span><span class="n">penguins</span>
-<span class="k">where</span><span class="w"> </span><span class="n">mass_kg</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">4.0</span><span class="p">;</span>
-</code></pre></div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A query that tries to filter using a column alias defined in the <code>select</code> clause
-fails with a "no such column" error because SQL evaluates <code>where</code> before <code>select</code>,
-so the alias does not yet exist at that point; the bug is referencing <code>mass_kg</code> in
-<code>where</code> instead of repeating the full expression <code>body_mass_g / 1000.0</code>.</p>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A query meant to retrieve the third page of five rows returns rows 12-16 instead of rows 11-15; the bug is using <code>offset 11</code> (which skips 11 rows) instead of <code>offset 10</code>.</p>
+<p>Shows: how <code>limit</code> and <code>offset</code> interact and how to calculate the correct offset for a given page number.</p>
+<p>To find it: add <code>rowid</code> to the <code>select</code> clause and run the query. If the first returned row has <code>rowid = 12</code> but the page should start at row 11, the offset is off by one. The formula is <code>(page_number - 1) * page_size</code>, so page 3 with page size 5 gives <code>offset 10</code>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="show-body-mass-in-kilograms" class="level2" data-number="18.3">
+<h2 data-number="18.3" class="anchored" data-anchor-id="show-body-mass-in-kilograms"><span class="header-section-number">18.3</span> Show body mass in kilograms</h2>
+<p>Run this query and compare the <code>mass_kg</code> column to the <code>body_mass_g</code> column. Do the kilogram values look right for a penguin that weighs, say, 3750 g?</p>
+<pre><code>-- Show body mass in kilograms for the first 10 penguins.
+select species, body_mass_g,
+    body_mass_g / 1000 as mass_kg
+from penguins
+limit 10;</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A query that converts body mass from grams to kilograms silently truncates the result because SQLite performs integer division when both operands are integers; the bug is dividing by <code>1000</code> instead of <code>1000.0</code>.</p>
+<p>Shows: how to force floating-point arithmetic in SQL and why checking computed columns against known values catches this class of error.</p>
+<p>To find it: run <code>select body_mass_g, body_mass_g / 1000 as mass_kg from penguins limit 5</code>. A penguin weighing 3750 g should show <code>3.75</code> kg; if it shows <code>3</code>, integer division is truncating the decimal. Change <code>1000</code> to <code>1000.0</code> and rerun.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="list-distinct-species-in-the-penguins-dataset" class="level2" data-number="18.4">
+<h2 data-number="18.4" class="anchored" data-anchor-id="list-distinct-species-in-the-penguins-dataset"><span class="header-section-number">18.4</span> List distinct species in the penguins dataset</h2>
+<p>Run this query and count the rows returned. How many distinct species are in the dataset? Does the row count match that number?</p>
+<pre><code>-- List the distinct species found in the penguins dataset (one row per species).
+select distinct species, sex
+from penguins;</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A query intended to list the distinct species in the dataset returns seven rows instead of three because <code>distinct</code> is applied to both <code>species</code> and <code>sex</code>, producing one row per unique (species, sex) combination; the bug is including <code>sex</code> in the <code>select</code> clause.</p>
+<p>Shows: that <code>distinct</code> operates on the entire set of selected columns, not on individual ones.</p>
+<p>To find it: run <code>select count(*) from (select distinct species from penguins)</code>. If that returns 3 but the original query returns 7, the extra column is what is producing the extra rows.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="find-penguins-with-no-recorded-sex" class="level2" data-number="18.5">
+<h2 data-number="18.5" class="anchored" data-anchor-id="find-penguins-with-no-recorded-sex"><span class="header-section-number">18.5</span> Find penguins with no recorded sex</h2>
+<p>Run this query. How many rows does it return? Are there penguins in the table whose sex was not recorded?</p>
+<pre><code>-- Find all penguins whose sex was not recorded.
+select *
+from penguins
+where sex = null;</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A query that tries to find penguins with no recorded sex returns zero rows because comparing any value to <code>null</code> with <code>=</code> produces <code>null</code> (not <code>true</code>) in SQL’s ternary logic, so the <code>where</code> clause never passes; the bug is using <code>= null</code> instead of <code>is null</code>.</p>
+<p>Shows: SQL’s three-valued logic and the two special tests <code>is null</code> and <code>is not null</code>.</p>
+<p>To find it: run <code>select count(*) from penguins where sex is null</code>. If that returns a nonzero count but <code>where sex = null</code> returns zero, the <code>=</code> test is failing because null comparisons always produce null, never <code>true</code>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="filter-for-records-in-two-different-categories" class="level2" data-number="18.6">
+<h2 data-number="18.6" class="anchored" data-anchor-id="filter-for-records-in-two-different-categories"><span class="header-section-number">18.6</span> Filter for records in two different categories</h2>
+<p>Run this query. How many rows does it return? Choose a penguin you know is on Biscoe island from a previous query and check whether it appears here.</p>
+<pre><code>-- Find all penguins from either Biscoe island or Dream island.
+select species, island, sex
+from penguins
+where island = 'Biscoe' and island = 'Dream';</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A query that should return penguins from either Biscoe or Dream island returns zero rows because <code>and</code> requires both conditions to be true at the same time, but a penguin can only be on one island; the bug is using <code>and</code> where <code>or</code> is needed.</p>
+<p>Shows: the difference between <code>and</code> and <code>or</code> and how to spot conditions that can never simultaneously be true.</p>
+<p>To find it: ask whether a single penguin can be on Biscoe island and Dream island at the same time. It cannot, so <code>AND</code> can never be true. Whenever a zero-row result is unexpected, check whether the conditions are mutually exclusive.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="find-all-female-penguins" class="level2" data-number="18.7">
+<h2 data-number="18.7" class="anchored" data-anchor-id="find-all-female-penguins"><span class="header-section-number">18.7</span> Find all female penguins</h2>
+<p>Run this query and count the rows returned. Then run a query to find the distinct values stored in the <code>sex</code> column. Do any of them match the literal used in the <code>where</code> clause?</p>
+<pre><code>-- Find all female penguins.
+select *
+from penguins
+where sex = 'female';</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A query that should return all female penguins returns zero rows because the <code>sex</code> column stores the value <code>'FEMALE'</code> in uppercase but the query filters on <code>'female'</code> in lowercase; SQLite string comparisons are case-sensitive for non-ASCII characters.</p>
+<p>Shows: how to inspect the actual stored values before writing a filter and how to use functions like <code>upper()</code> or <code>lower()</code> to normalise comparisons.</p>
+<p>To find it: run <code>select distinct sex from penguins</code> before writing the filter. If the results show <code>'FEMALE'</code> in uppercase, a <code>where sex = 'female'</code> will return zero rows because the literal does not match.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="filter-on-a-calculated-column" class="level2" data-number="18.8">
+<h2 data-number="18.8" class="anchored" data-anchor-id="filter-on-a-calculated-column"><span class="header-section-number">18.8</span> Filter on a calculated column</h2>
+<p>Run this query. Does it raise an error or return wrong results? Add a second <code>select</code> that uses the full expression <code>body_mass_g / 1000.0</code> in the <code>where</code> clause and compare the two queries’ output.</p>
+<pre><code>-- Find all penguins heavier than 4 kg, displaying mass in kilograms.
+select species, body_mass_g / 1000.0 as mass_kg
+from penguins
+where mass_kg &gt; 4.0;</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A query that tries to filter using a column alias defined in the <code>select</code> clause fails with a “no such column” error because SQL evaluates <code>where</code> before <code>select</code>, so the alias does not yet exist at that point; the bug is referencing <code>mass_kg</code> in <code>where</code> instead of repeating the full expression <code>body_mass_g / 1000.0</code>.</p>
 <p>Shows: the order of SQL clause evaluation.</p>
-<p>To find it: run the query and read the error: <code>no such column: mass_kg</code>. SQL
-evaluates <code>where</code> before <code>select</code>, so the alias defined in <code>select</code> does not yet
-exist when <code>where</code> runs. Replace the alias in <code>where</code> with the full expression
-<code>body_mass_g / 1000.0</code>.</p>
-</details>
-<h2 id="sql-andorprecedence">Select records matching one of two conditions</h2>
-<p>Run this query. Which species and islands appear in the result? Is the output what
-you expected based on the comment describing the intent?</p>
-<div data-inc="andorprecedence.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/andorprecedence.sql" class="inc-path" role="img" tabindex="0" title="sql/andorprecedence.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- Find penguins that are on Biscoe island and are either Adelie or Chinstrap.</span>
-<span class="k">select</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">island</span>
-<span class="k">from</span><span class="w"> </span><span class="n">penguins</span>
-<span class="k">where</span><span class="w"> </span><span class="n">species</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Adelie'</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">species</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Chinstrap'</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">island</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Biscoe'</span><span class="p">;</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A query intended to find Adelie or Chinstrap penguins that are on Biscoe island
-instead returns all Adelie penguins from any island plus Chinstraps on Biscoe,
-because <code>and</code> binds more tightly than <code>or</code>; the bug is missing parentheses around
-the <code>or</code> sub-expression.</p>
-<p>Shows: SQL operator precedence and why parentheses are needed to make
-complex <code>where</code> conditions unambiguous.</p>
-<p>To find it: run the query and check whether any Adelie penguins from non-Biscoe
-islands appear in the result. If they do, <code>and</code> is binding more tightly than <code>or</code>
-and the condition is being read as <code>species = 'Adelie' or (species = 'Chinstrap' and
-island = 'Biscoe')</code>. Add parentheses around the <code>or</code> sub-expression.</p>
-</details>
-<h2 id="sql-nonaggcol">Show average body mass per species</h2>
-<p>Run this query and examine the <code>sex</code> column. Pick one species and check a few rows
-against the original data. Are the sex values consistent with what you expected
-for that species group?</p>
-<div data-inc="nonaggcol.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/nonaggcol.sql" class="inc-path" role="img" tabindex="0" title="sql/nonaggcol.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- Show the average body mass for each species along with the sex of each penguin.</span>
-<span class="k">select</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">sex</span><span class="p">,</span><span class="w"> </span><span class="nf">avg</span><span class="p">(</span><span class="n">body_mass_g</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">avg_mass</span>
-<span class="k">from</span><span class="w"> </span><span class="n">penguins</span>
-<span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">species</span><span class="p">;</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A query that groups by species but also selects <code>sex</code> without aggregating it
-produces an arbitrary, unpredictable sex value for each species group because <code>sex</code>
-is not in the <code>group by</code> clause; the bug is selecting a column that is neither
-aggregated nor part of the grouping.</p>
-<p>Shows: why every column in <code>select</code> must either appear in <code>group by</code>
-or be wrapped in an aggregation function.</p>
-<p>To find it: pick one species in the result and verify its <code>sex</code> value against the
-original table. If the grouped query shows a single sex for the group but the raw
-data contains both sexes for that species, the database is picking an arbitrary
-value.</p>
-</details>
-<h2 id="sql-wherenothavin">Keep only groups above a minimum size</h2>
-<p>Run this query. Does it return a result or raise an error? Check whether moving
-the condition to a <code>having</code> clause after <code>group by</code> fixes the problem.</p>
-<div data-inc="wherenothavin.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/wherenothavin.sql" class="inc-path" role="img" tabindex="0" title="sql/wherenothavin.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- Find species whose average body mass exceeds 4000 g.</span>
-<span class="k">select</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="nf">avg</span><span class="p">(</span><span class="n">body_mass_g</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">avg_mass</span>
-<span class="k">from</span><span class="w"> </span><span class="n">penguins</span>
-<span class="k">where</span><span class="w"> </span><span class="nf">avg</span><span class="p">(</span><span class="n">body_mass_g</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">4000.0</span>
-<span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">species</span><span class="p">;</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A query that tries to filter groups by their average value using <code>where</code> raises an
-error because aggregate functions like <code>avg()</code> cannot appear in <code>where</code>; <code>where</code>
-filters individual rows before grouping, while <code>having</code> filters groups after
-aggregation; the bug is placing the condition in <code>where</code> instead of <code>having</code>.</p>
-<p>Shows: the difference in timing between <code>where</code> and <code>having</code> in SQL's
-execution order.</p>
-<p>To find it: run the query and read the error message — something like <code>misuse of
-aggregate function avg()</code>. Aggregate functions cannot appear in <code>where</code> because rows
-haven't been grouped yet at that point. Move the condition to a <code>having</code> clause after
-the <code>group by</code>.</p>
-</details>
-<h2 id="sql-limitorder">Show the five heaviest penguins</h2>
-<p>Run this query a few times and note which rows appear. Are they the
-five heaviest penguins, or does the result change?</p>
-<div data-inc="limitorder.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/limitorder.sql" class="inc-path" role="img" tabindex="0" title="sql/limitorder.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- Show the five heaviest penguins.</span>
-<span class="k">select</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">island</span><span class="p">,</span><span class="w"> </span><span class="n">body_mass_g</span>
-<span class="k">from</span><span class="w"> </span><span class="n">penguins</span>
-<span class="k">limit</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A query that uses <code>limit</code> without <code>order by</code> returns an arbitrary set
-of rows, not the five heaviest. The database makes no ordering
-promise, so the result can change between runs; the bug is omitting
-<code>order by</code>.</p>
-<p>Shows: that <code>limit</code> only restricts the number of rows, and that an
-explicit <code>order by</code> is required to control <em>which</em> rows are returned.</p>
-<p>To find it: add <code>order by body_mass_g desc</code> before the <code>limit</code> clause
-and rerun. The heaviest five penguins now appear consistently.</p>
-</details>
-<h2 id="sql-countnull">Count the penguin rows</h2>
-<p>Run this query. Then run a second query using <code>count(*)</code> and compare the two
-results. If the numbers differ, find the rows that account for the difference.</p>
-<div data-inc="countnull.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/countnull.sql" class="inc-path" role="img" tabindex="0" title="sql/countnull.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- Report the total number of penguins in the dataset.</span>
-<span class="k">select</span><span class="w"> </span><span class="nf">count</span><span class="p">(</span><span class="n">sex</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">total_penguins</span>
-<span class="k">from</span><span class="w"> </span><span class="n">penguins</span><span class="p">;</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A query meant to count all penguins in the dataset underreports the total because
-<code>count(sex)</code> only counts rows where <code>sex</code> is not null, omitting the 11 penguins
-whose sex was not recorded; the bug is using <code>count(sex)</code> instead of <code>count(*)</code>.</p>
-<p>Shows: the difference between <code>count(column)</code> (excludes nulls) and
-<code>count(*)</code> (counts every row).</p>
-<p>To find it: run <code>select count(*), count(sex) from penguins</code>. If the two numbers
-differ, the difference is the number of penguins <code>count(sex)</code> is missing because
-their <code>sex</code> is null.</p>
-</details>
-<h2 id="sql-avgmanual">Compute the average body mass</h2>
-<p>Run this query and note the result. Then run <code>select avg(body_mass_g) from penguins</code>
-and compare. Are the two values the same?</p>
-<div data-inc="avgmanual.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/avgmanual.sql" class="inc-path" role="img" tabindex="0" title="sql/avgmanual.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- Calculate the average body mass of all penguins.</span>
-<span class="k">select</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">body_mass_g</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nf">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">avg_mass</span>
-<span class="k">from</span><span class="w"> </span><span class="n">penguins</span><span class="p">;</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A manual average calculation divides the sum of body masses by the total row count,
-but <code>sum()</code> skips the two rows where <code>body_mass_g</code> is null while <code>count(*)</code> still
-counts them, making the denominator too large and the result too small; the bug is
-dividing by <code>count(*)</code> instead of <code>count(body_mass_g)</code> or using <code>avg()</code> directly.</p>
-<p>Shows: how aggregation functions treat null values and why the
-built-in <code>avg()</code> should be preferred over hand-rolled sum/count
-averages.</p>
-<p>To find it: run <code>select avg(body_mass_g) from penguins</code> and compare it to the manual
-calculation. If they differ, check whether <code>count(*)</code> and <code>count(body_mass_g)</code> return
-the same number — if not, some rows have a null mass and the manual denominator is
-too large.</p>
-</details>
-<h2 id="sql-nullorder">Order rows that contain null values</h2>
-<p>Run this query and look at the first few rows. Do the penguins with no
-recorded body mass appear where you expected?</p>
-<div data-inc="nullorder.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/nullorder.sql" class="inc-path" role="img" tabindex="0" title="sql/nullorder.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- List penguins ordered by body mass, lightest first.</span>
-<span class="k">select</span><span class="w"> </span><span class="n">species</span><span class="p">,</span><span class="w"> </span><span class="n">island</span><span class="p">,</span><span class="w"> </span><span class="n">body_mass_g</span>
-<span class="k">from</span><span class="w"> </span><span class="n">penguins</span>
-<span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">body_mass_g</span><span class="p">;</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A query that orders by <code>body_mass_g</code> puts the rows with a null body
-mass first, because SQLite sorts nulls before non-null values. The
-nulls appear as if they were lighter than everything else; the bug is
-not accounting for null ordering.</p>
-<p>Shows: how null values sort in <code>order by</code>, and how to control their
-placement with <code>order by body_mass_g is null, body_mass_g</code>.</p>
-<p>To find it: compare <code>select body_mass_g from penguins order by
-body_mass_g</code> to the same query with <code>order by body_mass_g is null,
-body_mass_g</code>. The nulls move from the top to the bottom.</p>
-</details>
-<h2 id="sql-innerleft">List every person and their total credits</h2>
-<p>Run this query and list the people in the result. Then run <code>select distinct person
-from work</code> and compare. Does every person from the <code>work</code> table appear in the
-query output?</p>
-<div data-inc="innerleft.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/innerleft.sql" class="inc-path" role="img" tabindex="0" title="sql/innerleft.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- List every person and the total credits they have earned.</span>
-<span class="c1">-- People who only did jobs not listed in the job table should appear with 0 credits.</span>
-<span class="k">select</span><span class="w"> </span><span class="k">work</span><span class="p">.</span><span class="n">person</span><span class="p">,</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">job</span><span class="p">.</span><span class="n">credits</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">total</span>
-<span class="k">from</span><span class="w"> </span><span class="k">work</span><span class="w"> </span><span class="k">inner</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">job</span>
-<span class="k">on</span><span class="w"> </span><span class="k">work</span><span class="p">.</span><span class="n">job</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">job</span><span class="p">.</span><span class="n">name</span>
-<span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="k">work</span><span class="p">.</span><span class="n">person</span><span class="p">;</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A query that should list total credits for every person silently omits people whose
-jobs do not appear in the <code>job</code> table (because their work has no matching credit
-value to join to); the bug is using <code>inner join</code> instead of <code>left join</code>.</p>
-<p>Shows: the difference between inner and left joins and when each is
-appropriate.</p>
-<p>To find it: run <code>select distinct person from work</code> and compare the names to those in
-the join result. Any name present in <code>work</code> but absent from the join result was
-dropped because <code>inner join</code> excludes rows with no matching partner in the other
-table.</p>
-</details>
-<h2 id="sql-noonclause">Join two tables to combine related records</h2>
-<p>Run this query. Count the rows returned. How many rows are in the <code>job</code> table?
-How many are in the <code>work</code> table? How do those numbers relate to the row count
-you observed?</p>
-<div data-inc="noonclause.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/noonclause.sql" class="inc-path" role="img" tabindex="0" title="sql/noonclause.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- Match each job entry to the work records for that job.</span>
-<span class="k">select</span><span class="w"> </span><span class="o">*</span>
-<span class="k">from</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="k">work</span>
-<span class="k">limit</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A query that should pair each job with its matching work records instead returns
-every possible combination of rows from both tables because the <code>on</code> clause is
-missing; a join without an <code>on</code> condition (or equivalent <code>where</code> condition) is
-a Cartesian product, producing rows equal to the product of the two table sizes.</p>
-<p>Shows: that a join without a matching condition is almost never
-correct and how to recognise a Cartesian product by its unexpectedly
-large row count.</p>
-<p>To find it: count the rows in <code>job</code> and the rows in <code>work</code>, then multiply. If the
-query result has exactly that many rows, the join produced a Cartesian product,
-which means the <code>on</code> clause is missing.</p>
-</details>
-<h2 id="sql-coalescemiss">Show total credits per person</h2>
-<p>Run this query and check the <code>total</code> column for each person. Which person has a
-null total? What jobs did that person do, according to the <code>work</code> table?</p>
-<div data-inc="coalescemiss.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/coalescemiss.sql" class="inc-path" role="img" tabindex="0" title="sql/coalescemiss.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- Show total credits earned per person.</span>
-<span class="c1">-- People who only did jobs not in the job table should show 0, not null.</span>
-<span class="k">select</span><span class="w"> </span><span class="k">work</span><span class="p">.</span><span class="n">person</span><span class="p">,</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">job</span><span class="p">.</span><span class="n">credits</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">total</span>
-<span class="k">from</span><span class="w"> </span><span class="k">work</span><span class="w"> </span><span class="nf">left</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">job</span>
-<span class="k">on</span><span class="w"> </span><span class="k">work</span><span class="p">.</span><span class="n">job</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">job</span><span class="p">.</span><span class="n">name</span>
-<span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="k">work</span><span class="p">.</span><span class="n">person</span>
-<span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="k">work</span><span class="p">.</span><span class="n">person</span><span class="p">;</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A query that uses a left join to include all people shows null instead of 0 for
-a person whose jobs produce no credit values, because <code>sum()</code> of an all-null group
-returns null; the bug is not wrapping the sum in <code>coalesce(…, 0)</code>.</p>
-<p>Shows: how <code>coalesce</code> provides a fallback value for null results and
-why left joins often require it.</p>
-<p>To find it: look for null values in the <code>total</code> column of the result. Then run
-<code>select person, job from work where person = '&lt;name with null total&gt;'</code> to confirm
-that person has work records. The null total comes from <code>sum()</code> over an all-null
-group — wrap it in <code>coalesce(..., 0)</code> to return zero instead.</p>
-</details>
-<h2 id="sql-joinswapped">List each person and their survey count</h2>
-<p>Run this query. Does every person appear? Compare the <code>num_surveys</code> counts to what
-you get from <code>select count(*) from survey group by person_id</code>. Do the numbers match?</p>
-<div data-inc="joinswapped.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/joinswapped.sql" class="inc-path" role="img" tabindex="0" title="sql/joinswapped.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- List each person's full name and the number of surveys they have done.</span>
-<span class="k">select</span>
-<span class="w">    </span><span class="n">person</span><span class="p">.</span><span class="n">personal</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">' '</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="n">family</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">full_name</span><span class="p">,</span>
-<span class="w">    </span><span class="nf">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">num_surveys</span>
-<span class="k">from</span><span class="w"> </span><span class="n">person</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">survey</span>
-<span class="k">on</span><span class="w"> </span><span class="n">survey</span><span class="p">.</span><span class="n">person_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">survey</span><span class="p">.</span><span class="n">person_id</span>
-<span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="n">person_id</span>
-<span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="n">family</span><span class="p">,</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="n">personal</span><span class="p">;</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A query that should join people to their surveys instead produces a Cartesian
-product because the <code>on</code> clause compares <code>survey.person_id</code> to itself (which is
-always true) rather than to <code>person.person_id</code>; the bug is a copy-paste error
-that left the table name on the left side of <code>on</code> as <code>survey</code> instead of <code>person</code>.</p>
-<p>Shows: how to carefully check <code>on</code> conditions when the same column
-name appears in both tables.</p>
-<p>To find it: compare <code>num_surveys</code> in the join result to <code>select count(*) from
-survey group by person_id</code>. If every person shows the same <code>num_surveys</code> equal to
-the total number of survey rows, the <code>on</code> clause is always true and is joining every
-row to every other row.</p>
-</details>
-<h2 id="sql-selfjoin">List each person and their supervisor</h2>
-<p>Run this query and look at a few rows. Use the <code>person</code> table to verify which
-people are supervisors and which are subordinates. Are the labels in the output
-correct?</p>
-<div data-inc="selfjoin.sql" data-scrub="\s*--.*BUG.*"><span aria-label="Source: sql/selfjoin.sql" class="inc-path" role="img" tabindex="0" title="sql/selfjoin.sql">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1">-- For each person, show their full name and their supervisor's full name.</span>
-<span class="k">select</span>
-<span class="w">    </span><span class="n">pa</span><span class="p">.</span><span class="n">personal</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">' '</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">pa</span><span class="p">.</span><span class="n">family</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">person_name</span><span class="p">,</span>
-<span class="w">    </span><span class="n">pb</span><span class="p">.</span><span class="n">personal</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">' '</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">pb</span><span class="p">.</span><span class="n">family</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">supervisor_name</span>
-<span class="k">from</span><span class="w"> </span><span class="n">person</span><span class="w"> </span><span class="n">pa</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">person</span><span class="w"> </span><span class="n">pb</span>
-<span class="k">on</span><span class="w"> </span><span class="n">pa</span><span class="p">.</span><span class="n">person_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pb</span><span class="p">.</span><span class="n">supervisor_id</span>
-<span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">pa</span><span class="p">.</span><span class="n">family</span><span class="p">,</span><span class="w"> </span><span class="n">pa</span><span class="p">.</span><span class="n">personal</span><span class="p">;</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A self-join query that should display each person's name alongside their
-supervisor's name has the labels reversed: the <code>on</code> condition <code>pa.person_id =
-pb.supervisor_id</code> makes <code>pa</code> the supervisor and <code>pb</code> the subordinate, but the
-aliases label <code>pa</code> as <code>person_name</code> and <code>pb</code> as <code>supervisor_name</code>; the bug is
-swapping the alias names.</p>
-<p>Shows: how to reason about the direction of a self-join and how to
-verify the result against the underlying data.</p>
-<p>To find it: pick one row from the result and look up both IDs in the <code>person</code> table.
-If the person labeled <code>supervisor_name</code> is actually listed as a subordinate in the
-raw data, the alias names in the query are reversed.</p>
-</details>
-</main>
-<footer aria-label="Page navigation">
-<div class="row">
-<div class="col-3 left">
-<span aria-hidden="true">⇐</span> <a href="../shell/">The Unix Shell</a>
-</div>
-<div class="col-6 center">
-<a href="../">Unbreak</a>
-	  ©
-	  <a href="../contributing/#contributors">the authors</a>
-</div>
-<div class="col-3 right">
-<a href="../testing/">Testing</a> <span aria-hidden="true">⇒</span>
+<p>To find it: run the query and read the error: <code>no such column: mass_kg</code>. SQL evaluates <code>where</code> before <code>select</code>, so the alias defined in <code>select</code> does not yet exist when <code>where</code> runs. Replace the alias in <code>where</code> with the full expression <code>body_mass_g / 1000.0</code>.</p>
 </div>
 </div>
-</footer>
-</body>
-</html>
+</div>
+</section>
+<section id="select-records-matching-one-of-two-conditions" class="level2" data-number="18.9">
+<h2 data-number="18.9" class="anchored" data-anchor-id="select-records-matching-one-of-two-conditions"><span class="header-section-number">18.9</span> Select records matching one of two conditions</h2>
+<p>Run this query. Which species and islands appear in the result? Is the output what you expected based on the comment describing the intent?</p>
+<pre><code>-- Find penguins that are on Biscoe island and are either Adelie or Chinstrap.
+select species, island
+from penguins
+where species = 'Adelie' or species = 'Chinstrap' and island = 'Biscoe';</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A query intended to find Adelie or Chinstrap penguins that are on Biscoe island instead returns all Adelie penguins from any island plus Chinstraps on Biscoe, because <code>and</code> binds more tightly than <code>or</code>; the bug is missing parentheses around the <code>or</code> sub-expression.</p>
+<p>Shows: SQL operator precedence and why parentheses are needed to make complex <code>where</code> conditions unambiguous.</p>
+<p>To find it: run the query and check whether any Adelie penguins from non-Biscoe islands appear in the result. If they do, <code>and</code> is binding more tightly than <code>or</code> and the condition is being read as <code>species = 'Adelie' or (species = 'Chinstrap' and island = 'Biscoe')</code>. Add parentheses around the <code>or</code> sub-expression.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="show-average-body-mass-per-species" class="level2" data-number="18.10">
+<h2 data-number="18.10" class="anchored" data-anchor-id="show-average-body-mass-per-species"><span class="header-section-number">18.10</span> Show average body mass per species</h2>
+<p>Run this query and examine the <code>sex</code> column. Pick one species and check a few rows against the original data. Are the sex values consistent with what you expected for that species group?</p>
+<pre><code>-- Show the average body mass for each species along with the sex of each penguin.
+select species, sex, avg(body_mass_g) as avg_mass
+from penguins
+group by species;</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A query that groups by species but also selects <code>sex</code> without aggregating it produces an arbitrary, unpredictable sex value for each species group because <code>sex</code> is not in the <code>group by</code> clause; the bug is selecting a column that is neither aggregated nor part of the grouping.</p>
+<p>Shows: why every column in <code>select</code> must either appear in <code>group by</code> or be wrapped in an aggregation function.</p>
+<p>To find it: pick one species in the result and verify its <code>sex</code> value against the original table. If the grouped query shows a single sex for the group but the raw data contains both sexes for that species, the database is picking an arbitrary value.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="keep-only-groups-above-a-minimum-size" class="level2" data-number="18.11">
+<h2 data-number="18.11" class="anchored" data-anchor-id="keep-only-groups-above-a-minimum-size"><span class="header-section-number">18.11</span> Keep only groups above a minimum size</h2>
+<p>Run this query. Does it return a result or raise an error? Check whether moving the condition to a <code>having</code> clause after <code>group by</code> fixes the problem.</p>
+<pre><code>-- Find species whose average body mass exceeds 4000 g.
+select species, avg(body_mass_g) as avg_mass
+from penguins
+where avg(body_mass_g) &gt; 4000.0
+group by species;</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A query that tries to filter groups by their average value using <code>where</code> raises an error because aggregate functions like <code>avg()</code> cannot appear in <code>where</code>; <code>where</code> filters individual rows before grouping, while <code>having</code> filters groups after aggregation; the bug is placing the condition in <code>where</code> instead of <code>having</code>.</p>
+<p>Shows: the difference in timing between <code>where</code> and <code>having</code> in SQL’s execution order.</p>
+<p>To find it: run the query and read the error message — something like <code>misuse of aggregate function avg()</code>. Aggregate functions cannot appear in <code>where</code> because rows haven’t been grouped yet at that point. Move the condition to a <code>having</code> clause after the <code>group by</code>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="show-the-five-heaviest-penguins" class="level2" data-number="18.12">
+<h2 data-number="18.12" class="anchored" data-anchor-id="show-the-five-heaviest-penguins"><span class="header-section-number">18.12</span> Show the five heaviest penguins</h2>
+<p>Run this query a few times and note which rows appear. Are they the five heaviest penguins, or does the result change?</p>
+<pre><code>-- Show the five heaviest penguins.
+select species, island, body_mass_g
+from penguins
+limit 5;</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A query that uses <code>limit</code> without <code>order by</code> returns an arbitrary set of rows, not the five heaviest. The database makes no ordering promise, so the result can change between runs; the bug is omitting <code>order by</code>.</p>
+<p>Shows: that <code>limit</code> only restricts the number of rows, and that an explicit <code>order by</code> is required to control <em>which</em> rows are returned.</p>
+<p>To find it: add <code>order by body_mass_g desc</code> before the <code>limit</code> clause and rerun. The heaviest five penguins now appear consistently.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="count-the-penguin-rows" class="level2" data-number="18.13">
+<h2 data-number="18.13" class="anchored" data-anchor-id="count-the-penguin-rows"><span class="header-section-number">18.13</span> Count the penguin rows</h2>
+<p>Run this query. Then run a second query using <code>count(*)</code> and compare the two results. If the numbers differ, find the rows that account for the difference.</p>
+<pre><code>-- Report the total number of penguins in the dataset.
+select count(sex) as total_penguins
+from penguins;</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A query meant to count all penguins in the dataset underreports the total because <code>count(sex)</code> only counts rows where <code>sex</code> is not null, omitting the 11 penguins whose sex was not recorded; the bug is using <code>count(sex)</code> instead of <code>count(*)</code>.</p>
+<p>Shows: the difference between <code>count(column)</code> (excludes nulls) and <code>count(*)</code> (counts every row).</p>
+<p>To find it: run <code>select count(*), count(sex) from penguins</code>. If the two numbers differ, the difference is the number of penguins <code>count(sex)</code> is missing because their <code>sex</code> is null.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="compute-the-average-body-mass" class="level2" data-number="18.14">
+<h2 data-number="18.14" class="anchored" data-anchor-id="compute-the-average-body-mass"><span class="header-section-number">18.14</span> Compute the average body mass</h2>
+<p>Run this query and note the result. Then run <code>select avg(body_mass_g) from penguins</code> and compare. Are the two values the same?</p>
+<pre><code>-- Calculate the average body mass of all penguins.
+select sum(body_mass_g) / count(*) as avg_mass
+from penguins;</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A manual average calculation divides the sum of body masses by the total row count, but <code>sum()</code> skips the two rows where <code>body_mass_g</code> is null while <code>count(*)</code> still counts them, making the denominator too large and the result too small; the bug is dividing by <code>count(*)</code> instead of <code>count(body_mass_g)</code> or using <code>avg()</code> directly.</p>
+<p>Shows: how aggregation functions treat null values and why the built-in <code>avg()</code> should be preferred over hand-rolled sum/count averages.</p>
+<p>To find it: run <code>select avg(body_mass_g) from penguins</code> and compare it to the manual calculation. If they differ, check whether <code>count(*)</code> and <code>count(body_mass_g)</code> return the same number — if not, some rows have a null mass and the manual denominator is too large.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="order-rows-that-contain-null-values" class="level2" data-number="18.15">
+<h2 data-number="18.15" class="anchored" data-anchor-id="order-rows-that-contain-null-values"><span class="header-section-number">18.15</span> Order rows that contain null values</h2>
+<p>Run this query and look at the first few rows. Do the penguins with no recorded body mass appear where you expected?</p>
+<pre><code>-- List penguins ordered by body mass, lightest first.
+select species, island, body_mass_g
+from penguins
+order by body_mass_g;</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A query that orders by <code>body_mass_g</code> puts the rows with a null body mass first, because SQLite sorts nulls before non-null values. The nulls appear as if they were lighter than everything else; the bug is not accounting for null ordering.</p>
+<p>Shows: how null values sort in <code>order by</code>, and how to control their placement with <code>order by body_mass_g is null, body_mass_g</code>.</p>
+<p>To find it: compare <code>select body_mass_g from penguins order by body_mass_g</code> to the same query with <code>order by body_mass_g is null, body_mass_g</code>. The nulls move from the top to the bottom.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="list-every-person-and-their-total-credits" class="level2" data-number="18.16">
+<h2 data-number="18.16" class="anchored" data-anchor-id="list-every-person-and-their-total-credits"><span class="header-section-number">18.16</span> List every person and their total credits</h2>
+<p>Run this query and list the people in the result. Then run <code>select distinct person from work</code> and compare. Does every person from the <code>work</code> table appear in the query output?</p>
+<pre><code>-- List every person and the total credits they have earned.
+-- People who only did jobs not listed in the job table should appear with 0 credits.
+select work.person, sum(job.credits) as total
+from work inner join job
+on work.job = job.name
+group by work.person;</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A query that should list total credits for every person silently omits people whose jobs do not appear in the <code>job</code> table (because their work has no matching credit value to join to); the bug is using <code>inner join</code> instead of <code>left join</code>.</p>
+<p>Shows: the difference between inner and left joins and when each is appropriate.</p>
+<p>To find it: run <code>select distinct person from work</code> and compare the names to those in the join result. Any name present in <code>work</code> but absent from the join result was dropped because <code>inner join</code> excludes rows with no matching partner in the other table.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="join-two-tables-to-combine-related-records" class="level2" data-number="18.17">
+<h2 data-number="18.17" class="anchored" data-anchor-id="join-two-tables-to-combine-related-records"><span class="header-section-number">18.17</span> Join two tables to combine related records</h2>
+<p>Run this query. Count the rows returned. How many rows are in the <code>job</code> table? How many are in the <code>work</code> table? How do those numbers relate to the row count you observed?</p>
+<pre><code>-- Match each job entry to the work records for that job.
+select *
+from job join work
+limit 10;</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-17" class="callout-17-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A query that should pair each job with its matching work records instead returns every possible combination of rows from both tables because the <code>on</code> clause is missing; a join without an <code>on</code> condition (or equivalent <code>where</code> condition) is a Cartesian product, producing rows equal to the product of the two table sizes.</p>
+<p>Shows: that a join without a matching condition is almost never correct and how to recognise a Cartesian product by its unexpectedly large row count.</p>
+<p>To find it: count the rows in <code>job</code> and the rows in <code>work</code>, then multiply. If the query result has exactly that many rows, the join produced a Cartesian product, which means the <code>on</code> clause is missing.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="show-total-credits-per-person" class="level2" data-number="18.18">
+<h2 data-number="18.18" class="anchored" data-anchor-id="show-total-credits-per-person"><span class="header-section-number">18.18</span> Show total credits per person</h2>
+<p>Run this query and check the <code>total</code> column for each person. Which person has a null total? What jobs did that person do, according to the <code>work</code> table?</p>
+<pre><code>-- Show total credits earned per person.
+-- People who only did jobs not in the job table should show 0, not null.
+select work.person, sum(job.credits) as total
+from work left join job
+on work.job = job.name
+group by work.person
+order by work.person;</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-18-contents" aria-controls="callout-18" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-18" class="callout-18-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A query that uses a left join to include all people shows null instead of 0 for a person whose jobs produce no credit values, because <code>sum()</code> of an all-null group returns null; the bug is not wrapping the sum in <code>coalesce(…, 0)</code>.</p>
+<p>Shows: how <code>coalesce</code> provides a fallback value for null results and why left joins often require it.</p>
+<p>To find it: look for null values in the <code>total</code> column of the result. Then run <code>select person, job from work where person = '&lt;name with null total&gt;'</code> to confirm that person has work records. The null total comes from <code>sum()</code> over an all-null group — wrap it in <code>coalesce(..., 0)</code> to return zero instead.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="list-each-person-and-their-survey-count" class="level2" data-number="18.19">
+<h2 data-number="18.19" class="anchored" data-anchor-id="list-each-person-and-their-survey-count"><span class="header-section-number">18.19</span> List each person and their survey count</h2>
+<p>Run this query. Does every person appear? Compare the <code>num_surveys</code> counts to what you get from <code>select count(*) from survey group by person_id</code>. Do the numbers match?</p>
+<pre><code>-- List each person's full name and the number of surveys they have done.
+select
+    person.personal || ' ' || person.family as full_name,
+    count(*) as num_surveys
+from person join survey
+on survey.person_id = survey.person_id
+group by person.person_id
+order by person.family, person.personal;</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-19-contents" aria-controls="callout-19" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-19" class="callout-19-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A query that should join people to their surveys instead produces a Cartesian product because the <code>on</code> clause compares <code>survey.person_id</code> to itself (which is always true) rather than to <code>person.person_id</code>; the bug is a copy-paste error that left the table name on the left side of <code>on</code> as <code>survey</code> instead of <code>person</code>.</p>
+<p>Shows: how to carefully check <code>on</code> conditions when the same column name appears in both tables.</p>
+<p>To find it: compare <code>num_surveys</code> in the join result to <code>select count(*) from survey group by person_id</code>. If every person shows the same <code>num_surveys</code> equal to the total number of survey rows, the <code>on</code> clause is always true and is joining every row to every other row.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="list-each-person-and-their-supervisor" class="level2" data-number="18.20">
+<h2 data-number="18.20" class="anchored" data-anchor-id="list-each-person-and-their-supervisor"><span class="header-section-number">18.20</span> List each person and their supervisor</h2>
+<p>Run this query and look at a few rows. Use the <code>person</code> table to verify which people are supervisors and which are subordinates. Are the labels in the output correct?</p>
+<pre><code>-- For each person, show their full name and their supervisor's full name.
+select
+    pa.personal || ' ' || pa.family as person_name,
+    pb.personal || ' ' || pb.family as supervisor_name
+from person pa join person pb
+on pa.person_id = pb.supervisor_id
+order by pa.family, pa.personal;</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-20-contents" aria-controls="callout-20" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-20" class="callout-20-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A self-join query that should display each person’s name alongside their supervisor’s name has the labels reversed: the <code>on</code> condition <code>pa.person_id = pb.supervisor_id</code> makes <code>pa</code> the supervisor and <code>pb</code> the subordinate, but the aliases label <code>pa</code> as <code>person_name</code> and <code>pb</code> as <code>supervisor_name</code>; the bug is swapping the alias names.</p>
+<p>Shows: how to reason about the direction of a self-join and how to verify the result against the underlying data.</p>
+<p>To find it: pick one row from the result and look up both IDs in the <code>person</code> table. If the person labeled <code>supervisor_name</code> is actually listed as a subordinate in the raw data, the alias names in the query are reversed.</p>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../shell/index.html" class="pagination-link" aria-label="The Unix Shell">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Unix Shell</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../testing/index.html" class="pagination-link" aria-label="Testing">
+        <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Testing</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/gvwilson/unbreak/edit/main/sql/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/gvwilson/unbreak/blob/main/sql/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/gvwilson/unbreak/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

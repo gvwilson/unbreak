@@ -1,143 +1,475 @@
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
-<html lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>The Unix Shell</title>
-<meta content="Unbreaking Software" name="description"/>
-<link href="../_static/favicon.ico" rel="icon" type="image/x-icon"/>
-<link href="../_static/pygments.css" rel="stylesheet" type="text/css"/>
-<link href="../_static/chota.css" rel="stylesheet" type="text/css"/>
-<link href="../_static/mccole.css" rel="stylesheet" type="text/css"/>
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>17&nbsp; The Unix Shell – Unbreaking Software</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../sql/index.html" rel="next">
+<link href="../polars/index.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-01a495efc5497ac6e3f5457e7ed18e65.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../mccole/book.css">
 </head>
-<body>
-<a class="skip-link" href="#main-content">Skip to main content</a>
-<nav aria-label="Site navigation" class="nav">
-<div class="nav-left">
-<a class="brand" href="../">Unbreak</a>
-<div class="dropdown">
-<button aria-controls="nav-lessons" aria-haspopup="true">Lessons</button>
-<ul class="dropdown-content" id="nav-lessons">
-<li><a href="../intro/">Introduction</a></li>
-<li><a href="../basicpy/">Basic Python</a></li>
-<li><a href="../interpy/">Intermediate Python</a></li>
-<li><a href="../oopy/">Object-Oriented Python</a></li>
-<li><a href="../regexp/">Regular Expressions</a></li>
-<li><a href="../diot/">Data, I/O, and Testing</a></li>
-<li><a href="../perfcon/">Performance and Concurrency</a></li>
-<li><a href="../jsbrowser/">JavaScript Fundamentals</a></li>
-<li><a href="../css/">CSS</a></li>
-<li><a href="../web/">HTTP and APIs</a></li>
-<li><a href="../htmx/">HTMX</a></li>
-<li><a href="../alpine/">Alpine.js</a></li>
-<li><a href="../fastapi/">FastAPI</a></li>
-<li><a href="../datasci/">Data Science</a></li>
-<li><a href="../dataviz/">Data Visualization</a></li>
-<li><a href="../polars/">Polars</a></li>
-<li><a class="active" href="../shell/">The Unix Shell</a></li>
-<li><a href="../sql/">SQL</a></li>
-<li><a href="../testing/">Testing</a></li>
-<li><a href="../finale/">Conclusion</a></li>
-</ul>
-</div>
-<div class="dropdown">
-<button aria-controls="nav-appendices" aria-haspopup="true">Appendices</button>
-<ul class="dropdown-content" id="nav-appendices">
-<li><a href="../license/">License</a></li>
-<li><a href="../conduct/">Code of Conduct</a></li>
-<li><a href="../contributing/">Contributing</a></li>
-<li><a href="../bibliography/">Bibliography</a></li>
-<li><a href="../glossary/">Glossary</a></li>
-<li><a href="../complex/">Complex Examples</a></li>
-</ul>
-</div>
-<a href="https://github.com/gvwilson/unbreak">Repository</a>
-</div>
-</nav>
-<main id="main-content">
-<h1>The Unix Shell</h1>
-<h2 id="shell-numericsort">Sort a list of numbers from smallest to largest</h2>
-<p>Run this script and look at the order of the numbers it prints. Is the smallest
-number first? What order would you expect?</p>
-<div data-inc="numericsort.sh" data-scrub="\s*# BUG.*"><span aria-label="Source: shell/numericsort.sh" class="inc-path" role="img" tabindex="0" title="shell/numericsort.sh">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="c1"># Print the numbers in numericsort.txt in ascending order.</span>
 
-sort<span class="w"> </span>numericsort.txt
-</code></pre></div>
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../shell/index.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Unix Shell</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Unbreaking Software</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/gvwilson/unbreak" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
-<div data-inc="numericsort.txt"><span aria-label="Source: shell/numericsort.txt" class="inc-path" role="img" tabindex="0" title="shell/numericsort.txt">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code>10
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basicpy/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Basic Python</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../interpy/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Intermediate Python</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../oopy/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Object-Oriented Python</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../regexp/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Regular Expressions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../diot/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data, I/O, and Testing</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../perfcon/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Performance, Concurrency, and System Interaction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../jsbrowser/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">JavaScript Fundamentals and the Browser</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../css/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">CSS</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../web/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">HTTP and APIs</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../htmx/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">HTMX</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../alpine/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Alpine.js</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fastapi/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">FastAPI</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../datasci/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Data Science</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dataviz/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Data Visualization</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../polars/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Polars</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../shell/index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Unix Shell</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../sql/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">SQL</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../testing/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Testing</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../finale/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Appendices</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../license/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">License</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../conduct/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Code of Conduct</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../contributing/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Contributing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bibliography/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Bibliography</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../glossary/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../complex/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Complex Examples</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sort-a-list-of-numbers-from-smallest-to-largest" id="toc-sort-a-list-of-numbers-from-smallest-to-largest" class="nav-link active" data-scroll-target="#sort-a-list-of-numbers-from-smallest-to-largest"><span class="header-section-number">17.1</span> Sort a list of numbers from smallest to largest</a></li>
+  <li><a href="#collect-a-summary-line-from-each-file-in-a-directory" id="toc-collect-a-summary-line-from-each-file-in-a-directory" class="nav-link" data-scroll-target="#collect-a-summary-line-from-each-file-in-a-directory"><span class="header-section-number">17.2</span> Collect a summary line from each file in a directory</a></li>
+  <li><a href="#copy-monthly-notes-files-to-an-archive-directory" id="toc-copy-monthly-notes-files-to-an-archive-directory" class="nav-link" data-scroll-target="#copy-monthly-notes-files-to-an-archive-directory"><span class="header-section-number">17.3</span> Copy monthly notes files to an archive directory</a></li>
+  <li><a href="#count-distinct-species-in-a-csv-file" id="toc-count-distinct-species-in-a-csv-file" class="nav-link" data-scroll-target="#count-distinct-species-in-a-csv-file"><span class="header-section-number">17.4</span> Count distinct species in a CSV file</a></li>
+  <li><a href="#count-words-in-files-whose-names-contain-spaces" id="toc-count-words-in-files-whose-names-contain-spaces" class="nav-link" data-scroll-target="#count-words-in-files-whose-names-contain-spaces"><span class="header-section-number">17.5</span> Count words in files whose names contain spaces</a></li>
+  <li><a href="#filter-lines-from-an-input-file-into-an-output-file" id="toc-filter-lines-from-an-input-file-into-an-output-file" class="nav-link" data-scroll-target="#filter-lines-from-an-input-file-into-an-output-file"><span class="header-section-number">17.6</span> Filter lines from an input file into an output file</a></li>
+  <li><a href="#print-the-most-recent-entries-from-a-log-file" id="toc-print-the-most-recent-entries-from-a-log-file" class="nav-link" data-scroll-target="#print-the-most-recent-entries-from-a-log-file"><span class="header-section-number">17.7</span> Print the most recent entries from a log file</a></li>
+  <li><a href="#save-output-to-a-shared-directory-one-level-up" id="toc-save-output-to-a-shared-directory-one-level-up" class="nav-link" data-scroll-target="#save-output-to-a-shared-directory-one-level-up"><span class="header-section-number">17.8</span> Save output to a shared directory one level up</a></li>
+  <li><a href="#count-the-records-in-a-data-file" id="toc-count-the-records-in-a-data-file" class="nav-link" data-scroll-target="#count-the-records-in-a-data-file"><span class="header-section-number">17.9</span> Count the records in a data file</a></li>
+  <li><a href="#find-all-csv-files-in-a-directory-tree" id="toc-find-all-csv-files-in-a-directory-tree" class="nav-link" data-scroll-target="#find-all-csv-files-in-a-directory-tree"><span class="header-section-number">17.10</span> Find all CSV files in a directory tree</a></li>
+  <li><a href="#extract-family-names-from-a-tab-separated-file" id="toc-extract-family-names-from-a-tab-separated-file" class="nav-link" data-scroll-target="#extract-family-names-from-a-tab-separated-file"><span class="header-section-number">17.11</span> Extract family names from a tab-separated file</a></li>
+  <li><a href="#filter-error-lines-from-a-log-file" id="toc-filter-error-lines-from-a-log-file" class="nav-link" data-scroll-target="#filter-error-lines-from-a-log-file"><span class="header-section-number">17.12</span> Filter error lines from a log file</a></li>
+  <li><a href="#count-the-lines-in-a-file-given-on-the-command-line" id="toc-count-the-lines-in-a-file-given-on-the-command-line" class="nav-link" data-scroll-target="#count-the-lines-in-a-file-given-on-the-command-line"><span class="header-section-number">17.13</span> Count the lines in a file given on the command line</a></li>
+  <li><a href="#concatenate-report-sections-in-the-correct-order" id="toc-concatenate-report-sections-in-the-correct-order" class="nav-link" data-scroll-target="#concatenate-report-sections-in-the-correct-order"><span class="header-section-number">17.14</span> Concatenate report sections in the correct order</a></li>
+  <li><a href="#append-a-summary-line-from-each-file-to-a-report" id="toc-append-a-summary-line-from-each-file-to-a-report" class="nav-link" data-scroll-target="#append-a-summary-line-from-each-file-to-a-report"><span class="header-section-number">17.15</span> Append a summary line from each file to a report</a></li>
+  <li><a href="#list-the-three-largest-files-in-a-directory" id="toc-list-the-three-largest-files-in-a-directory" class="nav-link" data-scroll-target="#list-the-three-largest-files-in-a-directory"><span class="header-section-number">17.16</span> List the three largest files in a directory</a></li>
+  <li><a href="#extract-ten-data-rows-from-a-csv-file" id="toc-extract-ten-data-rows-from-a-csv-file" class="nav-link" data-scroll-target="#extract-ten-data-rows-from-a-csv-file"><span class="header-section-number">17.17</span> Extract ten data rows from a CSV file</a></li>
+  <li><a href="#process-a-list-of-filenames-passed-as-script-arguments" id="toc-process-a-list-of-filenames-passed-as-script-arguments" class="nav-link" data-scroll-target="#process-a-list-of-filenames-passed-as-script-arguments"><span class="header-section-number">17.18</span> Process a list of filenames passed as script arguments</a></li>
+  <li><a href="#count-log-files-in-a-directory-tree" id="toc-count-log-files-in-a-directory-tree" class="nav-link" data-scroll-target="#count-log-files-in-a-directory-tree"><span class="header-section-number">17.19</span> Count log files in a directory tree</a></li>
+  <li><a href="#copy-a-directory-to-a-backup-location" id="toc-copy-a-directory-to-a-backup-location" class="nav-link" data-scroll-target="#copy-a-directory-to-a-backup-location"><span class="header-section-number">17.20</span> Copy a directory to a backup location</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/gvwilson/unbreak/edit/main/shell/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/gvwilson/unbreak/blob/main/shell/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/gvwilson/unbreak/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Unix Shell</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="sort-a-list-of-numbers-from-smallest-to-largest" class="level2" data-number="17.1">
+<h2 data-number="17.1" class="anchored" data-anchor-id="sort-a-list-of-numbers-from-smallest-to-largest"><span class="header-section-number">17.1</span> Sort a list of numbers from smallest to largest</h2>
+<p>Run this script and look at the order of the numbers it prints. Is the smallest number first? What order would you expect?</p>
+<p><code class="sourceCode bash"><span class="co">#!/usr/bin/env bash</span>
+<span class="co"># Print the numbers in numericsort.txt in ascending order.</span>
+<span class="fu">sort</span> numericsort.txt</code> <code>10
 9
 2
 100
 7
 1
-50
-</code></pre></div>
+50</code></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is calling <code>sort</code> without the <code>-n</code> flag, which causes lexicographic
-(alphabetical) ordering so <code>10</code> appears before <code>2</code>.</p>
-<p>Shows: the difference between alphabetical and numeric sort and when
-to use <code>sort -n</code>.</p>
-<p>To find it: look at where <code>10</code> appears in the output — if it comes before <code>2</code>, the
-sort is alphabetical because <code>"1" &lt; "2"</code> at the first character. Run <code>sort -n</code> on
-the same input and compare.</p>
-</details>
-<h2 id="shell-overwrite">Collect a summary line from each file in a directory</h2>
-<p>Run this script and then look at <code>summary.txt</code>. How many lines does it contain?
-How many did you expect?</p>
-<div data-inc="overwrite.sh" data-scrub="\s*# BUG.*"><span aria-label="Source: shell/overwrite.sh" class="inc-path" role="img" tabindex="0" title="shell/overwrite.sh">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="c1"># Collect the first (header) line of each .dat file into summary.txt.</span>
-
-<span class="k">for</span><span class="w"> </span>f<span class="w"> </span><span class="k">in</span><span class="w"> </span>overwrite_a.dat<span class="w"> </span>overwrite_b.dat<span class="w"> </span>overwrite_c.dat
-<span class="k">do</span>
-<span class="w">    </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="s2">"</span><span class="nv">$f</span><span class="s2">"</span><span class="w"> </span>&gt;<span class="w"> </span>summary.txt
-<span class="k">done</span>
-</code></pre></div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is using <code>&gt;</code> inside the loop, which overwrites the file on every iteration
-instead of appending to it, so the summary contains only one entry.</p>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is calling <code>sort</code> without the <code>-n</code> flag, which causes lexicographic (alphabetical) ordering so <code>10</code> appears before <code>2</code>.</p>
+<p>Shows: the difference between alphabetical and numeric sort and when to use <code>sort -n</code>.</p>
+<p>To find it: look at where <code>10</code> appears in the output — if it comes before <code>2</code>, the sort is alphabetical because <code>"1" &lt; "2"</code> at the first character. Run <code>sort -n</code> on the same input and compare.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="collect-a-summary-line-from-each-file-in-a-directory" class="level2" data-number="17.2">
+<h2 data-number="17.2" class="anchored" data-anchor-id="collect-a-summary-line-from-each-file-in-a-directory"><span class="header-section-number">17.2</span> Collect a summary line from each file in a directory</h2>
+<p>Run this script and then look at <code>summary.txt</code>. How many lines does it contain? How many did you expect?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Collect the first (header) line of each .dat file into summary.txt.</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> overwrite_a.dat overwrite_b.dat overwrite_c.dat</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">head</span> <span class="at">-n</span> 1 <span class="st">"</span><span class="va">$f</span><span class="st">"</span> <span class="op">&gt;</span> summary.txt</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is using <code>&gt;</code> inside the loop, which overwrites the file on every iteration instead of appending to it, so the summary contains only one entry.</p>
 <p>Shows: the difference between <code>&gt;</code> (overwrite) and <code>&gt;&gt;</code> (append).</p>
-<p>To find it: run the script and then count the lines in <code>summary.txt</code> with
-<code>wc -l summary.txt</code>. If only one line appears instead of one per file, look inside
-the loop for <code>&gt;</code> and check whether it should be <code>&gt;&gt;</code>.</p>
-</details>
-<h2 id="shell-wideglob">Copy monthly notes files to an archive directory</h2>
-<p>Look at the list of <code>.txt</code> files in the directory. Which files does <code>*.txt</code> match?
-Are all of them files you want to copy?</p>
-<div data-inc="wideglob.sh" data-scrub="\s*# BUG.*"><span aria-label="Source: shell/wideglob.sh" class="inc-path" role="img" tabindex="0" title="shell/wideglob.sh">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="c1"># Copy the monthly notes files to the archive directory.</span>
-<span class="c1"># Monthly notes are notes_jan.txt and notes_feb.txt.</span>
-<span class="c1"># notes_archive.txt is the running archive and should NOT be copied.</span>
-
-cp<span class="w"> </span>*.txt<span class="w"> </span>archive/
-</code></pre></div>
+<p>To find it: run the script and then count the lines in <code>summary.txt</code> with <code>wc -l summary.txt</code>. If only one line appears instead of one per file, look inside the loop for <code>&gt;</code> and check whether it should be <code>&gt;&gt;</code>.</p>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is that <code>*.txt</code> matches every <code>.txt</code> file in the directory, including the
-running archive file itself, so the script copies more than the monthly notes files.</p>
-<p>Shows: how to check what a wildcard matches before using it in a
-destructive command, and how to narrow a pattern (e.g.,
-<code>notes_???.txt</code>) to match only the intended files.</p>
-<p>To find it: before running the script, run <code>echo *.txt</code> in the directory and read
-the expansion. If the list includes files you do not want to copy, narrow the
-pattern before using it.</p>
-</details>
-<h2 id="shell-uniqsorted">Count distinct species in a CSV file</h2>
-<p>Run this script and check the count it reports. Then look at the species column in
-<code>species.csv</code>. How many distinct species are there, and does the count match?</p>
-<div data-inc="uniqsorted.sh" data-scrub="\s*# BUG.*"><span aria-label="Source: shell/uniqsorted.sh" class="inc-path" role="img" tabindex="0" title="shell/uniqsorted.sh">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="c1"># Count the number of distinct species recorded in species.csv.</span>
-
-cut<span class="w"> </span>-d,<span class="w"> </span>-f2<span class="w"> </span>species.csv<span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l
-</code></pre></div>
 </div>
-<div data-inc="species.csv"><span aria-label="Source: shell/species.csv" class="inc-path" role="img" tabindex="0" title="shell/species.csv">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code>date,species,count
+</div>
+</section>
+<section id="copy-monthly-notes-files-to-an-archive-directory" class="level2" data-number="17.3">
+<h2 data-number="17.3" class="anchored" data-anchor-id="copy-monthly-notes-files-to-an-archive-directory"><span class="header-section-number">17.3</span> Copy monthly notes files to an archive directory</h2>
+<p>Look at the list of <code>.txt</code> files in the directory. Which files does <code>*.txt</code> match? Are all of them files you want to copy?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the monthly notes files to the archive directory.</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Monthly notes are notes_jan.txt and notes_feb.txt.</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># notes_archive.txt is the running archive and should NOT be copied.</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="pp">*</span>.txt archive/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is that <code>*.txt</code> matches every <code>.txt</code> file in the directory, including the running archive file itself, so the script copies more than the monthly notes files.</p>
+<p>Shows: how to check what a wildcard matches before using it in a destructive command, and how to narrow a pattern (e.g., <code>notes_???.txt</code>) to match only the intended files.</p>
+<p>To find it: before running the script, run <code>echo *.txt</code> in the directory and read the expansion. If the list includes files you do not want to copy, narrow the pattern before using it.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="count-distinct-species-in-a-csv-file" class="level2" data-number="17.4">
+<h2 data-number="17.4" class="anchored" data-anchor-id="count-distinct-species-in-a-csv-file"><span class="header-section-number">17.4</span> Count distinct species in a CSV file</h2>
+<p>Run this script and check the count it reports. Then look at the species column in <code>species.csv</code>. How many distinct species are there, and does the count match?</p>
+<p><code class="sourceCode bash"><span class="co">#!/usr/bin/env bash</span>
+<span class="co"># Count the number of distinct species recorded in species.csv.</span>
+<span class="fu">cut</span> <span class="at">-d,</span> <span class="at">-f2</span> species.csv <span class="kw">|</span> <span class="fu">uniq</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></code> <code>date,species,count
 2024-03-01,sparrow,12
 2024-03-01,robin,5
 2024-03-02,sparrow,8
@@ -147,75 +479,86 @@ cut<span class="w"> </span>-d,<span class="w"> </span>-f2<span class="w"> </span
 2024-03-04,crow,4
 2024-03-04,robin,6
 2024-03-05,sparrow,9
-2024-03-05,crow,2
-</code></pre></div>
+2024-03-05,crow,2</code></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is piping directly to <code>uniq</code> without sorting first. Only adjacent identical
-lines are collapsed, so non-adjacent occurrences of the same species are counted
-separately and the reported count is too high.</p>
-<p>Shows: that <code>uniq</code> only removes adjacent duplicates and that
-<code>sort | uniq</code> is the correct pattern for counting distinct values.</p>
-<p>To find it: run <code>sort species.csv | uniq | wc -l</code> and compare the count to
-<code>cat species.csv | uniq | wc -l</code>. If the two counts differ, non-adjacent duplicates
-are being missed by <code>uniq</code> alone.</p>
-</details>
-<h2 id="shell-quotedvar">Count words in files whose names contain spaces</h2>
-<p>Run this script with a filename that contains a space (e.g., <code>"field notes.txt"</code>).
-Does it process the file correctly?</p>
-<div data-inc="quotedvar.sh" data-scrub="\s*# BUG.*"><span aria-label="Source: shell/quotedvar.sh" class="inc-path" role="img" tabindex="0" title="shell/quotedvar.sh">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="c1"># Count the lines in each text file passed to this script.</span>
-
-<span class="k">for</span><span class="w"> </span>f<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span>
-<span class="k">do</span>
-<span class="w">    </span>wc<span class="w"> </span>-l<span class="w"> </span><span class="nv">$f</span>
-<span class="k">done</span>
-</code></pre></div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is using <code>$f</code> without quotes, so the shell splits the filename on the space
-and passes the two halves as separate arguments to <code>wc</code>, causing the loop to fail
-for any filename that contains a space.</p>
-<p>Shows: why loop variables should always be quoted as <code>"$f"</code> and how
-spaces in filenames require consistent quoting throughout a script.</p>
-<p>To find it: replace the command inside the loop with two consecutive lines
-(i.e., <code>echo "$f"</code> and <code>echo $f</code>) then run with a filename containing a space. The
-unquoted version prints the name split into two words; the quoted version prints it
-as one.</p>
-</details>
-<h2 id="shell-wrongarg">Filter lines from an input file into an output file</h2>
-<p>Run the script with a small input file and the name of an output file. Look at
-which file was created and which file was modified.</p>
-<div data-inc="wrongarg.sh" data-scrub="\s*# BUG.*"><span aria-label="Source: shell/wrongarg.sh" class="inc-path" role="img" tabindex="0" title="shell/wrongarg.sh">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="c1"># Usage: wrongarg.sh input_file output_file</span>
-<span class="c1"># Copy the first 20 lines of input_file into output_file.</span>
-
-head<span class="w"> </span>-n<span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span><span class="w"> </span>&gt;<span class="w"> </span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
-</code></pre></div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is that the arguments <code>$1</code> and <code>$2</code> are swapped, so the script reads from
-the output path and writes to the input path instead.</p>
-<p>Shows: how to verify which argument is which by reading the usage
-comment, and how to use <code>echo</code> to print argument values before acting
-on them.</p>
-<p>To find it: replace the <code>grep</code> command temporarily with
-<code>echo "reading from $1, writing to $2"</code> and run the script. If the output shows the
-input and output filenames in the wrong positions, swap <code>$1</code> and <code>$2</code>.</p>
-</details>
-<h2 id="shell-headtail">Print the most recent entries from a log file</h2>
-<p>Run this script and note which rows are printed. Are they from the beginning or
-end of the file?</p>
-<div data-inc="headtail.sh" data-scrub="\s*# BUG.*"><span aria-label="Source: shell/headtail.sh" class="inc-path" role="img" tabindex="0" title="shell/headtail.sh">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="c1"># Print the last 5 data rows of headtail.txt (excluding the header line).</span>
-
-head<span class="w"> </span>-n<span class="w"> </span><span class="m">5</span><span class="w"> </span>headtail.txt
-</code></pre></div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is piping directly to <code>uniq</code> without sorting first. Only adjacent identical lines are collapsed, so non-adjacent occurrences of the same species are counted separately and the reported count is too high.</p>
+<p>Shows: that <code>uniq</code> only removes adjacent duplicates and that <code>sort | uniq</code> is the correct pattern for counting distinct values.</p>
+<p>To find it: run <code>sort species.csv | uniq | wc -l</code> and compare the count to <code>cat species.csv | uniq | wc -l</code>. If the two counts differ, non-adjacent duplicates are being missed by <code>uniq</code> alone.</p>
 </div>
-<div data-inc="headtail.txt"><span aria-label="Source: shell/headtail.txt" class="inc-path" role="img" tabindex="0" title="shell/headtail.txt">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code>experiment_id,temperature,pressure
+</div>
+</div>
+</section>
+<section id="count-words-in-files-whose-names-contain-spaces" class="level2" data-number="17.5">
+<h2 data-number="17.5" class="anchored" data-anchor-id="count-words-in-files-whose-names-contain-spaces"><span class="header-section-number">17.5</span> Count words in files whose names contain spaces</h2>
+<p>Run this script with a filename that contains a space (e.g., <code>"field notes.txt"</code>). Does it process the file correctly?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the lines in each text file passed to this script.</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> <span class="st">"</span><span class="va">$@</span><span class="st">"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">wc</span> <span class="at">-l</span> <span class="va">$f</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is using <code>$f</code> without quotes, so the shell splits the filename on the space and passes the two halves as separate arguments to <code>wc</code>, causing the loop to fail for any filename that contains a space.</p>
+<p>Shows: why loop variables should always be quoted as <code>"$f"</code> and how spaces in filenames require consistent quoting throughout a script.</p>
+<p>To find it: replace the command inside the loop with two consecutive lines (i.e., <code>echo "$f"</code> and <code>echo $f</code>) then run with a filename containing a space. The unquoted version prints the name split into two words; the quoted version prints it as one.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="filter-lines-from-an-input-file-into-an-output-file" class="level2" data-number="17.6">
+<h2 data-number="17.6" class="anchored" data-anchor-id="filter-lines-from-an-input-file-into-an-output-file"><span class="header-section-number">17.6</span> Filter lines from an input file into an output file</h2>
+<p>Run the script with a small input file and the name of an output file. Look at which file was created and which file was modified.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Usage: wrongarg.sh input_file output_file</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the first 20 lines of input_file into output_file.</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 20 <span class="st">"</span><span class="va">$2</span><span class="st">"</span> <span class="op">&gt;</span> <span class="st">"</span><span class="va">$1</span><span class="st">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is that the arguments <code>$1</code> and <code>$2</code> are swapped, so the script reads from the output path and writes to the input path instead.</p>
+<p>Shows: how to verify which argument is which by reading the usage comment, and how to use <code>echo</code> to print argument values before acting on them.</p>
+<p>To find it: replace the <code>grep</code> command temporarily with <code>echo "reading from $1, writing to $2"</code> and run the script. If the output shows the input and output filenames in the wrong positions, swap <code>$1</code> and <code>$2</code>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="print-the-most-recent-entries-from-a-log-file" class="level2" data-number="17.7">
+<h2 data-number="17.7" class="anchored" data-anchor-id="print-the-most-recent-entries-from-a-log-file"><span class="header-section-number">17.7</span> Print the most recent entries from a log file</h2>
+<p>Run this script and note which rows are printed. Are they from the beginning or end of the file?</p>
+<p><code class="sourceCode bash"><span class="co">#!/usr/bin/env bash</span>
+<span class="co"># Print the last 5 data rows of headtail.txt (excluding the header line).</span>
+<span class="fu">head</span> <span class="at">-n</span> 5 headtail.txt</code> <code>experiment_id,temperature,pressure
 E001,22.1,101.3
 E002,23.4,100.8
 E003,21.9,102.1
@@ -225,283 +568,302 @@ E006,23.1,100.2
 E007,21.5,102.8
 E008,24.3,99.1
 E009,22.6,101.4
-E010,23.9,100.5
-</code></pre></div>
+E010,23.9,100.5</code></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is using <code>head</code> (which prints the first N lines) instead of <code>tail</code> (which
-prints the last N lines), so the script shows the oldest entries instead of the most
-recent ones.</p>
-<p>Shows: the difference between <code>head</code> and <code>tail</code> and how to combine
-them, for example <code>tail -n 5</code> for the last 5 or <code>head -n 10 | tail -n 5</code>
-for lines 6-10.</p>
-<p>To find it: run <code>head -n 5 logfile.txt</code> and compare the timestamps to the script's
-output. If both show the earliest timestamps, the wrong command is being used. Run
-<code>tail -n 5 logfile.txt</code> to confirm those are the most recent entries.</p>
-</details>
-<h2 id="shell-dotdot">Save output to a shared directory one level up</h2>
-<p>Read the comment at the top of the script. Map out the expected directory structure
-on paper. How many levels up does <code>../..</code> go? Is that where <code>shared/</code> lives?</p>
-<div data-inc="dotdot.sh" data-scrub="\s*# BUG.*"><span aria-label="Source: shell/dotdot.sh" class="inc-path" role="img" tabindex="0" title="shell/dotdot.sh">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="c1"># Run this script from inside results/2024/.</span>
-<span class="c1"># Save a sorted copy of measurements.txt to the shared/ directory,</span>
-<span class="c1"># which is one level above the current directory (i.e., results/shared/).</span>
-
-sort<span class="w"> </span>-n<span class="w"> </span>measurements.txt<span class="w"> </span>&gt;<span class="w"> </span>../../shared/sorted.txt
-</code></pre></div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
 </div>
-<div data-inc="measurements.txt"><span aria-label="Source: shell/measurements.txt" class="inc-path" role="img" tabindex="0" title="shell/measurements.txt">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code>depth_m,temp_c,salinity
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is using <code>head</code> (which prints the first N lines) instead of <code>tail</code> (which prints the last N lines), so the script shows the oldest entries instead of the most recent ones.</p>
+<p>Shows: the difference between <code>head</code> and <code>tail</code> and how to combine them, for example <code>tail -n 5</code> for the last 5 or <code>head -n 10 | tail -n 5</code> for lines 6-10.</p>
+<p>To find it: run <code>head -n 5 logfile.txt</code> and compare the timestamps to the script’s output. If both show the earliest timestamps, the wrong command is being used. Run <code>tail -n 5 logfile.txt</code> to confirm those are the most recent entries.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="save-output-to-a-shared-directory-one-level-up" class="level2" data-number="17.8">
+<h2 data-number="17.8" class="anchored" data-anchor-id="save-output-to-a-shared-directory-one-level-up"><span class="header-section-number">17.8</span> Save output to a shared directory one level up</h2>
+<p>Read the comment at the top of the script. Map out the expected directory structure on paper. How many levels up does <code>../..</code> go? Is that where <code>shared/</code> lives?</p>
+<p><code class="sourceCode bash"><span class="co">#!/usr/bin/env bash</span>
+<span class="co"># Run this script from inside results/2024/.</span>
+<span class="co"># Save a sorted copy of measurements.txt to the shared/ directory,</span>
+<span class="co"># which is one level above the current directory (i.e., results/shared/).</span>
+<span class="fu">sort</span> <span class="at">-n</span> measurements.txt <span class="op">&gt;</span> ../../shared/sorted.txt</code> <code>depth_m,temp_c,salinity
 0,18.4,35.1
 10,17.9,35.2
 20,17.1,35.4
 50,14.3,35.7
 100,10.8,36.0
-200,7.2,36.3
-</code></pre></div>
+200,7.2,36.3</code></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is writing <code>../..</code> when the target is only one level up (<code>..</code>), so the
-script saves output two levels up instead of one.</p>
-<p>Shows: how to trace relative paths by counting directory levels, and
-how to use <code>pwd</code> and <code>ls ..</code> to verify the directory structure before
-running a script.</p>
-<p>To find it: add <code>echo "saving to: $(pwd)/../../shared/"</code> before the output
-command and run the script. Count how many directory levels <code>../../</code> climbs in
-the printed path and compare that to a sketch of the directory tree you drew on
-paper.</p>
-</details>
-<h2 id="shell-wcflag">Count the records in a data file</h2>
-<p>Run this script and look at the numbers it prints. Do they match the number of
-lines (records) in the file?</p>
-<div data-inc="wcflag.sh" data-scrub="\s*# BUG.*"><span aria-label="Source: shell/wcflag.sh" class="inc-path" role="img" tabindex="0" title="shell/wcflag.sh">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="c1"># Report the number of observation records in wcflag.txt.</span>
-<span class="c1"># Each line is one record.</span>
-
-wc<span class="w"> </span>-w<span class="w"> </span>wcflag.txt
-</code></pre></div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
 </div>
-<div data-inc="wcflag.txt"><span aria-label="Source: shell/wcflag.txt" class="inc-path" role="img" tabindex="0" title="shell/wcflag.txt">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code>sparrow observed at grid B4
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is writing <code>../..</code> when the target is only one level up (<code>..</code>), so the script saves output two levels up instead of one.</p>
+<p>Shows: how to trace relative paths by counting directory levels, and how to use <code>pwd</code> and <code>ls ..</code> to verify the directory structure before running a script.</p>
+<p>To find it: add <code>echo "saving to: $(pwd)/../../shared/"</code> before the output command and run the script. Count how many directory levels <code>../../</code> climbs in the printed path and compare that to a sketch of the directory tree you drew on paper.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="count-the-records-in-a-data-file" class="level2" data-number="17.9">
+<h2 data-number="17.9" class="anchored" data-anchor-id="count-the-records-in-a-data-file"><span class="header-section-number">17.9</span> Count the records in a data file</h2>
+<p>Run this script and look at the numbers it prints. Do they match the number of lines (records) in the file?</p>
+<p><code class="sourceCode bash"><span class="co">#!/usr/bin/env bash</span>
+<span class="co"># Report the number of observation records in wcflag.txt.</span>
+<span class="co"># Each line is one record.</span>
+<span class="fu">wc</span> <span class="at">-w</span> wcflag.txt</code> <code>sparrow observed at grid B4
 robin observed at grid A2
 crow observed at grid C1
 sparrow observed at grid D3
 robin observed at grid B1
 crow observed at grid A4
-sparrow observed at grid C3
-</code></pre></div>
+sparrow observed at grid C3</code></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is using <code>wc -w</code> (count words) instead of <code>wc -l</code> (count lines), so the
-script prints a much larger number than the number of records.</p>
-<p>Shows: the difference between <code>wc</code> flags and how to use <code>wc --help</code> to
-check which flag produces which count.</p>
-<p>To find it: run both <code>wc -l file.txt</code> and <code>wc -w file.txt</code> on the same file and
-compare the two numbers. If the script is printing the larger number, it is
-counting words rather than lines.</p>
-</details>
-<h2 id="shell-findglob">Find all CSV files in a directory tree</h2>
-<p>Run this script from a directory that contains at least one <code>.csv</code> file. What
-arguments does <code>find</code> actually receive? Use <code>echo</code> in place of <code>find</code> to check.</p>
-<div data-inc="findglob.sh" data-scrub="\s*# BUG.*"><span aria-label="Source: shell/findglob.sh" class="inc-path" role="img" tabindex="0" title="shell/findglob.sh">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="c1"># Find all CSV files anywhere under the data/ directory.</span>
-
-find<span class="w"> </span>data<span class="w"> </span>-name<span class="w"> </span>*.csv
-</code></pre></div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is passing <code>*.csv</code> without quotes, so the shell expands the glob before
-<code>find</code> runs and the command searches for files whose names match already-expanded
-filenames from the current directory.</p>
-<p>Shows: that the shell expands unquoted wildcards before passing them
-to any command, and that patterns given to <code>find -name</code> must be
-quoted.</p>
-<p>To find it: replace <code>find</code> with <code>echo find</code> and run the command. The shell will
-print the arguments <code>find</code> would receive. If <code>*.csv</code> was expanded, the argument
-list shows specific filenames rather than the literal pattern <code>*.csv</code>.</p>
-</details>
-<h2 id="shell-cutdelim">Extract family names from a tab-separated file</h2>
-<p>Run this script and examine the output. Does each output line contain just the
-family name, or does it contain the whole row?</p>
-<div data-inc="cutdelim.sh" data-scrub="\s*# BUG.*"><span aria-label="Source: shell/cutdelim.sh" class="inc-path" role="img" tabindex="0" title="shell/cutdelim.sh">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="c1"># Extract the family name (first column) from the tab-delimited roster.</span>
-
-cut<span class="w"> </span>-d,<span class="w"> </span>-f1<span class="w"> </span>cutdelim.txt
-</code></pre></div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div data-inc="cutdelim.txt"><span aria-label="Source: shell/cutdelim.txt" class="inc-path" role="img" tabindex="0" title="shell/cutdelim.txt">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code>Smith	Jane	Biology
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is using <code>wc -w</code> (count words) instead of <code>wc -l</code> (count lines), so the script prints a much larger number than the number of records.</p>
+<p>Shows: the difference between <code>wc</code> flags and how to use <code>wc --help</code> to check which flag produces which count.</p>
+<p>To find it: run both <code>wc -l file.txt</code> and <code>wc -w file.txt</code> on the same file and compare the two numbers. If the script is printing the larger number, it is counting words rather than lines.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="find-all-csv-files-in-a-directory-tree" class="level2" data-number="17.10">
+<h2 data-number="17.10" class="anchored" data-anchor-id="find-all-csv-files-in-a-directory-tree"><span class="header-section-number">17.10</span> Find all CSV files in a directory tree</h2>
+<p>Run this script from a directory that contains at least one <code>.csv</code> file. What arguments does <code>find</code> actually receive? Use <code>echo</code> in place of <code>find</code> to check.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Find all CSV files anywhere under the data/ directory.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data <span class="at">-name</span> <span class="pp">*</span>.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is passing <code>*.csv</code> without quotes, so the shell expands the glob before <code>find</code> runs and the command searches for files whose names match already-expanded filenames from the current directory.</p>
+<p>Shows: that the shell expands unquoted wildcards before passing them to any command, and that patterns given to <code>find -name</code> must be quoted.</p>
+<p>To find it: replace <code>find</code> with <code>echo find</code> and run the command. The shell will print the arguments <code>find</code> would receive. If <code>*.csv</code> was expanded, the argument list shows specific filenames rather than the literal pattern <code>*.csv</code>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="extract-family-names-from-a-tab-separated-file" class="level2" data-number="17.11">
+<h2 data-number="17.11" class="anchored" data-anchor-id="extract-family-names-from-a-tab-separated-file"><span class="header-section-number">17.11</span> Extract family names from a tab-separated file</h2>
+<p>Run this script and examine the output. Does each output line contain just the family name, or does it contain the whole row?</p>
+<p><code class="sourceCode bash"><span class="co">#!/usr/bin/env bash</span>
+<span class="co"># Extract the family name (first column) from the tab-delimited roster.</span>
+<span class="fu">cut</span> <span class="at">-d,</span> <span class="at">-f1</span> cutdelim.txt</code> <code>Smith	Jane	Biology
 Jones	Tom	Chemistry
 Garcia	Maria	Physics
 Chen	Wei	Biology
-Okafor	Amara	Chemistry
-</code></pre></div>
+Okafor	Amara	Chemistry</code></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is specifying <code>-d,</code> (comma delimiter) when the file uses tabs. Since there
-are no commas, <code>cut</code> treats each line as a single field and returns it whole.</p>
-<p>Shows: how to identify the actual delimiter in a file (using <code>cat -A</code>
-to show invisible characters) and how to specify a tab with <code>-d$'\t'</code>.</p>
-<p>To find it: run <code>cat -A file.txt | head -n 3</code> to make invisible characters visible.
-Tab characters appear as <code>^I</code>. If <code>^I</code> separates the fields but <code>-d,</code> specifies a
-comma, <code>cut</code> will see no delimiter and return each entire line as a single field.</p>
-</details>
-<h2 id="shell-grepinvert">Filter error lines from a log file</h2>
-<p>Run this script and read the output. Do the lines shown contain the word you
-were searching for?</p>
-<div data-inc="grepinvert.sh" data-scrub="\s*# BUG.*"><span aria-label="Source: shell/grepinvert.sh" class="inc-path" role="img" tabindex="0" title="shell/grepinvert.sh">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="c1"># Print all lines in the log that contain the word "ERROR".</span>
-
-grep<span class="w"> </span>-v<span class="w"> </span><span class="s2">"ERROR"</span><span class="w"> </span>grepinvert.txt
-</code></pre></div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
 </div>
-<div data-inc="grepinvert.txt"><span aria-label="Source: shell/grepinvert.txt" class="inc-path" role="img" tabindex="0" title="shell/grepinvert.txt">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code>2024-03-01 08:02 INFO  server started
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is specifying <code>-d,</code> (comma delimiter) when the file uses tabs. Since there are no commas, <code>cut</code> treats each line as a single field and returns it whole.</p>
+<p>Shows: how to identify the actual delimiter in a file (using <code>cat -A</code> to show invisible characters) and how to specify a tab with <code>-d$'\t'</code>.</p>
+<p>To find it: run <code>cat -A file.txt | head -n 3</code> to make invisible characters visible. Tab characters appear as <code>^I</code>. If <code>^I</code> separates the fields but <code>-d,</code> specifies a comma, <code>cut</code> will see no delimiter and return each entire line as a single field.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="filter-error-lines-from-a-log-file" class="level2" data-number="17.12">
+<h2 data-number="17.12" class="anchored" data-anchor-id="filter-error-lines-from-a-log-file"><span class="header-section-number">17.12</span> Filter error lines from a log file</h2>
+<p>Run this script and read the output. Do the lines shown contain the word you were searching for?</p>
+<p><code class="sourceCode bash"><span class="co">#!/usr/bin/env bash</span>
+<span class="co"># Print all lines in the log that contain the word "ERROR".</span>
+<span class="fu">grep</span> <span class="at">-v</span> <span class="st">"ERROR"</span> grepinvert.txt</code> <code>2024-03-01 08:02 INFO  server started
 2024-03-01 08:15 ERROR disk usage above 90%
 2024-03-01 09:00 INFO  backup complete
 2024-03-01 09:47 ERROR connection timeout after 30s
 2024-03-01 10:30 INFO  request processed
 2024-03-01 11:15 ERROR out of memory in worker 3
-2024-03-01 12:00 INFO  daily report sent
-</code></pre></div>
+2024-03-01 12:00 INFO  daily report sent</code></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is the <code>-v</code> flag, which inverts the match so <code>grep</code> shows lines that do not
-contain the pattern. The script prints everything except the error lines instead of
-just the error lines.</p>
-<p>Shows: what <code>-v</code> does and how to check the result of a <code>grep</code> command
-against a small known file to confirm it is filtering in the right
-direction.</p>
-<p>To find it: run the script on the sample file and check whether any output line
-contains the search term. If every output line lacks the search term, <code>-v</code> is
-inverting the match. Remove <code>-v</code> to keep only matching lines.</p>
-</details>
-<h2 id="shell-missingarg">Count the lines in a file given on the command line</h2>
-<p>Run this script with no arguments. Does it print useful output, produce an error,
-or do something else? Use <code>Ctrl-C</code> to stop it if it appears to hang.</p>
-<div data-inc="missingarg.sh" data-scrub="\s*# BUG.*"><span aria-label="Source: shell/missingarg.sh" class="inc-path" role="img" tabindex="0" title="shell/missingarg.sh">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="c1"># Usage: missingarg.sh filename</span>
-<span class="c1"># Print the filename and its line count.</span>
-
-<span class="nb">echo</span><span class="w"> </span><span class="s2">"File: </span><span class="nv">$1</span><span class="s2">"</span>
-wc<span class="w"> </span>-l<span class="w"> </span><span class="nv">$1</span>
-</code></pre></div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is that <code>$1</code> expands to nothing when no argument is given and <code>wc -l</code> with
-no filename reads from standard input, so the script hangs waiting indefinitely for
-keystrokes.</p>
-<p>Shows: how positional parameters expand to empty strings when omitted,
-and how to check for missing arguments with <code>echo "Usage: …"</code> before
-using them.</p>
-<p>To find it: run the script with no arguments and watch whether it hangs. Press
-Ctrl-C to stop it. Then add <code>echo "Got: '$1'"</code> as the first line — running again
-shows <code>Got: ''</code>, proving <code>$1</code> is empty and that <code>wc -l</code> is reading from stdin
-instead of a file.</p>
-</details>
-<h2 id="shell-catorder">Concatenate report sections in the correct order</h2>
-<p>Run this script and read the resulting <code>report.txt</code>. Does the report begin with
-the introduction, or with a different section?</p>
-<div data-inc="catorder.sh" data-scrub="\s*# BUG.*"><span aria-label="Source: shell/catorder.sh" class="inc-path" role="img" tabindex="0" title="shell/catorder.sh">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="c1"># Assemble the three sections of the report in order: introduction, methods, results.</span>
-
-cat<span class="w"> </span>section3.txt<span class="w"> </span>section1.txt<span class="w"> </span>section2.txt<span class="w"> </span>&gt;<span class="w"> </span>report.txt
-</code></pre></div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div data-inc="section1.txt"><span aria-label="Source: shell/section1.txt" class="inc-path" role="img" tabindex="0" title="shell/section1.txt">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code>Introduction
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is the <code>-v</code> flag, which inverts the match so <code>grep</code> shows lines that do not contain the pattern. The script prints everything except the error lines instead of just the error lines.</p>
+<p>Shows: what <code>-v</code> does and how to check the result of a <code>grep</code> command against a small known file to confirm it is filtering in the right direction.</p>
+<p>To find it: run the script on the sample file and check whether any output line contains the search term. If every output line lacks the search term, <code>-v</code> is inverting the match. Remove <code>-v</code> to keep only matching lines.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="count-the-lines-in-a-file-given-on-the-command-line" class="level2" data-number="17.13">
+<h2 data-number="17.13" class="anchored" data-anchor-id="count-the-lines-in-a-file-given-on-the-command-line"><span class="header-section-number">17.13</span> Count the lines in a file given on the command line</h2>
+<p>Run this script with no arguments. Does it print useful output, produce an error, or do something else? Use <code>Ctrl-C</code> to stop it if it appears to hang.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Usage: missingarg.sh filename</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the filename and its line count.</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"File: </span><span class="va">$1</span><span class="st">"</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> <span class="va">$1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is that <code>$1</code> expands to nothing when no argument is given and <code>wc -l</code> with no filename reads from standard input, so the script hangs waiting indefinitely for keystrokes.</p>
+<p>Shows: how positional parameters expand to empty strings when omitted, and how to check for missing arguments with <code>echo "Usage: …"</code> before using them.</p>
+<p>To find it: run the script with no arguments and watch whether it hangs. Press Ctrl-C to stop it. Then add <code>echo "Got: '$1'"</code> as the first line — running again shows <code>Got: ''</code>, proving <code>$1</code> is empty and that <code>wc -l</code> is reading from stdin instead of a file.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="concatenate-report-sections-in-the-correct-order" class="level2" data-number="17.14">
+<h2 data-number="17.14" class="anchored" data-anchor-id="concatenate-report-sections-in-the-correct-order"><span class="header-section-number">17.14</span> Concatenate report sections in the correct order</h2>
+<p>Run this script and read the resulting <code>report.txt</code>. Does the report begin with the introduction, or with a different section?</p>
+<p><code class="sourceCode bash"><span class="co">#!/usr/bin/env bash</span>
+<span class="co"># Assemble the three sections of the report in order: introduction, methods, results.</span>
+<span class="fu">cat</span> section3.txt section1.txt section2.txt <span class="op">&gt;</span> report.txt</code> <code>Introduction
 ============
 This report summarises findings from the 2024 field season.
-Three sites were surveyed between January and March.
-</code></pre></div>
-</div>
-<div data-inc="section2.txt"><span aria-label="Source: shell/section2.txt" class="inc-path" role="img" tabindex="0" title="shell/section2.txt">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code>Methods
+Three sites were surveyed between January and March.</code> <code>Methods
 =======
 Samples were collected using standard protocols.
 Each site was visited on three consecutive days.
-Temperature and salinity were recorded at each visit.
-</code></pre></div>
-</div>
-<div data-inc="section3.txt"><span aria-label="Source: shell/section3.txt" class="inc-path" role="img" tabindex="0" title="shell/section3.txt">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code>Results
+Temperature and salinity were recorded at each visit.</code> <code>Results
 =======
 Site A showed elevated salinity compared to baseline.
 Site B was within normal range on all measures.
-Site C had anomalously low temperatures on day 2.
-</code></pre></div>
+Site C had anomalously low temperatures on day 2.</code></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is that the filenames are listed in the wrong sequence on the <code>cat</code> command
-line, so the sections appear in the wrong order.</p>
-<p>Shows: that <code>cat</code> concatenates files in the order they are given, and
-how to verify the result with <code>head</code> before treating the output as
-correct.</p>
-<p>To find it: run <code>head -n 3 report.txt</code> after the script finishes. The first few
-lines should come from the introduction file. If they do not, compare the order of
-filenames on the <code>cat</code> command line to the intended section order.</p>
-</details>
-<h2 id="shell-loopclobber">Append a summary line from each file to a report</h2>
-<p>Run this script once, then run it again. How many lines does <code>summary.txt</code> contain
-after the first run? After the second run?</p>
-<div data-inc="loopclobber.sh" data-scrub="\s*# BUG.*"><span aria-label="Source: shell/loopclobber.sh" class="inc-path" role="img" tabindex="0" title="shell/loopclobber.sh">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="c1"># Collect word counts for all .dat files into summary.txt.</span>
-<span class="c1"># Running this script a second time should produce the same summary,</span>
-<span class="c1"># not a file with doubled entries.</span>
-
-<span class="k">for</span><span class="w"> </span>f<span class="w"> </span><span class="k">in</span><span class="w"> </span>*.dat
-<span class="k">do</span>
-<span class="w">    </span>wc<span class="w"> </span>-w<span class="w"> </span><span class="s2">"</span><span class="nv">$f</span><span class="s2">"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>summary.txt
-<span class="k">done</span>
-</code></pre></div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is using <code>&gt;&gt;</code> inside the loop without clearing the file first, so each run
-appends to whatever the previous run left and the file contains double the expected
-entries after a second run.</p>
-<p>Shows: how to decide between <code>&gt;</code> and <code>&gt;&gt;</code>, and the pattern of
-redirecting the first write with <code>&gt;</code> or removing the output file
-before the loop begins.</p>
-<p>To find it: run the script twice and count the lines in <code>summary.txt</code> with
-<code>wc -l</code> after each run. If the count doubles on the second run, the file is not
-being cleared before the loop. Remove the file or use <code>&gt;</code> on the first write before
-switching to <code>&gt;&gt;</code> for subsequent writes.</p>
-</details>
-<h2 id="shell-sortn">List the three largest files in a directory</h2>
-<p>Run this script in a directory that has files of different sizes. Compare the
-output to <code>ls -s | sort -rn | head -n 3</code>. Are the results the same?</p>
-<div data-inc="sortn.sh" data-scrub="\s*# BUG.*"><span aria-label="Source: shell/sortn.sh" class="inc-path" role="img" tabindex="0" title="shell/sortn.sh">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="c1"># List the three largest files in the current directory by block size,</span>
-<span class="c1"># largest first.</span>
-
-ls<span class="w"> </span>-s<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-r<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">3</span>
-</code></pre></div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is using <code>sort -r</code>, which reverses alphabetical order rather than numeric
-order. A file of size 100 blocks sorts as smaller than 8 because <code>"8"</code> comes after
-<code>"1"</code> in alphabetical order, so the three largest files are listed in the wrong
-order.</p>
-<p>Shows: that <code>-r</code> alone reverses the current sort order and that <code>-rn</code>
-is needed to sort numbers in descending order.</p>
-<p>To find it: run <code>ls -s</code> in the directory and note the block counts for a few files.
-If the script output shows a file with size 100 below a file with size 8, the sort
-is alphabetical rather than numeric. Compare with <code>ls -s | sort -rn | head -n 3</code>.</p>
-</details>
-<h2 id="shell-headcount">Extract ten data rows from a CSV file</h2>
-<p>Run this script and count the data rows in the output. Then count the data rows
-in the original file. Are they the same?</p>
-<div data-inc="headcount.sh" data-scrub="\s*# BUG.*"><span aria-label="Source: shell/headcount.sh" class="inc-path" role="img" tabindex="0" title="shell/headcount.sh">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="c1"># Extract the header row plus the first 10 data rows from headcount.csv</span>
-<span class="c1"># (11 lines total: 1 header + 10 data).</span>
-
-head<span class="w"> </span>-n<span class="w"> </span><span class="m">10</span><span class="w"> </span>headcount.csv
-</code></pre></div>
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is that the filenames are listed in the wrong sequence on the <code>cat</code> command line, so the sections appear in the wrong order.</p>
+<p>Shows: that <code>cat</code> concatenates files in the order they are given, and how to verify the result with <code>head</code> before treating the output as correct.</p>
+<p>To find it: run <code>head -n 3 report.txt</code> after the script finishes. The first few lines should come from the introduction file. If they do not, compare the order of filenames on the <code>cat</code> command line to the intended section order.</p>
 </div>
-<div data-inc="headcount.csv"><span aria-label="Source: shell/headcount.csv" class="inc-path" role="img" tabindex="0" title="shell/headcount.csv">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code>site,reading,value
+</div>
+</div>
+</section>
+<section id="append-a-summary-line-from-each-file-to-a-report" class="level2" data-number="17.15">
+<h2 data-number="17.15" class="anchored" data-anchor-id="append-a-summary-line-from-each-file-to-a-report"><span class="header-section-number">17.15</span> Append a summary line from each file to a report</h2>
+<p>Run this script once, then run it again. How many lines does <code>summary.txt</code> contain after the first run? After the second run?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Collect word counts for all .dat files into summary.txt.</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Running this script a second time should produce the same summary,</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># not a file with doubled entries.</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> <span class="pp">*</span>.dat</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">wc</span> <span class="at">-w</span> <span class="st">"</span><span class="va">$f</span><span class="st">"</span> <span class="op">&gt;&gt;</span> summary.txt</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is using <code>&gt;&gt;</code> inside the loop without clearing the file first, so each run appends to whatever the previous run left and the file contains double the expected entries after a second run.</p>
+<p>Shows: how to decide between <code>&gt;</code> and <code>&gt;&gt;</code>, and the pattern of redirecting the first write with <code>&gt;</code> or removing the output file before the loop begins.</p>
+<p>To find it: run the script twice and count the lines in <code>summary.txt</code> with <code>wc -l</code> after each run. If the count doubles on the second run, the file is not being cleared before the loop. Remove the file or use <code>&gt;</code> on the first write before switching to <code>&gt;&gt;</code> for subsequent writes.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="list-the-three-largest-files-in-a-directory" class="level2" data-number="17.16">
+<h2 data-number="17.16" class="anchored" data-anchor-id="list-the-three-largest-files-in-a-directory"><span class="header-section-number">17.16</span> List the three largest files in a directory</h2>
+<p>Run this script in a directory that has files of different sizes. Compare the output to <code>ls -s | sort -rn | head -n 3</code>. Are the results the same?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># List the three largest files in the current directory by block size,</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># largest first.</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-s</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-r</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 3</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is using <code>sort -r</code>, which reverses alphabetical order rather than numeric order. A file of size 100 blocks sorts as smaller than 8 because <code>"8"</code> comes after <code>"1"</code> in alphabetical order, so the three largest files are listed in the wrong order.</p>
+<p>Shows: that <code>-r</code> alone reverses the current sort order and that <code>-rn</code> is needed to sort numbers in descending order.</p>
+<p>To find it: run <code>ls -s</code> in the directory and note the block counts for a few files. If the script output shows a file with size 100 below a file with size 8, the sort is alphabetical rather than numeric. Compare with <code>ls -s | sort -rn | head -n 3</code>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="extract-ten-data-rows-from-a-csv-file" class="level2" data-number="17.17">
+<h2 data-number="17.17" class="anchored" data-anchor-id="extract-ten-data-rows-from-a-csv-file"><span class="header-section-number">17.17</span> Extract ten data rows from a CSV file</h2>
+<p>Run this script and count the data rows in the output. Then count the data rows in the original file. Are they the same?</p>
+<p><code class="sourceCode bash"><span class="co">#!/usr/bin/env bash</span>
+<span class="co"># Extract the header row plus the first 10 data rows from headcount.csv</span>
+<span class="co"># (11 lines total: 1 header + 10 data).</span>
+<span class="fu">head</span> <span class="at">-n</span> 10 headcount.csv</code> <code>site,reading,value
 A,1,42.3
 A,2,38.9
 A,3,55.1
@@ -512,99 +874,600 @@ C,1,47.2
 C,2,51.0
 C,3,44.6
 D,1,28.3
-D,2,30.1
-</code></pre></div>
+D,2,30.1</code></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is <code>head -n 10</code> when the header itself is one of the ten lines, so only nine
-data rows remain instead of ten.</p>
-<p>Shows: how to account for header lines when counting with <code>head</code> and
-how to use <code>wc -l</code> to verify the actual line count of the output.</p>
-<p>To find it: run <code>wc -l</code> on both the script's output and the original file. If the
-output has 10 lines total but you expected 10 data rows plus a header, the header
-was counted as one of the 10 lines. Use <code>head -n 11</code> to include the header and 10
-data rows.</p>
-</details>
-<h2 id="shell-quotedall">Process a list of filenames passed as script arguments</h2>
-<p>Run this script with a filename that contains a space. Does it process the file,
-or does it report an error about a non-existent file?</p>
-<div data-inc="quotedall.sh" data-scrub="\s*# BUG.*"><span aria-label="Source: shell/quotedall.sh" class="inc-path" role="img" tabindex="0" title="shell/quotedall.sh">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="c1"># Usage: quotedall.sh file1 file2 ...</span>
-<span class="c1"># Count the lines in each file passed as an argument.</span>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-17" class="callout-17-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is <code>head -n 10</code> when the header itself is one of the ten lines, so only nine data rows remain instead of ten.</p>
+<p>Shows: how to account for header lines when counting with <code>head</code> and how to use <code>wc -l</code> to verify the actual line count of the output.</p>
+<p>To find it: run <code>wc -l</code> on both the script’s output and the original file. If the output has 10 lines total but you expected 10 data rows plus a header, the header was counted as one of the 10 lines. Use <code>head -n 11</code> to include the header and 10 data rows.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="process-a-list-of-filenames-passed-as-script-arguments" class="level2" data-number="17.18">
+<h2 data-number="17.18" class="anchored" data-anchor-id="process-a-list-of-filenames-passed-as-script-arguments"><span class="header-section-number">17.18</span> Process a list of filenames passed as script arguments</h2>
+<p>Run this script with a filename that contains a space. Does it process the file, or does it report an error about a non-existent file?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Usage: quotedall.sh file1 file2 ...</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the lines in each file passed as an argument.</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> <span class="va">$@</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">wc</span> <span class="at">-l</span> <span class="st">"</span><span class="va">$f</span><span class="st">"</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-18-contents" aria-controls="callout-18" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-18" class="callout-18-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is using <code>$@</code> without quotes, which causes word-splitting so each space-separated token is treated as a separate argument and the script fails for any argument that contains a space.</p>
+<p>Shows: the difference between <code>$@</code> and <code>"$@"</code>: the quoted form preserves each argument as a single token, even if it contains spaces.</p>
+<p>To find it: add <code>echo "Processing: '$1'"</code> inside the loop and run with a filename containing a space. The unquoted <code>$@</code> version prints two separate single-word arguments for one filename; the quoted <code>"$@"</code> version prints one argument with the space preserved.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="count-log-files-in-a-directory-tree" class="level2" data-number="17.19">
+<h2 data-number="17.19" class="anchored" data-anchor-id="count-log-files-in-a-directory-tree"><span class="header-section-number">17.19</span> Count log files in a directory tree</h2>
+<p>Create a directory whose name ends in <code>.log</code> (e.g., <code>mkdir debug.log</code>). Now run this script. Does the count include the directory?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Count all log files (and only log files) under the current directory.</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-name</span> <span class="st">"*.log"</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-19-contents" aria-controls="callout-19" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-19" class="callout-19-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is that <code>-name "*.log"</code> matches any filesystem entry, not just regular files, so directories whose names end in <code>.log</code> are included in the count.</p>
+<p>Shows: the use of <code>-type f</code> to restrict <code>find</code> results to regular files and <code>-type d</code> to restrict to directories.</p>
+<p>To find it: create a directory whose name ends in <code>.log</code> — e.g., <code>mkdir debug.log</code> — then run <code>find . -name "*.log"</code> and see whether that directory appears in the output. Add <code>-type f</code> and rerun to confirm it is excluded.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="copy-a-directory-to-a-backup-location" class="level2" data-number="17.20">
+<h2 data-number="17.20" class="anchored" data-anchor-id="copy-a-directory-to-a-backup-location"><span class="header-section-number">17.20</span> Copy a directory to a backup location</h2>
+<p>Run this script. Does it copy the directory, or does it produce an error message? What does the error message say?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Back up the entire results/ directory to backup/results/.</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> results/ backup/results/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-20-contents" aria-controls="callout-20" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-20" class="callout-20-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is calling <code>cp</code> without the <code>-r</code> flag, which is required to copy a directory and its contents recursively, so the script fails with the message “omitting directory”.</p>
+<p>Shows: the difference between copying a file and copying a directory, and how to read <code>cp --help</code> to find the right flag.</p>
+<p>To find it: run the script and read the error message. It says <code>cp: -r not specified; omitting directory</code>, i.e., the message names the missing flag directly.</p>
+</div>
+</div>
+</div>
 
-<span class="k">for</span><span class="w"> </span>f<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nv">$@</span>
-<span class="k">do</span>
-<span class="w">    </span>wc<span class="w"> </span>-l<span class="w"> </span><span class="s2">"</span><span class="nv">$f</span><span class="s2">"</span>
-<span class="k">done</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is using <code>$@</code> without quotes, which causes word-splitting so each
-space-separated token is treated as a separate argument and the script fails for any
-argument that contains a space.</p>
-<p>Shows: the difference between <code>$@</code> and <code>"$@"</code>: the quoted form
-preserves each argument as a single token, even if it contains spaces.</p>
-<p>To find it: add <code>echo "Processing: '$1'"</code> inside the loop and run with a filename
-containing a space. The unquoted <code>$@</code> version prints two separate single-word
-arguments for one filename; the quoted <code>"$@"</code> version prints one argument with the
-space preserved.</p>
-</details>
-<h2 id="shell-findtype">Count log files in a directory tree</h2>
-<p>Create a directory whose name ends in <code>.log</code> (e.g., <code>mkdir debug.log</code>). Now run
-this script. Does the count include the directory?</p>
-<div data-inc="findtype.sh" data-scrub="\s*# BUG.*"><span aria-label="Source: shell/findtype.sh" class="inc-path" role="img" tabindex="0" title="shell/findtype.sh">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="c1"># Count all log files (and only log files) under the current directory.</span>
 
-find<span class="w"> </span>.<span class="w"> </span>-name<span class="w"> </span><span class="s2">"*.log"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is that <code>-name "*.log"</code> matches any filesystem entry, not just regular
-files, so directories whose names end in <code>.log</code> are included in the count.</p>
-<p>Shows: the use of <code>-type f</code> to restrict <code>find</code> results to regular
-files and <code>-type d</code> to restrict to directories.</p>
-<p>To find it: create a directory whose name ends in <code>.log</code> — e.g., <code>mkdir debug.log</code>
-— then run <code>find . -name "*.log"</code> and see whether that directory appears in the
-output. Add <code>-type f</code> and rerun to confirm it is excluded.</p>
-</details>
-<h2 id="shell-cprecurse">Copy a directory to a backup location</h2>
-<p>Run this script. Does it copy the directory, or does it produce an error message?
-What does the error message say?</p>
-<div data-inc="cprecurse.sh" data-scrub="\s*# BUG.*"><span aria-label="Source: shell/cprecurse.sh" class="inc-path" role="img" tabindex="0" title="shell/cprecurse.sh">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="c1"># Back up the entire results/ directory to backup/results/.</span>
+</section>
 
-cp<span class="w"> </span>results/<span class="w"> </span>backup/results/
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is calling <code>cp</code> without the <code>-r</code> flag, which is required to copy a directory
-and its contents recursively, so the script fails with the message "omitting
-directory".</p>
-<p>Shows: the difference between copying a file and copying a directory,
-and how to read <code>cp --help</code> to find the right flag.</p>
-<p>To find it: run the script and read the error message. It says
-<code>cp: -r not specified; omitting directory</code>, i.e., the message names
-the missing flag directly.</p>
-</details>
-</main>
-<footer aria-label="Page navigation">
-<div class="row">
-<div class="col-3 left">
-<span aria-hidden="true">⇐</span> <a href="../polars/">Polars</a>
-</div>
-<div class="col-6 center">
-<a href="../">Unbreak</a>
-	  ©
-	  <a href="../contributing/#contributors">the authors</a>
-</div>
-<div class="col-3 right">
-<a href="../sql/">SQL</a> <span aria-hidden="true">⇒</span>
-</div>
-</div>
-</footer>
-</body>
-</html>
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../polars/index.html" class="pagination-link" aria-label="Polars">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Polars</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../sql/index.html" class="pagination-link" aria-label="SQL">
+        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">SQL</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/gvwilson/unbreak/edit/main/shell/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/gvwilson/unbreak/blob/main/shell/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/gvwilson/unbreak/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

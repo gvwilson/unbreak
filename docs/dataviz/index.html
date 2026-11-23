@@ -1,361 +1,1176 @@
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
-<html lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Data Visualization</title>
-<meta content="Unbreaking Software" name="description"/>
-<link href="../_static/favicon.ico" rel="icon" type="image/x-icon"/>
-<link href="../_static/pygments.css" rel="stylesheet" type="text/css"/>
-<link href="../_static/chota.css" rel="stylesheet" type="text/css"/>
-<link href="../_static/mccole.css" rel="stylesheet" type="text/css"/>
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>15&nbsp; Data Visualization – Unbreaking Software</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../polars/index.html" rel="next">
+<link href="../datasci/index.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-01a495efc5497ac6e3f5457e7ed18e65.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../mccole/book.css">
 </head>
-<body>
-<a class="skip-link" href="#main-content">Skip to main content</a>
-<nav aria-label="Site navigation" class="nav">
-<div class="nav-left">
-<a class="brand" href="../">Unbreak</a>
-<div class="dropdown">
-<button aria-controls="nav-lessons" aria-haspopup="true">Lessons</button>
-<ul class="dropdown-content" id="nav-lessons">
-<li><a href="../intro/">Introduction</a></li>
-<li><a href="../basicpy/">Basic Python</a></li>
-<li><a href="../interpy/">Intermediate Python</a></li>
-<li><a href="../oopy/">Object-Oriented Python</a></li>
-<li><a href="../regexp/">Regular Expressions</a></li>
-<li><a href="../diot/">Data, I/O, and Testing</a></li>
-<li><a href="../perfcon/">Performance and Concurrency</a></li>
-<li><a href="../jsbrowser/">JavaScript Fundamentals</a></li>
-<li><a href="../css/">CSS</a></li>
-<li><a href="../web/">HTTP and APIs</a></li>
-<li><a href="../htmx/">HTMX</a></li>
-<li><a href="../alpine/">Alpine.js</a></li>
-<li><a href="../fastapi/">FastAPI</a></li>
-<li><a href="../datasci/">Data Science</a></li>
-<li><a class="active" href="../dataviz/">Data Visualization</a></li>
-<li><a href="../polars/">Polars</a></li>
-<li><a href="../shell/">The Unix Shell</a></li>
-<li><a href="../sql/">SQL</a></li>
-<li><a href="../testing/">Testing</a></li>
-<li><a href="../finale/">Conclusion</a></li>
-</ul>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../dataviz/index.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Data Visualization</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Unbreaking Software</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/gvwilson/unbreak" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
-<div class="dropdown">
-<button aria-controls="nav-appendices" aria-haspopup="true">Appendices</button>
-<ul class="dropdown-content" id="nav-appendices">
-<li><a href="../license/">License</a></li>
-<li><a href="../conduct/">Code of Conduct</a></li>
-<li><a href="../contributing/">Contributing</a></li>
-<li><a href="../bibliography/">Bibliography</a></li>
-<li><a href="../glossary/">Glossary</a></li>
-<li><a href="../complex/">Complex Examples</a></li>
-</ul>
-</div>
-<a href="https://github.com/gvwilson/unbreak">Repository</a>
-</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basicpy/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Basic Python</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../interpy/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Intermediate Python</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../oopy/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Object-Oriented Python</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../regexp/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Regular Expressions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../diot/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data, I/O, and Testing</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../perfcon/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Performance, Concurrency, and System Interaction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../jsbrowser/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">JavaScript Fundamentals and the Browser</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../css/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">CSS</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../web/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">HTTP and APIs</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../htmx/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">HTMX</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../alpine/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Alpine.js</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fastapi/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">FastAPI</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../datasci/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Data Science</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dataviz/index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Data Visualization</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../polars/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Polars</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../shell/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Unix Shell</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../sql/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">SQL</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../testing/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Testing</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../finale/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Appendices</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../license/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">License</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../conduct/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Code of Conduct</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../contributing/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Contributing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bibliography/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Bibliography</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../glossary/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../complex/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Complex Examples</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
 </nav>
-<main id="main-content">
-<h1>Data Visualization</h1>
-<h2 id="dataviz-truncated">Compare candidate approval ratings</h2>
-<figure id="f:dataviz-truncated-wrong">
-<img alt="Bar chart of candidate approval ratings with Y-axis starting at 85." src="truncated_axis.svg"/>
-<figcaption>Figure 1: Candidate approval ratings with a truncated Y-axis.</figcaption>
-</figure>
-<p>Compare the visual height of candidate A's bar to candidate D's bar. How much larger
-does D appear? Now look at the actual numbers. How large is the real difference?</p>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The Y-axis starts at 85 instead of 0. Candidate D's approval (93%) is only 6
-percentage points above candidate A's (87%), but the bars make it look roughly
-three times taller. Any bar chart where the Y-axis does not start at zero
-exaggerates relative differences. The effect is proportional to how far the
-baseline is raised: the higher the floor, the more dramatic the distortion.</p>
-<p>Shows: how a non-zero baseline inflates visual differences in bar charts out of
-proportion to the underlying data.</p>
-<p>To find it: check where the Y-axis starts. If it starts above zero on a bar chart,
-divide the visual height ratio of two bars by their actual data ratio. If the visual
-ratio is several times larger than the data ratio, the truncated axis is distorting
-the comparison.</p>
-<figure id="f:dataviz-truncated-fixed">
-<img alt="Bar chart of candidate approval ratings with Y-axis starting at 0." src="truncated_axis_fixed.svg"/>
-<figcaption>Figure 2: The same data with the Y-axis starting at 0.</figcaption>
-</figure>
-</details>
-<h2 id="dataviz-cherry">Assess a product's long-term performance trend</h2>
-<figure id="f:dataviz-cherry-wrong">
-<img alt="Line chart showing an upward performance trend over 8 months." src="cherry_pick.svg"/>
-<figcaption>Figure 3: Performance trend over the last 8 months.</figcaption>
-</figure>
-<p>The chart shows a clear upward trend over 8 months. What conclusion might you draw
-about this product's long-term trajectory? What information would you need to know
-whether this is reliable?</p>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The 8 months shown are a recovery from a multi-year decline. The full 5-year series
-falls from 100 to roughly 52 before the recent uptick. Choosing a start date at the
-bottom of a trough guarantees an upward slope. This pattern is common in financial
-and performance reporting: selecting the window that flatters the story while
-omitting the longer context that contradicts it.</p>
-<p>Shows: how selecting a window that starts at a historical low manufactures an
-upward trend that disappears when the full series is shown.</p>
-<p>To find it: ask what the full dataset covers and compare the chart's start date to
-the earliest available data. If the start date coincides with a local minimum, extend
-the chart to show the complete history. If only the selected window is available,
-that absence of context is itself a warning sign.</p>
-<figure id="f:dataviz-cherry-fixed">
-<img alt="Line chart showing the full 60-month history with a recent uptick at the end of a long decline." src="cherry_pick_fixed.svg"/>
-<figcaption>Figure 4: The full 60-month history.</figcaption>
-</figure>
-</details>
-<h2 id="dataviz-spurious">Interpret the relationship between coffee consumption and code commits</h2>
-<figure id="f:dataviz-spurious-wrong">
-<img alt="Scatter plot of monthly coffee consumption vs code commits with a tight regression line." src="spurious_correlation.svg"/>
-<figcaption>Figure 5: Coffee consumption vs code commits over 48 months.</figcaption>
-</figure>
-<p>The scatter plot shows a strong positive relationship between monthly coffee
-consumption and code commits, with a tight regression line. What conclusion might
-a reader draw? What third factor might explain the pattern?</p>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>Both metrics grow because the engineering team grew: more engineers means more commits
-and more coffee consumed. Plotting two time-trending variables against each other
-removes the time axis entirely and makes a shared common cause look like a direct
-relationship between the two variables. Any two series that both trend in the same
-direction will produce a scatter that looks correlated, regardless of whether they
-have anything to do with each other.</p>
-<p>Shows: how two variables driven by the same common cause (team size) appear
-strongly correlated in a scatter plot even when there is no direct relationship
-between them.</p>
-<p>To find it: color the scatter plot points by time, with early months dark and late
-months light. If early months cluster in one corner and late months in the opposite,
-the apparent correlation is temporal ordering rather than a direct relationship. Then
-ask whether a plausible common cause — such as growth in team size — could explain
-both trends independently.</p>
-<figure id="f:dataviz-spurious-fixed">
-<img alt="Scatter plot of coffee vs commits with points colored from dark to light by month, showing temporal ordering." src="spurious_correlation_fixed.svg"/>
-<figcaption>Figure 6: The same scatter with points colored by month. Early months are dark; late months are light.</figcaption>
-</figure>
-<p>Early months cluster in the lower left and late months in the upper right — the
-apparent correlation is entirely temporal ordering.</p>
-</details>
-<h2 id="dataviz-simpsons">Interpret the relationship between study hours and exam scores</h2>
-<figure id="f:dataviz-simpsons-wrong">
-<img alt="Scatter plot of study hours vs exam score with a downward-sloping regression line." src="simpsons_paradox.svg"/>
-<figcaption>Figure 7: Study hours vs exam score across all students.</figcaption>
-</figure>
-<p>The trend line shows that students who study more tend to score lower. Does that
-mean studying is counterproductive? What might explain the pattern?</p>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>Students in harder courses study more hours but earn lower scores because the courses
-are harder, not because studying hurts performance. Within each difficulty level the
-relationship is positive: more study leads to higher scores. The aggregate trend
-reverses because a third variable — course difficulty — drives both the study hours
-and the scores. Adding a color encoding for difficulty would reveal three upward
-slopes instead of one downward one. This is Simpson's Paradox: an aggregate trend
-that disappears or reverses when a confounding variable is introduced.</p>
-<p>Shows: how a confounding variable can reverse the direction of an aggregate trend,
-making a genuinely positive relationship appear negative in the pooled data.</p>
-<p>To find it: color or facet the scatter plot by a categorical variable you suspect
-might be driving the outcome—here, course difficulty. If the aggregate slope
-reverses within each group, the confound is real. List candidate confounds before
-looking at the data: any variable that plausibly affects both axes is worth testing.</p>
-<figure id="f:dataviz-simpsons-fixed">
-<img alt="Scatter plot colored by course difficulty showing three upward-sloping regression lines." src="simpsons_paradox_fixed.svg"/>
-<figcaption>Figure 8: The same data colored by difficulty, with a separate regression line for each group.</figcaption>
-</figure>
-</details>
-<h2 id="dataviz-meanconceals">Compare two groups by average score</h2>
-<figure id="f:dataviz-mean-wrong">
-<img alt="Bar chart showing nearly identical group means for groups A and B." src="mean_hides_distribution.svg"/>
-<figcaption>Figure 9: Average score by group.</figcaption>
-</figure>
-<p>Both groups have nearly the same average score. Would you conclude they are
-performing similarly? What other chart type would you choose before drawing that
-conclusion?</p>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>Group A is roughly normally distributed around 62. Group B is bimodal: half the
-students score near 25 and half score near 90. Both groups have the same mean, but
-their situations are completely different — Group B has two distinct subpopulations
-that the mean obscures entirely. A strip plot, histogram, or violin chart would make
-the bimodal structure immediately visible. Reporting only the mean discards the
-information most relevant to understanding Group B.</p>
-<p>Shows: how identical means can hide completely different distributions, including
-bimodal structure that would demand a different response from an educator or
-manager.</p>
-<p>To find it: replace the bar chart of means with a strip plot, histogram, or violin
-chart of the raw values. If the two groups look different in the distribution chart
-despite identical averages, or if one group shows two distinct clusters, the mean
-was suppressing the most important information in the data.</p>
-<figure id="f:dataviz-mean-fixed">
-<img alt="Strip plot showing Group A clustered around 62 and Group B split near 25 and 90." src="mean_hides_distribution_fixed.svg"/>
-<figcaption>Figure 10: Individual scores for each group as a strip plot.</figcaption>
-</figure>
-</details>
-<h2 id="dataviz-absolute">Identify which city has the worst traffic safety record</h2>
-<figure id="f:dataviz-absolute-wrong">
-<img alt="Bar chart of raw traffic accident counts by city, with Metro City tallest." src="absolute_vs_rate.svg"/>
-<figcaption>Figure 11: Traffic accidents by city (raw counts).</figcaption>
-</figure>
-<p>Which city appears to have the most serious traffic safety problem? Now calculate
-accidents per 100,000 residents for each city using the figures below. Does the
-ranking change?</p>
-<p>Metro City: 820 accidents, population 2,100,000.
-River Town: 210 accidents, population 180,000.
-Oak Valley: 95 accidents, population 52,000.
-Pine Bluff: 430 accidents, population 640,000.</p>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>Metro City's raw count is largest, but its rate is 39 per 100,000 — the lowest of
-the four. Oak Valley has only 95 accidents but a rate of 183 per 100,000 — nearly
-five times higher. Absolute counts favor larger populations and are only meaningful
-when comparing groups of similar size. Any comparison that involves groups of
-different sizes requires a denominator: rate, proportion, or per-capita figure.</p>
-<p>Shows: why absolute counts mislead whenever the groups being compared differ in
-size, and how normalizing to a rate can reverse the apparent ranking entirely.</p>
-<p>To find it: divide each group's count by its population (or another appropriate
-denominator) and compare the normalized rates. If the rankings change after
-normalizing, the raw counts were misleading. As a rule of thumb, if the groups
-differ in size by more than a factor of two, rates are almost always more
-informative than counts.</p>
-<figure id="f:dataviz-absolute-fixed">
-<img alt="Bar chart of traffic accidents per 100,000 residents, with Oak Valley now tallest." src="absolute_vs_rate_fixed.svg"/>
-<figcaption>Figure 12: Traffic accidents per 100,000 residents by city.</figcaption>
-</figure>
-</details>
-<h2 id="dataviz-cumulative">Assess a product's user growth over the past year</h2>
-<figure id="f:dataviz-cumulative-wrong">
-<img alt="Line chart of cumulative user signups rising steadily over 52 weeks." src="cumulative_hides_slowdown.svg"/>
-<figcaption>Figure 13: Cumulative user signups over 52 weeks.</figcaption>
-</figure>
-<p>The total user count is rising steadily. Would you describe the product as growing?
-Now think about what the weekly rate of new signups looks like in the second half of
-the year compared to the first.</p>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>A cumulative chart can only go up or stay flat: it can never show a decline even if
-new additions stop entirely. Weeks 1-26 add 400-600 users each; weeks 27-52 add
-10-30. The product's growth has effectively stopped, but the cumulative line looks
-like a healthy upward trend throughout. Plotting the weekly rate instead reveals the
-collapse in new signups. Cumulative charts are useful for showing totals but
-systematically hide any information about acceleration, deceleration, or stagnation.</p>
-<p>Shows: how a cumulative chart makes stagnating growth look like a continuous upward
-trend by construction, since it can never decrease.</p>
-<p>To find it: compute the period-over-period difference (subtract each value from the
-previous one to get weekly new additions) and plot that instead of the running total.
-If the differences drop sharply while the cumulative line keeps rising, growth has
-stopped even though the total continues to climb.</p>
-<figure id="f:dataviz-cumulative-fixed">
-<img alt="Line chart of weekly new signups showing a sharp drop to near zero after week 26." src="cumulative_hides_slowdown_fixed.svg"/>
-<figcaption>Figure 14: Weekly new signups for the same period.</figcaption>
-</figure>
-</details>
-<h2 id="dataviz-overplot">Read exam scores by hours studied for 600 students</h2>
-<figure id="f:dataviz-overplot-wrong">
-<img alt="Grid of uniformly-sized dots showing exam scores vs study hours for 600 students." src="discrete_overplot.svg"/>
-<figcaption>Figure 15: Exam scores by hours studied (600 students).</figcaption>
-</figure>
-<p>How many students appear to have studied for 4 hours and scored 65? How confident
-are you that each visible dot represents the same number of students?</p>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>Both the exam scores (multiples of 5) and hours studied (integers) are discrete, so
-many students share the same coordinates. Opaque markers stack on top of each other
-and become indistinguishable from a single point: a position with 40 students on top
-of each other looks identical to a position with 1. The chart gives no indication
-of how populated each cell is, making the data appear uniformly distributed when 80%
-of students cluster at 3-6 hours and scores of 55-75.</p>
-<p>Shows: how opaque markers on discrete data hide density by stacking invisibly,
-making a heavily skewed distribution look uniform.</p>
-<p>To find it: set the marker opacity to a low value (such as 10-20%) or replace the
-scatter plot with a bubble chart where marker area encodes count. If the chart looks
-dramatically different, e.g., dense clusters appearing where everything looked uniform
-before, then overplotting was hiding the true distribution.</p>
-<figure id="f:dataviz-overplot-fixed">
-<img alt="Bubble chart of exam scores vs study hours where bubble size reveals dense clustering at 3-6 hours and scores of 55-75." src="discrete_overplot_fixed.svg"/>
-<figcaption>Figure 16: The same data with bubble area proportional to number of students.</figcaption>
-</figure>
-</details>
-<h2 id="dataviz-pie">Rank seven categories by market share</h2>
-<figure id="f:dataviz-pie-wrong">
-<img alt="Pie chart with seven similarly-sized slices labeled Alpha through Eta." src="pie_chart.svg"/>
-<figcaption>Figure 17: Market share by category.</figcaption>
-</figure>
-<p>Without reading the exact percentages, rank the seven categories from largest to
-smallest share. How confident are you in your ranking? Which pairs of adjacent
-categories are hardest to distinguish?</p>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>Human perception of angles and arc lengths is unreliable, especially when slices are
-similar in size. The shares range from 18.4% down to 8.6% — a meaningful spread —
-but most readers cannot reliably rank the middle five categories without reading the
-labels. A horizontal bar chart sorted by value requires only length perception, which
-humans perform much more accurately. Pie charts are defensible only when there are
-two or three slices with clearly different sizes.</p>
-<p>Shows: how pie charts make ranking difficult when slices are similar in size,
-because angle and arc perception is far less accurate than length perception.</p>
-<p>To find it: try to rank all slices from memory without reading the labels. If you
-cannot confidently order the middle categories, replace the pie with a bar chart
-sorted by value and compare how long the ranking takes. The bar chart should be
-almost instantaneous.</p>
-<figure id="f:dataviz-pie-fixed">
-<img alt="Horizontal bar chart of the same seven categories sorted by market share." src="pie_chart_fixed.svg"/>
-<figcaption>Figure 18: The same data as a sorted horizontal bar chart.</figcaption>
-</figure>
-</details>
-<h2 id="dataviz-ecological">Predict individual student scores from district income data</h2>
-<figure id="f:dataviz-ecological-wrong">
-<img alt="Scatter plot of 20 district averages showing a tight positive correlation between household income and test scores." src="group_vs_individual.svg"/>
-<figcaption>Figure 19: District average income vs average test score (20 districts).</figcaption>
-</figure>
-<p>The chart shows that school districts with higher average household income have higher
-average test scores, with a tight regression line. Would you expect to be able to
-predict an individual student's score from knowing their district's average income?
-How accurate do you think that prediction would be?</p>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The district-level chart uses 20 aggregate points, so noise is suppressed and the
-trend looks precise. But the district average income is a property of the district,
-not the student. Within any district, students from families with very different
-incomes sit in the same classrooms and take the same tests, and individual scores
-scatter widely around the district mean. A statistic that explains 95% of the
-variance across group averages may explain only 25-30% of the variance across
-individuals, because most of the individual variance is within-group and invisible
-in the aggregate chart. Drawing conclusions about individuals from group-level
-correlations is the ecological fallacy.</p>
-<p>Shows: how group-level correlations can look much tighter than individual-level
-correlations, because averaging within groups suppresses within-group variance and
-makes the aggregate trend appear more predictive than it is.</p>
-<p>To find it: if individual-level data is available, plot individual points instead of
-group averages. Compare the R² values for the two charts. If the individual-level
-R² is substantially lower than the group-level R², the group correlation was
-overstating predictive power for individuals. The gap between the two values is the
-proportion of individual variance that lies within groups and is invisible in the
-aggregate chart.</p>
-<figure id="f:dataviz-ecological-fixed">
-<img alt="Scatter plot of 500 individual students at their district average income showing wide vertical spread around the trend line." src="group_vs_individual_fixed.svg"/>
-<figcaption>Figure 20: Individual student scores plotted at their district's average income level.</figcaption>
-</figure>
-<p>The upward trend is still present but the scatter is so wide that knowing a student's
-district tells you little about that student's score.</p>
-</details>
-</main>
-<footer aria-label="Page navigation">
-<div class="row">
-<div class="col-3 left">
-<span aria-hidden="true">⇐</span> <a href="../datasci/">Data Science</a>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#compare-candidate-approval-ratings" id="toc-compare-candidate-approval-ratings" class="nav-link active" data-scroll-target="#compare-candidate-approval-ratings"><span class="header-section-number">15.1</span> Compare candidate approval ratings</a></li>
+  <li><a href="#assess-a-products-long-term-performance-trend" id="toc-assess-a-products-long-term-performance-trend" class="nav-link" data-scroll-target="#assess-a-products-long-term-performance-trend"><span class="header-section-number">15.2</span> Assess a product’s long-term performance trend</a></li>
+  <li><a href="#interpret-the-relationship-between-coffee-consumption-and-code-commits" id="toc-interpret-the-relationship-between-coffee-consumption-and-code-commits" class="nav-link" data-scroll-target="#interpret-the-relationship-between-coffee-consumption-and-code-commits"><span class="header-section-number">15.3</span> Interpret the relationship between coffee consumption and code commits</a></li>
+  <li><a href="#interpret-the-relationship-between-study-hours-and-exam-scores" id="toc-interpret-the-relationship-between-study-hours-and-exam-scores" class="nav-link" data-scroll-target="#interpret-the-relationship-between-study-hours-and-exam-scores"><span class="header-section-number">15.4</span> Interpret the relationship between study hours and exam scores</a></li>
+  <li><a href="#compare-two-groups-by-average-score" id="toc-compare-two-groups-by-average-score" class="nav-link" data-scroll-target="#compare-two-groups-by-average-score"><span class="header-section-number">15.5</span> Compare two groups by average score</a></li>
+  <li><a href="#identify-which-city-has-the-worst-traffic-safety-record" id="toc-identify-which-city-has-the-worst-traffic-safety-record" class="nav-link" data-scroll-target="#identify-which-city-has-the-worst-traffic-safety-record"><span class="header-section-number">15.6</span> Identify which city has the worst traffic safety record</a></li>
+  <li><a href="#assess-a-products-user-growth-over-the-past-year" id="toc-assess-a-products-user-growth-over-the-past-year" class="nav-link" data-scroll-target="#assess-a-products-user-growth-over-the-past-year"><span class="header-section-number">15.7</span> Assess a product’s user growth over the past year</a></li>
+  <li><a href="#read-exam-scores-by-hours-studied-for-600-students" id="toc-read-exam-scores-by-hours-studied-for-600-students" class="nav-link" data-scroll-target="#read-exam-scores-by-hours-studied-for-600-students"><span class="header-section-number">15.8</span> Read exam scores by hours studied for 600 students</a></li>
+  <li><a href="#rank-seven-categories-by-market-share" id="toc-rank-seven-categories-by-market-share" class="nav-link" data-scroll-target="#rank-seven-categories-by-market-share"><span class="header-section-number">15.9</span> Rank seven categories by market share</a></li>
+  <li><a href="#predict-individual-student-scores-from-district-income-data" id="toc-predict-individual-student-scores-from-district-income-data" class="nav-link" data-scroll-target="#predict-individual-student-scores-from-district-income-data"><span class="header-section-number">15.10</span> Predict individual student scores from district income data</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/gvwilson/unbreak/edit/main/dataviz/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/gvwilson/unbreak/blob/main/dataviz/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/gvwilson/unbreak/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Data Visualization</span></h1>
 </div>
-<div class="col-6 center">
-<a href="../">Unbreak</a>
-	  ©
-	  <a href="../contributing/#contributors">the authors</a>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="compare-candidate-approval-ratings" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="compare-candidate-approval-ratings"><span class="header-section-number">15.1</span> Compare candidate approval ratings</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="truncated_axis.svg" class="img-fluid figure-img"></p>
+<figcaption>Candidate approval ratings with a truncated Y-axis.</figcaption>
+</figure>
 </div>
-<div class="col-3 right">
-<a href="../polars/">Polars</a> <span aria-hidden="true">⇒</span>
+<p>Compare the visual height of candidate A’s bar to candidate D’s bar. How much larger does D appear? Now look at the actual numbers. How large is the real difference?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The Y-axis starts at 85 instead of 0. Candidate D’s approval (93%) is only 6 percentage points above candidate A’s (87%), but the bars make it look roughly three times taller. Any bar chart where the Y-axis does not start at zero exaggerates relative differences. The effect is proportional to how far the baseline is raised: the higher the floor, the more dramatic the distortion.</p>
+<p>Shows: how a non-zero baseline inflates visual differences in bar charts out of proportion to the underlying data.</p>
+<p>To find it: check where the Y-axis starts. If it starts above zero on a bar chart, divide the visual height ratio of two bars by their actual data ratio. If the visual ratio is several times larger than the data ratio, the truncated axis is distorting the comparison.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="truncated_axis_fixed.svg" class="img-fluid figure-img"></p>
+<figcaption>The same data with the Y-axis starting at 0.</figcaption>
+</figure>
 </div>
 </div>
-</footer>
-</body>
-</html>
+</div>
+</div>
+</section>
+<section id="assess-a-products-long-term-performance-trend" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="assess-a-products-long-term-performance-trend"><span class="header-section-number">15.2</span> Assess a product’s long-term performance trend</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="cherry_pick.svg" class="img-fluid figure-img"></p>
+<figcaption>Performance trend over the last 8 months.</figcaption>
+</figure>
+</div>
+<p>The chart shows a clear upward trend over 8 months. What conclusion might you draw about this product’s long-term trajectory? What information would you need to know whether this is reliable?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The 8 months shown are a recovery from a multi-year decline. The full 5-year series falls from 100 to roughly 52 before the recent uptick. Choosing a start date at the bottom of a trough guarantees an upward slope. This pattern is common in financial and performance reporting: selecting the window that flatters the story while omitting the longer context that contradicts it.</p>
+<p>Shows: how selecting a window that starts at a historical low manufactures an upward trend that disappears when the full series is shown.</p>
+<p>To find it: ask what the full dataset covers and compare the chart’s start date to the earliest available data. If the start date coincides with a local minimum, extend the chart to show the complete history. If only the selected window is available, that absence of context is itself a warning sign.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="cherry_pick_fixed.svg" class="img-fluid figure-img"></p>
+<figcaption>The full 60-month history.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="interpret-the-relationship-between-coffee-consumption-and-code-commits" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="interpret-the-relationship-between-coffee-consumption-and-code-commits"><span class="header-section-number">15.3</span> Interpret the relationship between coffee consumption and code commits</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="spurious_correlation.svg" class="img-fluid figure-img"></p>
+<figcaption>Coffee consumption vs code commits over 48 months.</figcaption>
+</figure>
+</div>
+<p>The scatter plot shows a strong positive relationship between monthly coffee consumption and code commits, with a tight regression line. What conclusion might a reader draw? What third factor might explain the pattern?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Both metrics grow because the engineering team grew: more engineers means more commits and more coffee consumed. Plotting two time-trending variables against each other removes the time axis entirely and makes a shared common cause look like a direct relationship between the two variables. Any two series that both trend in the same direction will produce a scatter that looks correlated, regardless of whether they have anything to do with each other.</p>
+<p>Shows: how two variables driven by the same common cause (team size) appear strongly correlated in a scatter plot even when there is no direct relationship between them.</p>
+<p>To find it: color the scatter plot points by time, with early months dark and late months light. If early months cluster in one corner and late months in the opposite, the apparent correlation is temporal ordering rather than a direct relationship. Then ask whether a plausible common cause — such as growth in team size — could explain both trends independently.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="spurious_correlation_fixed.svg" class="img-fluid figure-img"></p>
+<figcaption>The same scatter with points colored by month. Early months are dark; late months are light.</figcaption>
+</figure>
+</div>
+<p>Early months cluster in the lower left and late months in the upper right — the apparent correlation is entirely temporal ordering.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="interpret-the-relationship-between-study-hours-and-exam-scores" class="level2" data-number="15.4">
+<h2 data-number="15.4" class="anchored" data-anchor-id="interpret-the-relationship-between-study-hours-and-exam-scores"><span class="header-section-number">15.4</span> Interpret the relationship between study hours and exam scores</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="simpsons_paradox.svg" class="img-fluid figure-img"></p>
+<figcaption>Study hours vs exam score across all students.</figcaption>
+</figure>
+</div>
+<p>The trend line shows that students who study more tend to score lower. Does that mean studying is counterproductive? What might explain the pattern?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Students in harder courses study more hours but earn lower scores because the courses are harder, not because studying hurts performance. Within each difficulty level the relationship is positive: more study leads to higher scores. The aggregate trend reverses because a third variable — course difficulty — drives both the study hours and the scores. Adding a color encoding for difficulty would reveal three upward slopes instead of one downward one. This is Simpson’s Paradox: an aggregate trend that disappears or reverses when a confounding variable is introduced.</p>
+<p>Shows: how a confounding variable can reverse the direction of an aggregate trend, making a genuinely positive relationship appear negative in the pooled data.</p>
+<p>To find it: color or facet the scatter plot by a categorical variable you suspect might be driving the outcome—here, course difficulty. If the aggregate slope reverses within each group, the confound is real. List candidate confounds before looking at the data: any variable that plausibly affects both axes is worth testing.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="simpsons_paradox_fixed.svg" class="img-fluid figure-img"></p>
+<figcaption>The same data colored by difficulty, with a separate regression line for each group.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="compare-two-groups-by-average-score" class="level2" data-number="15.5">
+<h2 data-number="15.5" class="anchored" data-anchor-id="compare-two-groups-by-average-score"><span class="header-section-number">15.5</span> Compare two groups by average score</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="mean_hides_distribution.svg" class="img-fluid figure-img"></p>
+<figcaption>Average score by group.</figcaption>
+</figure>
+</div>
+<p>Both groups have nearly the same average score. Would you conclude they are performing similarly? What other chart type would you choose before drawing that conclusion?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Group A is roughly normally distributed around 62. Group B is bimodal: half the students score near 25 and half score near 90. Both groups have the same mean, but their situations are completely different — Group B has two distinct subpopulations that the mean obscures entirely. A strip plot, histogram, or violin chart would make the bimodal structure immediately visible. Reporting only the mean discards the information most relevant to understanding Group B.</p>
+<p>Shows: how identical means can hide completely different distributions, including bimodal structure that would demand a different response from an educator or manager.</p>
+<p>To find it: replace the bar chart of means with a strip plot, histogram, or violin chart of the raw values. If the two groups look different in the distribution chart despite identical averages, or if one group shows two distinct clusters, the mean was suppressing the most important information in the data.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="mean_hides_distribution_fixed.svg" class="img-fluid figure-img"></p>
+<figcaption>Individual scores for each group as a strip plot.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="identify-which-city-has-the-worst-traffic-safety-record" class="level2" data-number="15.6">
+<h2 data-number="15.6" class="anchored" data-anchor-id="identify-which-city-has-the-worst-traffic-safety-record"><span class="header-section-number">15.6</span> Identify which city has the worst traffic safety record</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="absolute_vs_rate.svg" class="img-fluid figure-img"></p>
+<figcaption>Traffic accidents by city (raw counts).</figcaption>
+</figure>
+</div>
+<p>Which city appears to have the most serious traffic safety problem? Now calculate accidents per 100,000 residents for each city using the figures below. Does the ranking change?</p>
+<p>Metro City: 820 accidents, population 2,100,000. River Town: 210 accidents, population 180,000. Oak Valley: 95 accidents, population 52,000. Pine Bluff: 430 accidents, population 640,000.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Metro City’s raw count is largest, but its rate is 39 per 100,000 — the lowest of the four. Oak Valley has only 95 accidents but a rate of 183 per 100,000 — nearly five times higher. Absolute counts favor larger populations and are only meaningful when comparing groups of similar size. Any comparison that involves groups of different sizes requires a denominator: rate, proportion, or per-capita figure.</p>
+<p>Shows: why absolute counts mislead whenever the groups being compared differ in size, and how normalizing to a rate can reverse the apparent ranking entirely.</p>
+<p>To find it: divide each group’s count by its population (or another appropriate denominator) and compare the normalized rates. If the rankings change after normalizing, the raw counts were misleading. As a rule of thumb, if the groups differ in size by more than a factor of two, rates are almost always more informative than counts.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="absolute_vs_rate_fixed.svg" class="img-fluid figure-img"></p>
+<figcaption>Traffic accidents per 100,000 residents by city.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="assess-a-products-user-growth-over-the-past-year" class="level2" data-number="15.7">
+<h2 data-number="15.7" class="anchored" data-anchor-id="assess-a-products-user-growth-over-the-past-year"><span class="header-section-number">15.7</span> Assess a product’s user growth over the past year</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="cumulative_hides_slowdown.svg" class="img-fluid figure-img"></p>
+<figcaption>Cumulative user signups over 52 weeks.</figcaption>
+</figure>
+</div>
+<p>The total user count is rising steadily. Would you describe the product as growing? Now think about what the weekly rate of new signups looks like in the second half of the year compared to the first.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A cumulative chart can only go up or stay flat: it can never show a decline even if new additions stop entirely. Weeks 1-26 add 400-600 users each; weeks 27-52 add 10-30. The product’s growth has effectively stopped, but the cumulative line looks like a healthy upward trend throughout. Plotting the weekly rate instead reveals the collapse in new signups. Cumulative charts are useful for showing totals but systematically hide any information about acceleration, deceleration, or stagnation.</p>
+<p>Shows: how a cumulative chart makes stagnating growth look like a continuous upward trend by construction, since it can never decrease.</p>
+<p>To find it: compute the period-over-period difference (subtract each value from the previous one to get weekly new additions) and plot that instead of the running total. If the differences drop sharply while the cumulative line keeps rising, growth has stopped even though the total continues to climb.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="cumulative_hides_slowdown_fixed.svg" class="img-fluid figure-img"></p>
+<figcaption>Weekly new signups for the same period.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="read-exam-scores-by-hours-studied-for-600-students" class="level2" data-number="15.8">
+<h2 data-number="15.8" class="anchored" data-anchor-id="read-exam-scores-by-hours-studied-for-600-students"><span class="header-section-number">15.8</span> Read exam scores by hours studied for 600 students</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="discrete_overplot.svg" class="img-fluid figure-img"></p>
+<figcaption>Exam scores by hours studied (600 students).</figcaption>
+</figure>
+</div>
+<p>How many students appear to have studied for 4 hours and scored 65? How confident are you that each visible dot represents the same number of students?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Both the exam scores (multiples of 5) and hours studied (integers) are discrete, so many students share the same coordinates. Opaque markers stack on top of each other and become indistinguishable from a single point: a position with 40 students on top of each other looks identical to a position with 1. The chart gives no indication of how populated each cell is, making the data appear uniformly distributed when 80% of students cluster at 3-6 hours and scores of 55-75.</p>
+<p>Shows: how opaque markers on discrete data hide density by stacking invisibly, making a heavily skewed distribution look uniform.</p>
+<p>To find it: set the marker opacity to a low value (such as 10-20%) or replace the scatter plot with a bubble chart where marker area encodes count. If the chart looks dramatically different, e.g., dense clusters appearing where everything looked uniform before, then overplotting was hiding the true distribution.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="discrete_overplot_fixed.svg" class="img-fluid figure-img"></p>
+<figcaption>The same data with bubble area proportional to number of students.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="rank-seven-categories-by-market-share" class="level2" data-number="15.9">
+<h2 data-number="15.9" class="anchored" data-anchor-id="rank-seven-categories-by-market-share"><span class="header-section-number">15.9</span> Rank seven categories by market share</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="pie_chart.svg" class="img-fluid figure-img"></p>
+<figcaption>Market share by category.</figcaption>
+</figure>
+</div>
+<p>Without reading the exact percentages, rank the seven categories from largest to smallest share. How confident are you in your ranking? Which pairs of adjacent categories are hardest to distinguish?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Human perception of angles and arc lengths is unreliable, especially when slices are similar in size. The shares range from 18.4% down to 8.6% — a meaningful spread — but most readers cannot reliably rank the middle five categories without reading the labels. A horizontal bar chart sorted by value requires only length perception, which humans perform much more accurately. Pie charts are defensible only when there are two or three slices with clearly different sizes.</p>
+<p>Shows: how pie charts make ranking difficult when slices are similar in size, because angle and arc perception is far less accurate than length perception.</p>
+<p>To find it: try to rank all slices from memory without reading the labels. If you cannot confidently order the middle categories, replace the pie with a bar chart sorted by value and compare how long the ranking takes. The bar chart should be almost instantaneous.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="pie_chart_fixed.svg" class="img-fluid figure-img"></p>
+<figcaption>The same data as a sorted horizontal bar chart.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="predict-individual-student-scores-from-district-income-data" class="level2" data-number="15.10">
+<h2 data-number="15.10" class="anchored" data-anchor-id="predict-individual-student-scores-from-district-income-data"><span class="header-section-number">15.10</span> Predict individual student scores from district income data</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="group_vs_individual.svg" class="img-fluid figure-img"></p>
+<figcaption>District average income vs average test score (20 districts).</figcaption>
+</figure>
+</div>
+<p>The chart shows that school districts with higher average household income have higher average test scores, with a tight regression line. Would you expect to be able to predict an individual student’s score from knowing their district’s average income? How accurate do you think that prediction would be?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The district-level chart uses 20 aggregate points, so noise is suppressed and the trend looks precise. But the district average income is a property of the district, not the student. Within any district, students from families with very different incomes sit in the same classrooms and take the same tests, and individual scores scatter widely around the district mean. A statistic that explains 95% of the variance across group averages may explain only 25-30% of the variance across individuals, because most of the individual variance is within-group and invisible in the aggregate chart. Drawing conclusions about individuals from group-level correlations is the ecological fallacy.</p>
+<p>Shows: how group-level correlations can look much tighter than individual-level correlations, because averaging within groups suppresses within-group variance and makes the aggregate trend appear more predictive than it is.</p>
+<p>To find it: if individual-level data is available, plot individual points instead of group averages. Compare the R² values for the two charts. If the individual-level R² is substantially lower than the group-level R², the group correlation was overstating predictive power for individuals. The gap between the two values is the proportion of individual variance that lies within groups and is invisible in the aggregate chart.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="group_vs_individual_fixed.svg" class="img-fluid figure-img"></p>
+<figcaption>Individual student scores plotted at their district’s average income level.</figcaption>
+</figure>
+</div>
+<p>The upward trend is still present but the scatter is so wide that knowing a student’s district tells you little about that student’s score.</p>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../datasci/index.html" class="pagination-link" aria-label="Data Science">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Data Science</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../polars/index.html" class="pagination-link" aria-label="Polars">
+        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Polars</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/gvwilson/unbreak/edit/main/dataviz/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/gvwilson/unbreak/blob/main/dataviz/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/gvwilson/unbreak/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

@@ -1,517 +1,1306 @@
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
-<html lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Data, I/O, and Testing</title>
-<meta content="Unbreaking Software" name="description"/>
-<link href="../_static/favicon.ico" rel="icon" type="image/x-icon"/>
-<link href="../_static/pygments.css" rel="stylesheet" type="text/css"/>
-<link href="../_static/chota.css" rel="stylesheet" type="text/css"/>
-<link href="../_static/mccole.css" rel="stylesheet" type="text/css"/>
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>6&nbsp; Data, I/O, and Testing – Unbreaking Software</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../perfcon/index.html" rel="next">
+<link href="../regexp/index.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-01a495efc5497ac6e3f5457e7ed18e65.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../mccole/book.css">
 </head>
-<body>
-<a class="skip-link" href="#main-content">Skip to main content</a>
-<nav aria-label="Site navigation" class="nav">
-<div class="nav-left">
-<a class="brand" href="../">Unbreak</a>
-<div class="dropdown">
-<button aria-controls="nav-lessons" aria-haspopup="true">Lessons</button>
-<ul class="dropdown-content" id="nav-lessons">
-<li><a href="../intro/">Introduction</a></li>
-<li><a href="../basicpy/">Basic Python</a></li>
-<li><a href="../interpy/">Intermediate Python</a></li>
-<li><a href="../oopy/">Object-Oriented Python</a></li>
-<li><a href="../regexp/">Regular Expressions</a></li>
-<li><a class="active" href="../diot/">Data, I/O, and Testing</a></li>
-<li><a href="../perfcon/">Performance and Concurrency</a></li>
-<li><a href="../jsbrowser/">JavaScript Fundamentals</a></li>
-<li><a href="../css/">CSS</a></li>
-<li><a href="../web/">HTTP and APIs</a></li>
-<li><a href="../htmx/">HTMX</a></li>
-<li><a href="../alpine/">Alpine.js</a></li>
-<li><a href="../fastapi/">FastAPI</a></li>
-<li><a href="../datasci/">Data Science</a></li>
-<li><a href="../dataviz/">Data Visualization</a></li>
-<li><a href="../polars/">Polars</a></li>
-<li><a href="../shell/">The Unix Shell</a></li>
-<li><a href="../sql/">SQL</a></li>
-<li><a href="../testing/">Testing</a></li>
-<li><a href="../finale/">Conclusion</a></li>
-</ul>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../diot/index.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data, I/O, and Testing</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Unbreaking Software</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/gvwilson/unbreak" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
-<div class="dropdown">
-<button aria-controls="nav-appendices" aria-haspopup="true">Appendices</button>
-<ul class="dropdown-content" id="nav-appendices">
-<li><a href="../license/">License</a></li>
-<li><a href="../conduct/">Code of Conduct</a></li>
-<li><a href="../contributing/">Contributing</a></li>
-<li><a href="../bibliography/">Bibliography</a></li>
-<li><a href="../glossary/">Glossary</a></li>
-<li><a href="../complex/">Complex Examples</a></li>
-</ul>
-</div>
-<a href="https://github.com/gvwilson/unbreak">Repository</a>
-</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basicpy/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Basic Python</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../interpy/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Intermediate Python</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../oopy/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Object-Oriented Python</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../regexp/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Regular Expressions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../diot/index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data, I/O, and Testing</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../perfcon/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Performance, Concurrency, and System Interaction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../jsbrowser/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">JavaScript Fundamentals and the Browser</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../css/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">CSS</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../web/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">HTTP and APIs</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../htmx/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">HTMX</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../alpine/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Alpine.js</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fastapi/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">FastAPI</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../datasci/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Data Science</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dataviz/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Data Visualization</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../polars/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Polars</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../shell/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Unix Shell</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../sql/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">SQL</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../testing/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Testing</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../finale/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Appendices</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../license/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">License</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../conduct/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Code of Conduct</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../contributing/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Contributing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bibliography/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Bibliography</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../glossary/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../complex/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Complex Examples</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
 </nav>
-<main id="main-content">
-<h1>Data, I/O, and Testing</h1>
-<h2 id="diot-quotecsv">Parse records with quoted fields</h2>
-<p>Run the parser with the provided CSV file. Do all rows produce the correct number
-of fields? Pay particular attention to rows that contain commas.</p>
-<div data-inc="quotecsv.py" data-scrub="\s*# BUG.*"><span aria-label="Source: diot/quotecsv.py" class="inc-path" role="img" tabindex="0" title="diot/quotecsv.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#parse-records-with-quoted-fields" id="toc-parse-records-with-quoted-fields" class="nav-link active" data-scroll-target="#parse-records-with-quoted-fields"><span class="header-section-number">6.1</span> Parse records with quoted fields</a></li>
+  <li><a href="#benchmark-an-image-processing-function" id="toc-benchmark-an-image-processing-function" class="nav-link" data-scroll-target="#benchmark-an-image-processing-function"><span class="header-section-number">6.2</span> Benchmark an image processing function</a></li>
+  <li><a href="#schedule-a-recurring-task-across-time-zones" id="toc-schedule-a-recurring-task-across-time-zones" class="nav-link" data-scroll-target="#schedule-a-recurring-task-across-time-zones"><span class="header-section-number">6.3</span> Schedule a recurring task across time zones</a></li>
+  <li><a href="#scrape-prices-from-a-product-page" id="toc-scrape-prices-from-a-product-page" class="nav-link" data-scroll-target="#scrape-prices-from-a-product-page"><span class="header-section-number">6.4</span> Scrape prices from a product page</a></li>
+  <li><a href="#extract-email-addresses-from-a-text-file" id="toc-extract-email-addresses-from-a-text-file" class="nav-link" data-scroll-target="#extract-email-addresses-from-a-text-file"><span class="header-section-number">6.5</span> Extract email addresses from a text file</a></li>
+  <li><a href="#write-a-test-for-a-data-validation-function" id="toc-write-a-test-for-a-data-validation-function" class="nav-link" data-scroll-target="#write-a-test-for-a-data-validation-function"><span class="header-section-number">6.6</span> Write a test for a data validation function</a></li>
+  <li><a href="#test-a-function-that-modifies-a-global-registry" id="toc-test-a-function-that-modifies-a-global-registry" class="nav-link" data-scroll-target="#test-a-function-that-modifies-a-global-registry"><span class="header-section-number">6.7</span> Test a function that modifies a global registry</a></li>
+  <li><a href="#load-a-reference-data-file-in-a-test" id="toc-load-a-reference-data-file-in-a-test" class="nav-link" data-scroll-target="#load-a-reference-data-file-in-a-test"><span class="header-section-number">6.8</span> Load a reference data file in a test</a></li>
+  <li><a href="#save-a-record-with-a-timestamp-to-a-file" id="toc-save-a-record-with-a-timestamp-to-a-file" class="nav-link" data-scroll-target="#save-a-record-with-a-timestamp-to-a-file"><span class="header-section-number">6.9</span> Save a record with a timestamp to a file</a></li>
+  <li><a href="#add-diagnostic-output-to-a-data-pipeline" id="toc-add-diagnostic-output-to-a-data-pipeline" class="nav-link" data-scroll-target="#add-diagnostic-output-to-a-data-pipeline"><span class="header-section-number">6.10</span> Add diagnostic output to a data pipeline</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/gvwilson/unbreak/edit/main/diot/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/gvwilson/unbreak/blob/main/diot/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/gvwilson/unbreak/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
 
-
-<span class="k">def</span><span class="w"> </span><span class="nf">parse_scores</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Return a list of (name, city, score) triples from a CSV file."""</span>
-    <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>  <span class="c1"># skip header</span>
-        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">city</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">score</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-            <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="n">city</span><span class="p">,</span> <span class="n">score</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">records</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
-    <span class="n">filename</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">"quotecsv.csv"</span>
-    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">city</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">parse_scores</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">city</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">score</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</code></pre></div>
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data, I/O, and Testing</span></h1>
 </div>
-<div data-inc="quotecsv.csv"><span aria-label="Source: diot/quotecsv.csv" class="inc-path" role="img" tabindex="0" title="diot/quotecsv.csv">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code>name,city,score
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="parse-records-with-quoted-fields" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="parse-records-with-quoted-fields"><span class="header-section-number">6.1</span> Parse records with quoted fields</h2>
+<p>Run the parser with the provided CSV file. Do all rows produce the correct number of fields? Pay particular attention to rows that contain commas.</p>
+<p><code class="sourceCode python"><span class="im">import</span> sys
+<span class="kw">def</span> parse_scores(filename):
+    <span class="co">"""Return a list of (name, city, score) triples from a CSV file."""</span>
+    records <span class="op">=</span> []
+    <span class="cf">with</span> <span class="bu">open</span>(filename) <span class="im">as</span> f:
+        <span class="bu">next</span>(f)  <span class="co"># skip header</span>
+        <span class="cf">for</span> line <span class="kw">in</span> f:
+            parts <span class="op">=</span> line.strip().split(<span class="st">","</span>)
+            name <span class="op">=</span> parts[<span class="dv">0</span>]
+            city <span class="op">=</span> parts[<span class="dv">1</span>]
+            score <span class="op">=</span> <span class="bu">int</span>(parts[<span class="dv">2</span>])
+            records.append((name, city, score))
+    <span class="cf">return</span> records
+<span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:
+    filename <span class="op">=</span> sys.argv[<span class="dv">1</span>] <span class="cf">if</span> <span class="bu">len</span>(sys.argv) <span class="op">&gt;</span> <span class="dv">1</span> <span class="cf">else</span> <span class="st">"quotecsv.csv"</span>
+    <span class="cf">for</span> name, city, score <span class="kw">in</span> parse_scores(filename):
+        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>city<span class="sc">}</span><span class="ss">): </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss">"</span>)</code> <code>name,city,score
 Alice,New York,95
 Bob,"Los Angeles, CA",87
 Carol,Chicago,92
-Dave,"Austin, TX",88
-</code></pre></div>
+Dave,"Austin, TX",88</code></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is using <code>line.split(',')</code> instead of the <code>csv</code> module, so rows that contain
-commas inside quoted fields are split incorrectly.</p>
-<p>Shows: why hand-rolled parsers fail on real-world data and when to use
-standard library tools.</p>
-<p>To find it: print <code>len(fields)</code> for each row as you parse. When it prints <code>3</code> instead
-of <code>2</code>, find that row in the CSV and count the commas — the extra one is inside a
-quoted field that <code>line.split(',')</code> does not recognize as quoted.</p>
-</details>
-<h2 id="diot-walltime">Benchmark an image processing function</h2>
-<p>Run the benchmarking function several times and examine the elapsed time values.
-Do any of them look unusual?</p>
-<div data-inc="walltime.py" data-scrub="\s*# BUG.*"><span aria-label="Source: diot/walltime.py" class="inc-path" role="img" tabindex="0" title="diot/walltime.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">unittest.mock</span><span class="w"> </span><span class="kn">import</span> <span class="n">patch</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">measure</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Return (elapsed_seconds, return_value) for a call to func."""</span>
-    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">()</span>
-    <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">,</span> <span class="n">result</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">work</span><span class="p">():</span>
-    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
-    <span class="k">return</span> <span class="s2">"done"</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
-    <span class="n">elapsed</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">measure</span><span class="p">(</span><span class="n">work</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Normal:           </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">s  result=</span><span class="si">{</span><span class="n">result</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
-
-    <span class="n">call_count</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">stepped_back</span><span class="p">():</span>
-        <span class="n">call_count</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="mf">1000.0</span> <span class="k">if</span> <span class="n">call_count</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="mf">999.7</span>
-
-    <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s2">"time.time"</span><span class="p">,</span> <span class="n">stepped_back</span><span class="p">):</span>
-        <span class="n">elapsed</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">measure</span><span class="p">(</span><span class="n">work</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"After clock step: </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">s  result=</span><span class="si">{</span><span class="n">result</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"(time.monotonic() would never produce a negative duration)"</span><span class="p">)</span>
-</code></pre></div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is using <code>time.time()</code> without accounting for system clock adjustments, so
-the function reports negative durations when the clock is set back.</p>
-<p>Shows: the difference between wall time and monotonic time and when to
-use <code>time.monotonic</code>.</p>
-<p>To find it: print each start and end timestamp as a float alongside the computed
-elapsed time. A negative elapsed value proves the end timestamp was smaller than the
-start, which happens when the system clock is stepped backward by NTP or a VM
-snapshot restore.</p>
-</details>
-<h2 id="diot-daylight">Schedule a recurring task across time zones</h2>
-<p>Call the date arithmetic function with a date near a daylight saving transition.
-Compare the result from the naive datetime path with the result from the
-timezone-aware path.</p>
-<div data-inc="daylight.py" data-scrub="\s*# BUG.*"><span aria-label="Source: diot/daylight.py" class="inc-path" role="img" tabindex="0" title="diot/daylight.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">add_days</span><span class="p">(</span><span class="n">start_str</span><span class="p">,</span> <span class="n">days</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Return the wall-clock time `days` days after start_str (YYYY-MM-DD HH:MM)."""</span>
-    <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">start_str</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">dt</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">days</span><span class="p">)</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
-
-    <span class="n">start</span> <span class="o">=</span> <span class="s2">"2024-03-09 08:00"</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">add_days</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Start:          </span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">  (America/New_York, pre-DST)"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"+ 1 naive day:  </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"The naive result is 2024-03-10 08:00, which looks correct."</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"But clocks sprang forward at 02:00, so only 23 hours elapsed."</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"A timezone-aware calculation using zoneinfo or pytz would show"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"the gap and let you choose: 23 wall-clock hours or 24 absolute hours."</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">()</span>
-
-    <span class="c1"># Show what UTC-based arithmetic reveals</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">zoneinfo</span><span class="w"> </span><span class="kn">import</span> <span class="n">ZoneInfo</span>
-        <span class="n">tz</span> <span class="o">=</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">"America/New_York"</span><span class="p">)</span>
-        <span class="n">aware</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">tz</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Aware start UTC offset: </span><span class="si">{</span><span class="n">aware</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">aware</span><span class="o">.</span><span class="n">tzname</span><span class="p">()</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
-        <span class="n">result_aware</span> <span class="o">=</span> <span class="n">aware</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Aware result UTC offset: </span><span class="si">{</span><span class="n">result_aware</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">result_aware</span><span class="o">.</span><span class="n">tzname</span><span class="p">()</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
-        <span class="n">utc_hours</span> <span class="o">=</span> <span class="p">(</span><span class="n">result_aware</span><span class="o">.</span><span class="n">utctimetuple</span><span class="p">(),</span> <span class="n">aware</span><span class="o">.</span><span class="n">utctimetuple</span><span class="p">())</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">calendar</span>
-        <span class="n">start_utc</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">timegm</span><span class="p">(</span><span class="n">aware</span><span class="o">.</span><span class="n">utctimetuple</span><span class="p">())</span>
-        <span class="n">end_utc</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">timegm</span><span class="p">(</span><span class="n">result_aware</span><span class="o">.</span><span class="n">utctimetuple</span><span class="p">())</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Actual elapsed seconds: </span><span class="si">{</span><span class="n">end_utc</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_utc</span><span class="si">}</span><span class="s2">  "</span>
-              <span class="sa">f</span><span class="s2">"(86400 = 24h; 82800 = 23h)"</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">"Install Python 3.9+ for zoneinfo demonstration"</span><span class="p">)</span>
-</code></pre></div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is adding a <code>timedelta</code> to a naive datetime, so the function produces results
-that are off by one day around daylight saving time transitions.</p>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is using <code>line.split(',')</code> instead of the <code>csv</code> module, so rows that contain commas inside quoted fields are split incorrectly.</p>
+<p>Shows: why hand-rolled parsers fail on real-world data and when to use standard library tools.</p>
+<p>To find it: print <code>len(fields)</code> for each row as you parse. When it prints <code>3</code> instead of <code>2</code>, find that row in the CSV and count the commas — the extra one is inside a quoted field that <code>line.split(',')</code> does not recognize as quoted.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="benchmark-an-image-processing-function" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="benchmark-an-image-processing-function"><span class="header-section-number">6.2</span> Benchmark an image processing function</h2>
+<p>Run the benchmarking function several times and examine the elapsed time values. Do any of them look unusual?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> unittest.mock <span class="im">import</span> patch</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> measure(func):</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return (elapsed_seconds, return_value) for a call to func."""</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    start <span class="op">=</span> time.time()</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> func()</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    end <span class="op">=</span> time.time()</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> end <span class="op">-</span> start, result</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> work():</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="fl">0.05</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"done"</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    elapsed, result <span class="op">=</span> measure(work)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Normal:           </span><span class="sc">{</span>elapsed<span class="sc">:.4f}</span><span class="ss">s  result=</span><span class="sc">{</span>result<span class="sc">!r}</span><span class="ss">"</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    call_count <span class="op">=</span> [<span class="dv">0</span>]</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> stepped_back():</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        call_count[<span class="dv">0</span>] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="fl">1000.0</span> <span class="cf">if</span> call_count[<span class="dv">0</span>] <span class="op">==</span> <span class="dv">1</span> <span class="cf">else</span> <span class="fl">999.7</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> patch(<span class="st">"time.time"</span>, stepped_back):</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        elapsed, result <span class="op">=</span> measure(work)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"After clock step: </span><span class="sc">{</span>elapsed<span class="sc">:.4f}</span><span class="ss">s  result=</span><span class="sc">{</span>result<span class="sc">!r}</span><span class="ss">"</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"(time.monotonic() would never produce a negative duration)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is using <code>time.time()</code> without accounting for system clock adjustments, so the function reports negative durations when the clock is set back.</p>
+<p>Shows: the difference between wall time and monotonic time and when to use <code>time.monotonic</code>.</p>
+<p>To find it: print each start and end timestamp as a float alongside the computed elapsed time. A negative elapsed value proves the end timestamp was smaller than the start, which happens when the system clock is stepped backward by NTP or a VM snapshot restore.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="schedule-a-recurring-task-across-time-zones" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="schedule-a-recurring-task-across-time-zones"><span class="header-section-number">6.3</span> Schedule a recurring task across time zones</h2>
+<p>Call the date arithmetic function with a date near a daylight saving transition. Compare the result from the naive datetime path with the result from the timezone-aware path.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime, timedelta</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add_days(start_str, days):</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return the wall-clock time `days` days after start_str (YYYY-MM-DD HH:MM)."""</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    dt <span class="op">=</span> datetime.fromisoformat(start_str)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dt <span class="op">+</span> timedelta(days<span class="op">=</span>days)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    start <span class="op">=</span> <span class="st">"2024-03-09 08:00"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> add_days(start, days<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Start:          </span><span class="sc">{</span>start<span class="sc">}</span><span class="ss">  (America/New_York, pre-DST)"</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"+ 1 naive day:  </span><span class="sc">{</span>result<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"The naive result is 2024-03-10 08:00, which looks correct."</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"But clocks sprang forward at 02:00, so only 23 hours elapsed."</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"A timezone-aware calculation using zoneinfo or pytz would show"</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"the gap and let you choose: 23 wall-clock hours or 24 absolute hours."</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Show what UTC-based arithmetic reveals</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> zoneinfo <span class="im">import</span> ZoneInfo</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        tz <span class="op">=</span> ZoneInfo(<span class="st">"America/New_York"</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        aware <span class="op">=</span> datetime(<span class="dv">2024</span>, <span class="dv">3</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="dv">0</span>, tzinfo<span class="op">=</span>tz)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Aware start UTC offset: </span><span class="sc">{</span>aware<span class="sc">.</span>utcoffset()<span class="sc">}</span><span class="ss">  (</span><span class="sc">{</span>aware<span class="sc">.</span>tzname()<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        result_aware <span class="op">=</span> aware <span class="op">+</span> timedelta(days<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Aware result UTC offset: </span><span class="sc">{</span>result_aware<span class="sc">.</span>utcoffset()<span class="sc">}</span><span class="ss">  (</span><span class="sc">{</span>result_aware<span class="sc">.</span>tzname()<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        utc_hours <span class="op">=</span> (result_aware.utctimetuple(), aware.utctimetuple())</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        <span class="im">import</span> calendar</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>        start_utc <span class="op">=</span> calendar.timegm(aware.utctimetuple())</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>        end_utc <span class="op">=</span> calendar.timegm(result_aware.utctimetuple())</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Actual elapsed seconds: </span><span class="sc">{</span>end_utc <span class="op">-</span> start_utc<span class="sc">}</span><span class="ss">  "</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>              <span class="ss">f"(86400 = 24h; 82800 = 23h)"</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">ImportError</span>:</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Install Python 3.9+ for zoneinfo demonstration"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is adding a <code>timedelta</code> to a naive datetime, so the function produces results that are off by one day around daylight saving time transitions.</p>
 <p>Shows: the difference between naive and timezone-aware datetimes.</p>
-<p>To find it: call the function with <code>datetime(2024, 3, 10)</code> — the Sunday US clocks
-spring forward — and add one day. Print the naive result and the timezone-aware
-result side by side. The naive version may report the wrong date because it adds
-exactly 86,400 seconds without accounting for the 23-hour day.</p>
-</details>
-<h2 id="diot-missparse">Scrape prices from a product page</h2>
-<p>Run the script with the provided HTML file and check whether it finds all the
-expected elements. What happens when an element is not found?</p>
-<div data-inc="missparse.py" data-scrub="\s*# BUG.*"><span aria-label="Source: diot/missparse.py" class="inc-path" role="img" tabindex="0" title="diot/missparse.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">extract_prices</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Return all prices found in the HTML as a list of floats."""</span>
-    <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'&lt;span class="price"&gt;\$([\d.]+)&lt;/span&gt;'</span>
-    <span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">]</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
-    <span class="n">filename</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">"missparse.html"</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">html</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-    <span class="n">prices</span> <span class="o">=</span> <span class="n">extract_prices</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">prices</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Prices: </span><span class="si">{</span><span class="n">prices</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total:  $</span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">"No prices found."</span><span class="p">)</span>
-</code></pre></div>
+<p>To find it: call the function with <code>datetime(2024, 3, 10)</code> — the Sunday US clocks spring forward — and add one day. Print the naive result and the timezone-aware result side by side. The naive version may report the wrong date because it adds exactly 86,400 seconds without accounting for the 23-hour day.</p>
 </div>
-<div data-inc="missparse.html"><span aria-label="Source: diot/missparse.html" class="inc-path" role="img" tabindex="0" title="diot/missparse.html">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
-<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"product"</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Widget<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"product-price"</span><span class="p">&gt;</span>$9.99<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
-  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"product"</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Gadget<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"product-price"</span><span class="p">&gt;</span>$24.99<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
-  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"product"</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Doohickey<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"product-price"</span><span class="p">&gt;</span>$4.99<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
-  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</code></pre></div>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is that the HTML structure varies and the selector matches zero elements
-without raising an error, so the script fails silently on some pages.</p>
-<p>Shows: how to handle missing data in HTML parsing and use assertions
-to catch unexpected input.</p>
-<p>To find it: print <code>len(soup.select(selector))</code> before accessing the first element.
-Seeing <code>0</code> tells you the selector matched nothing. Then print the first hundred
-characters of <code>str(soup)</code> to confirm whether the expected element is actually present
-in the HTML.</p>
-</details>
-<h2 id="diot-overexp">Extract email addresses from a text file</h2>
-<p>Test the regular expression against a few valid email addresses and a few strings
-that look like email addresses but are not. Does it reject the invalid ones?</p>
-<div data-inc="overexp.py" data-scrub="\s*# BUG.*"><span aria-label="Source: diot/overexp.py" class="inc-path" role="img" tabindex="0" title="diot/overexp.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
-
-<span class="n">EMAIL_PATTERN</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"\w+@\w+"</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">extract_emails</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Return all email addresses found in text."""</span>
-    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">EMAIL_PATTERN</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
-    <span class="n">tests</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="s2">"alice@example.com"</span><span class="p">,</span>        <span class="kc">True</span><span class="p">),</span>   <span class="c1"># valid</span>
-        <span class="p">(</span><span class="s2">"bob.smith@uni.edu"</span><span class="p">,</span>        <span class="kc">True</span><span class="p">),</span>   <span class="c1"># valid (but dots in local part missed)</span>
-        <span class="p">(</span><span class="s2">"not-an-email"</span><span class="p">,</span>             <span class="kc">False</span><span class="p">),</span>  <span class="c1"># should not match</span>
-        <span class="p">(</span><span class="s2">"foo@bar"</span><span class="p">,</span>                  <span class="kc">False</span><span class="p">),</span>  <span class="c1"># no TLD — should not match</span>
-        <span class="p">(</span><span class="s2">"user@host with spaces"</span><span class="p">,</span>    <span class="kc">False</span><span class="p">),</span>  <span class="c1"># malformed — should not match</span>
-        <span class="p">(</span><span class="s2">"x@y"</span><span class="p">,</span>                      <span class="kc">False</span><span class="p">),</span>  <span class="c1"># too short — should not match</span>
-    <span class="p">]</span>
-    <span class="k">for</span> <span class="n">text</span><span class="p">,</span> <span class="n">should_match</span> <span class="ow">in</span> <span class="n">tests</span><span class="p">:</span>
-        <span class="n">found</span> <span class="o">=</span> <span class="n">extract_emails</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-        <span class="n">matched</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">found</span><span class="p">)</span>
-        <span class="n">status</span> <span class="o">=</span> <span class="s2">"OK  "</span> <span class="k">if</span> <span class="n">matched</span> <span class="o">==</span> <span class="n">should_match</span> <span class="k">else</span> <span class="s2">"FAIL"</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">text</span><span class="si">!r:</span><span class="s2">35s</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">found</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</code></pre></div>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is a pattern that is too permissive (e.g., missing anchors or character
-class constraints), so the regular expression also matches invalid strings.</p>
-<p>Shows: how to test regular expressions with both valid and invalid
-inputs.</p>
-<p>To find it: test the regular expression against known-invalid strings such as
-<code>"not_an_email"</code> or <code>"two@@signs.com"</code>. If <code>re.fullmatch</code> returns a match object
-instead of <code>None</code> for either, the pattern is too permissive.</p>
-</details>
-<h2 id="diot-noassert">Write a test for a data validation function</h2>
-<p>Run the test suite. Does it pass? Now deliberately break the function the test is
-testing. Does the test still pass?</p>
-<div data-inc="noassert.py" data-scrub="\s*# BUG.*"><span aria-label="Source: diot/noassert.py" class="inc-path" role="img" tabindex="0" title="diot/noassert.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">average</span><span class="p">(</span><span class="n">numbers</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Return the mean of a non-empty list of numbers."""</span>
-    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">test_average_single</span><span class="p">():</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">average</span><span class="p">([</span><span class="mi">10</span><span class="p">])</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">test_average_simple</span><span class="p">():</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">average</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">test_average_known</span><span class="p">():</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">average</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">test</span> <span class="ow">in</span> <span class="p">[</span><span class="n">test_average_simple</span><span class="p">,</span> <span class="n">test_average_known</span><span class="p">]:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">test</span><span class="p">()</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"PASS </span><span class="si">{</span><span class="n">test</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>   <span class="c1"># always prints PASS</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"FAIL </span><span class="si">{</span><span class="n">test</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"average([2, 4, 6, 8]) = </span><span class="si">{</span><span class="n">average</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">])</span><span class="si">}</span><span class="s2">  (expected 5.0)"</span><span class="p">)</span>
-</code></pre></div>
+</section>
+<section id="scrape-prices-from-a-product-page" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="scrape-prices-from-a-product-page"><span class="header-section-number">6.4</span> Scrape prices from a product page</h2>
+<p>Run the script with the provided HTML file and check whether it finds all the expected elements. What happens when an element is not found?</p>
+<p><code class="sourceCode python"><span class="im">import</span> re
+<span class="im">import</span> sys
+<span class="kw">def</span> extract_prices(html):
+    <span class="co">"""Return all prices found in the HTML as a list of floats."""</span>
+    pattern <span class="op">=</span> <span class="vs">r'&lt;span class="price"&gt;</span><span class="ch">\$</span><span class="kw">(</span><span class="pp">[</span><span class="dv">\d</span><span class="pp">.]</span><span class="op">+</span><span class="kw">)</span><span class="vs">&lt;/span&gt;'</span>
+    matches <span class="op">=</span> re.findall(pattern, html)
+    <span class="cf">return</span> [<span class="bu">float</span>(m) <span class="cf">for</span> m <span class="kw">in</span> matches]
+<span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:
+    filename <span class="op">=</span> sys.argv[<span class="dv">1</span>] <span class="cf">if</span> <span class="bu">len</span>(sys.argv) <span class="op">&gt;</span> <span class="dv">1</span> <span class="cf">else</span> <span class="st">"missparse.html"</span>
+    <span class="cf">with</span> <span class="bu">open</span>(filename) <span class="im">as</span> f:
+        html <span class="op">=</span> f.read()
+    prices <span class="op">=</span> extract_prices(html)
+    <span class="cf">if</span> prices:
+        <span class="bu">print</span>(<span class="ss">f"Prices: </span><span class="sc">{</span>prices<span class="sc">}</span><span class="ss">"</span>)
+        <span class="bu">print</span>(<span class="ss">f"Total:  $</span><span class="sc">{</span><span class="bu">sum</span>(prices)<span class="sc">:.2f}</span><span class="ss">"</span>)
+    <span class="cf">else</span>:
+        <span class="bu">print</span>(<span class="st">"No prices found."</span>)</code> <code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+  &lt;div class="product"&gt;
+    &lt;h2&gt;Widget&lt;/h2&gt;
+    &lt;span class="product-price"&gt;$9.99&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="product"&gt;
+    &lt;h2&gt;Gadget&lt;/h2&gt;
+    &lt;span class="product-price"&gt;$24.99&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="product"&gt;
+    &lt;h2&gt;Doohickey&lt;/h2&gt;
+    &lt;span class="product-price"&gt;$4.99&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is that the test calls the function but never asserts anything about the
-result, so it always passes even when the function is broken.</p>
-<p>Shows: that a test with no assertions is not a test and how to write
-assertions correctly.</p>
-<p>To find it: modify the function under test to return an obviously wrong value, such
-as <code>return None</code>. Run the test suite again. If the test still passes, it contains
-no assertion that can detect the wrong return value.</p>
-</details>
-<h2 id="diot-shared">Test a function that modifies a global registry</h2>
-<p>Run each test on its own. Then run both together. Do you get the same results both
-ways?</p>
-<div data-inc="shared.py" data-scrub="\s*# BUG.*"><span aria-label="Source: diot/shared.py" class="inc-path" role="img" tabindex="0" title="diot/shared.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="c1"># Module-level registry — shared state that persists between tests</span>
-<span class="n">REGISTRY</span> <span class="o">=</span> <span class="p">{}</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">register</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-    <span class="n">REGISTRY</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">REGISTRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-
-
-<span class="c1"># --- tests ---</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">test_register</span><span class="p">():</span>
-    <span class="n">register</span><span class="p">(</span><span class="s2">"alpha"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">lookup</span><span class="p">(</span><span class="s2">"alpha"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">test_lookup_absent</span><span class="p">():</span>
-    <span class="k">assert</span> <span class="n">lookup</span><span class="p">(</span><span class="s2">"absent"</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">REGISTRY</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">test_overwrite</span><span class="p">():</span>
-    <span class="n">register</span><span class="p">(</span><span class="s2">"alpha"</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">lookup</span><span class="p">(</span><span class="s2">"alpha"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">99</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">test</span> <span class="ow">in</span> <span class="p">[</span><span class="n">test_register</span><span class="p">,</span> <span class="n">test_lookup_absent</span><span class="p">,</span> <span class="n">test_overwrite</span><span class="p">]:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">test</span><span class="p">()</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"PASS </span><span class="si">{</span><span class="n">test</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"FAIL </span><span class="si">{</span><span class="n">test</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</code></pre></div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
 </div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is that one test modifies a module-level variable that another test depends
-on, so the suite passes in isolation but fails when run together.</p>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is that the HTML structure varies and the selector matches zero elements without raising an error, so the script fails silently on some pages.</p>
+<p>Shows: how to handle missing data in HTML parsing and use assertions to catch unexpected input.</p>
+<p>To find it: print <code>len(soup.select(selector))</code> before accessing the first element. Seeing <code>0</code> tells you the selector matched nothing. Then print the first hundred characters of <code>str(soup)</code> to confirm whether the expected element is actually present in the HTML.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="extract-email-addresses-from-a-text-file" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="extract-email-addresses-from-a-text-file"><span class="header-section-number">6.5</span> Extract email addresses from a text file</h2>
+<p>Test the regular expression against a few valid email addresses and a few strings that look like email addresses but are not. Does it reject the invalid ones?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>EMAIL_PATTERN <span class="op">=</span> <span class="vs">r"</span><span class="dv">\w</span><span class="op">+</span><span class="vs">@</span><span class="dv">\w</span><span class="op">+</span><span class="vs">"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_emails(text):</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return all email addresses found in text."""</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> re.findall(EMAIL_PATTERN, text)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    tests <span class="op">=</span> [</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"alice@example.com"</span>,        <span class="va">True</span>),   <span class="co"># valid</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"bob.smith@uni.edu"</span>,        <span class="va">True</span>),   <span class="co"># valid (but dots in local part missed)</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"not-an-email"</span>,             <span class="va">False</span>),  <span class="co"># should not match</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"foo@bar"</span>,                  <span class="va">False</span>),  <span class="co"># no TLD — should not match</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"user@host with spaces"</span>,    <span class="va">False</span>),  <span class="co"># malformed — should not match</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"x@y"</span>,                      <span class="va">False</span>),  <span class="co"># too short — should not match</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> text, should_match <span class="kw">in</span> tests:</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        found <span class="op">=</span> extract_emails(text)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        matched <span class="op">=</span> <span class="bu">bool</span>(found)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        status <span class="op">=</span> <span class="st">"OK  "</span> <span class="cf">if</span> matched <span class="op">==</span> should_match <span class="cf">else</span> <span class="st">"FAIL"</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>status<span class="sc">}</span><span class="ss">  </span><span class="sc">{</span>text<span class="sc">!r:35s}</span><span class="ss"> -&gt; </span><span class="sc">{</span>found<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is a pattern that is too permissive (e.g., missing anchors or character class constraints), so the regular expression also matches invalid strings.</p>
+<p>Shows: how to test regular expressions with both valid and invalid inputs.</p>
+<p>To find it: test the regular expression against known-invalid strings such as <code>"not_an_email"</code> or <code>"two@@signs.com"</code>. If <code>re.fullmatch</code> returns a match object instead of <code>None</code> for either, the pattern is too permissive.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="write-a-test-for-a-data-validation-function" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="write-a-test-for-a-data-validation-function"><span class="header-section-number">6.6</span> Write a test for a data validation function</h2>
+<p>Run the test suite. Does it pass? Now deliberately break the function the test is testing. Does the test still pass?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> average(numbers):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return the mean of a non-empty list of numbers."""</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sum</span>(numbers) <span class="op">/</span> (<span class="bu">len</span>(numbers) <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_average_single():</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> average([<span class="dv">10</span>])</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_average_simple():</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> average([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>])</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_average_known():</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> average([<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>])</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> test <span class="kw">in</span> [test_average_simple, test_average_known]:</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>            test()</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"PASS </span><span class="sc">{</span>test<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">"</span>)   <span class="co"># always prints PASS</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"FAIL </span><span class="sc">{</span>test<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"average([2, 4, 6, 8]) = </span><span class="sc">{</span>average([<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>])<span class="sc">}</span><span class="ss">  (expected 5.0)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is that the test calls the function but never asserts anything about the result, so it always passes even when the function is broken.</p>
+<p>Shows: that a test with no assertions is not a test and how to write assertions correctly.</p>
+<p>To find it: modify the function under test to return an obviously wrong value, such as <code>return None</code>. Run the test suite again. If the test still passes, it contains no assertion that can detect the wrong return value.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="test-a-function-that-modifies-a-global-registry" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="test-a-function-that-modifies-a-global-registry"><span class="header-section-number">6.7</span> Test a function that modifies a global registry</h2>
+<p>Run each test on its own. Then run both together. Do you get the same results both ways?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Module-level registry — shared state that persists between tests</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>REGISTRY <span class="op">=</span> {}</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> register(name, value):</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    REGISTRY[name] <span class="op">=</span> value</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lookup(name):</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> REGISTRY.get(name)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># --- tests ---</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_register():</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    register(<span class="st">"alpha"</span>, <span class="dv">1</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> lookup(<span class="st">"alpha"</span>) <span class="op">==</span> <span class="dv">1</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_lookup_absent():</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> lookup(<span class="st">"absent"</span>) <span class="kw">is</span> <span class="va">None</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">len</span>(REGISTRY) <span class="op">==</span> <span class="dv">0</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_overwrite():</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    register(<span class="st">"alpha"</span>, <span class="dv">99</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> lookup(<span class="st">"alpha"</span>) <span class="op">==</span> <span class="dv">99</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> test <span class="kw">in</span> [test_register, test_lookup_absent, test_overwrite]:</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>            test()</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"PASS </span><span class="sc">{</span>test<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">AssertionError</span> <span class="im">as</span> e:</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"FAIL </span><span class="sc">{</span>test<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is that one test modifies a module-level variable that another test depends on, so the suite passes in isolation but fails when run together.</p>
 <p>Shows: test isolation, teardown, and the risks of shared global state.</p>
-<p>To find it: run <code>pytest test.py::test_first -v</code> alone, then run
-<code>pytest test.py::test_second -v</code> alone. If each passes in isolation but one fails
-when both run together, the failing test depends on state left by the other.</p>
-</details>
-<h2 id="diot-abspath">Load a reference data file in a test</h2>
-<p>Run the script from a different working directory than the one where the script
-file is saved. Does it find its configuration file?</p>
-<div data-inc="abspath.py" data-scrub="\s*# BUG.*"><span aria-label="Source: diot/abspath.py" class="inc-path" role="img" tabindex="0" title="diot/abspath.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">load_config</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">"""Load configuration from the project config file."""</span>
-    <span class="n">config_path</span> <span class="o">=</span> <span class="s2">"/Users/gvwilson/unbreak/diot/abspath.json"</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
-    <span class="n">config</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"threshold:   </span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">'threshold'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"max_retries: </span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">'max_retries'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"output_dir:  </span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">'output_dir'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</code></pre></div>
-</div>
-<div data-inc="abspath.json"><span aria-label="Source: diot/abspath.json" class="inc-path" role="img" tabindex="0" title="diot/abspath.json">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="p">{</span>
-<span class="w">    </span><span class="nt">"threshold"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"max_retries"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"output_dir"</span><span class="p">:</span><span class="w"> </span><span class="s2">"results"</span>
-<span class="p">}</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is using a hardcoded absolute path instead of a path relative to the
-script's location, so the function behaves differently on different machines.</p>
-<p>Shows: the difference between <code>__file__</code>-relative and
-working-directory-relative paths.</p>
-<p>To find it: run the script from a different directory — e.g., <code>cd /tmp &amp;&amp; python
-/full/path/to/script.py</code>. It will fail to open the config file. Print <code>os.getcwd()</code>
-inside the script to confirm that <code>open("config.json")</code> resolves relative to <code>/tmp</code>,
-not to the script's own directory.</p>
-</details>
-<h2 id="diot-jsondate">Save a record with a timestamp to a file</h2>
-<p>Run the script and read the error message. Which value in the data structure cannot
-be serialized?</p>
-<div data-inc="jsondate.py" data-scrub="\s*# BUG.*"><span aria-label="Source: diot/jsondate.py" class="inc-path" role="img" tabindex="0" title="diot/jsondate.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">make_report</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Build a report dict including the current timestamp."""</span>
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">"title"</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
-        <span class="s2">"value"</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
-        <span class="s2">"generated_at"</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
-    <span class="p">}</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
-    <span class="n">report</span> <span class="o">=</span> <span class="n">make_report</span><span class="p">(</span><span class="s2">"monthly_sales"</span><span class="p">,</span> <span class="mf">48291.75</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Report dict: </span><span class="si">{</span><span class="n">report</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Serializing to JSON..."</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">report</span><span class="p">))</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is that the data contains <code>datetime</code> objects, which are not
-JSON-serializable, so the program raises an error when writing output.</p>
-<p>Shows: how to identify serialization errors and write custom JSON
-encoders.</p>
-<p>To find it: read the <code>TypeError</code> message — <code>Object of type datetime is not JSON
-serializable</code>. Then search the data structure being serialized for any <code>datetime</code>
-object: <code>print(type(record['timestamp']))</code> will show <code>&lt;class 'datetime.datetime'&gt;</code>.</p>
-</details>
-<h2 id="diot-loglevel">Add diagnostic output to a data pipeline</h2>
-<p>Run the script and then look at the log file. Are the messages you expected to see
-present?</p>
-<div data-inc="loglevel.py" data-scrub="\s*# BUG.*"><span aria-label="Source: diot/loglevel.py" class="inc-path" role="img" tabindex="0" title="diot/loglevel.py">i</span><div class="codehilite"><pre class="" tabindex="0"><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
-    <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span>
-    <span class="nb">format</span><span class="o">=</span><span class="s2">"</span><span class="si">%(levelname)s</span><span class="s2">: </span><span class="si">%(message)s</span><span class="s2">"</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Double each item, logging progress at DEBUG level."""</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Starting process() with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span><span class="si">}</span><span class="s2"> items"</span><span class="p">)</span>
-    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  processing item </span><span class="si">{</span><span class="n">item</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Finished: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s2"> results"</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">results</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output: </span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"(no debug messages shown — logger.debug() calls are silenced by WARNING level)"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Effective log level: </span><span class="si">{</span><span class="n">logging</span><span class="o">.</span><span class="n">getLevelName</span><span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">getEffectiveLevel</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</code></pre></div>
-</div>
-<details class="explanation">
-<summary>Show explanation</summary>
-<p>The bug is that the log level is set to <code>WARNING</code> but the calls use
-<code>logger.debug()</code>, so the messages never appear in the log file.</p>
-<p>Shows: how Python's logging hierarchy works and how to verify the
-effective log level.</p>
-<p>To find it: add <code>print(logger.getEffectiveLevel())</code> near the top of the script. The
-output <code>30</code> means the effective level is <code>WARNING</code> (30), and <code>DEBUG</code> messages require
-level <code>10</code>. Either lower the level to <code>DEBUG</code> or upgrade the calls to <code>logger.warning()</code>.</p>
-</details>
-</main>
-<footer aria-label="Page navigation">
-<div class="row">
-<div class="col-3 left">
-<span aria-hidden="true">⇐</span> <a href="../regexp/">Regular Expressions</a>
-</div>
-<div class="col-6 center">
-<a href="../">Unbreak</a>
-	  ©
-	  <a href="../contributing/#contributors">the authors</a>
-</div>
-<div class="col-3 right">
-<a href="../perfcon/">Performance and Concurrency</a> <span aria-hidden="true">⇒</span>
+<p>To find it: run <code>pytest test.py::test_first -v</code> alone, then run <code>pytest test.py::test_second -v</code> alone. If each passes in isolation but one fails when both run together, the failing test depends on state left by the other.</p>
 </div>
 </div>
-</footer>
-</body>
-</html>
+</div>
+</section>
+<section id="load-a-reference-data-file-in-a-test" class="level2" data-number="6.8">
+<h2 data-number="6.8" class="anchored" data-anchor-id="load-a-reference-data-file-in-a-test"><span class="header-section-number">6.8</span> Load a reference data file in a test</h2>
+<p>Run the script from a different working directory than the one where the script file is saved. Does it find its configuration file?</p>
+<p><code class="sourceCode python"><span class="im">import</span> json
+<span class="kw">def</span> load_config():
+    <span class="co">"""Load configuration from the project config file."""</span>
+    config_path <span class="op">=</span> <span class="st">"/Users/gvwilson/unbreak/diot/abspath.json"</span>
+    <span class="cf">with</span> <span class="bu">open</span>(config_path) <span class="im">as</span> f:
+        <span class="cf">return</span> json.load(f)
+<span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:
+    config <span class="op">=</span> load_config()
+    <span class="bu">print</span>(<span class="ss">f"threshold:   </span><span class="sc">{</span>config[<span class="st">'threshold'</span>]<span class="sc">}</span><span class="ss">"</span>)
+    <span class="bu">print</span>(<span class="ss">f"max_retries: </span><span class="sc">{</span>config[<span class="st">'max_retries'</span>]<span class="sc">}</span><span class="ss">"</span>)
+    <span class="bu">print</span>(<span class="ss">f"output_dir:  </span><span class="sc">{</span>config[<span class="st">'output_dir'</span>]<span class="sc">}</span><span class="ss">"</span>)</code> <code>{
+    "threshold": 0.5,
+    "max_retries": 3,
+    "output_dir": "results"
+}</code></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is using a hardcoded absolute path instead of a path relative to the script’s location, so the function behaves differently on different machines.</p>
+<p>Shows: the difference between <code>__file__</code>-relative and working-directory-relative paths.</p>
+<p>To find it: run the script from a different directory — e.g., <code>cd /tmp &amp;&amp; python /full/path/to/script.py</code>. It will fail to open the config file. Print <code>os.getcwd()</code> inside the script to confirm that <code>open("config.json")</code> resolves relative to <code>/tmp</code>, not to the script’s own directory.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="save-a-record-with-a-timestamp-to-a-file" class="level2" data-number="6.9">
+<h2 data-number="6.9" class="anchored" data-anchor-id="save-a-record-with-a-timestamp-to-a-file"><span class="header-section-number">6.9</span> Save a record with a timestamp to a file</h2>
+<p>Run the script and read the error message. Which value in the data structure cannot be serialized?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_report(title, value):</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Build a report dict including the current timestamp."""</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"title"</span>: title,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"value"</span>: value,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"generated_at"</span>: datetime.now(),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    report <span class="op">=</span> make_report(<span class="st">"monthly_sales"</span>, <span class="fl">48291.75</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Report dict: </span><span class="sc">{</span>report<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Serializing to JSON..."</span>)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(json.dumps(report))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is that the data contains <code>datetime</code> objects, which are not JSON-serializable, so the program raises an error when writing output.</p>
+<p>Shows: how to identify serialization errors and write custom JSON encoders.</p>
+<p>To find it: read the <code>TypeError</code> message — <code>Object of type datetime is not JSON serializable</code>. Then search the data structure being serialized for any <code>datetime</code> object: <code>print(type(record['timestamp']))</code> will show <code>&lt;class 'datetime.datetime'&gt;</code>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="add-diagnostic-output-to-a-data-pipeline" class="level2" data-number="6.10">
+<h2 data-number="6.10" class="anchored" data-anchor-id="add-diagnostic-output-to-a-data-pipeline"><span class="header-section-number">6.10</span> Add diagnostic output to a data pipeline</h2>
+<p>Run the script and then look at the log file. Are the messages you expected to see present?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> logging</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>logging.basicConfig(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    level<span class="op">=</span>logging.WARNING,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">format</span><span class="op">=</span><span class="st">"</span><span class="sc">%(levelname)s</span><span class="st">: </span><span class="sc">%(message)s</span><span class="st">"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>logger <span class="op">=</span> logging.getLogger(<span class="va">__name__</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> process(items):</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Double each item, logging progress at DEBUG level."""</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    logger.debug(<span class="ss">f"Starting process() with </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> []</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> item <span class="kw">in</span> items:</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        logger.debug(<span class="ss">f"  processing item </span><span class="sc">{</span>item<span class="sc">!r}</span><span class="ss">"</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        results.append(item <span class="op">*</span> <span class="dv">2</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    logger.debug(<span class="ss">f"Finished: </span><span class="sc">{</span><span class="bu">len</span>(results)<span class="sc">}</span><span class="ss"> results"</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> results</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>]</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> process(data)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Output: </span><span class="sc">{</span>output<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"(no debug messages shown — logger.debug() calls are silenced by WARNING level)"</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Effective log level: </span><span class="sc">{</span>logging<span class="sc">.</span>getLevelName(logger.getEffectiveLevel())<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show explanation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The bug is that the log level is set to <code>WARNING</code> but the calls use <code>logger.debug()</code>, so the messages never appear in the log file.</p>
+<p>Shows: how Python’s logging hierarchy works and how to verify the effective log level.</p>
+<p>To find it: add <code>print(logger.getEffectiveLevel())</code> near the top of the script. The output <code>30</code> means the effective level is <code>WARNING</code> (30), and <code>DEBUG</code> messages require level <code>10</code>. Either lower the level to <code>DEBUG</code> or upgrade the calls to <code>logger.warning()</code>.</p>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../regexp/index.html" class="pagination-link" aria-label="Regular Expressions">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Regular Expressions</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../perfcon/index.html" class="pagination-link" aria-label="Performance, Concurrency, and System Interaction">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Performance, Concurrency, and System Interaction</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/gvwilson/unbreak/edit/main/diot/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/gvwilson/unbreak/blob/main/diot/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/gvwilson/unbreak/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
