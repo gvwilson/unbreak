@@ -12,7 +12,8 @@ Does it return 24?
 
 {{< inc oopy/no_self.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is the missing `self` parameter in `area`. When you call `r.area()`, Python
 automatically passes the instance `r` as the first positional argument. A method
@@ -25,8 +26,7 @@ has somewhere to put the instance it passes automatically.
 To find it: the traceback says the error is in the call `r.area()` and mentions "0
 positional arguments but 1 was given". Change `def area():` to `def area(self):`.
 
-:::
-
+</details>
 ## Get a value back from a method
 
 Create a `Greeter` and print the result of calling `greet`.
@@ -34,7 +34,8 @@ Does the output say `"Hello, world!"`?
 
 {{< inc oopy/no_parens.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is the missing parentheses. `g.greet` without `()` evaluates to the bound
 method object itself—a callable—rather than calling it and returning its string. The
@@ -47,8 +48,7 @@ a return value.
 To find it: the output will contain the word `bound method` instead of `Hello`.
 Change `g.greet` to `g.greet()`.
 
-:::
-
+</details>
 ## Make `__init__` set up an object
 
 Create a `Config` object and print its `debug` attribute.
@@ -56,7 +56,8 @@ Does it print `True`?
 
 {{< inc oopy/init_return.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is `return self` inside `__init__`. Python's object creation protocol
 requires `__init__` to return `None`. Any other return value raises `TypeError:
@@ -70,15 +71,15 @@ must not return anything.
 To find it: the traceback says `TypeError: __init__() should return None`. Remove
 the `return self` line.
 
-:::
-
+</details>
 ## Spell an attribute name consistently
 
 Create a `Student` and call `greet()`. Does it print the student's name?
 
 {{< inc oopy/typo_attr.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is a typo: `self.nane = name` in `__init__` stores the value under the
 misspelled key `nane`. When `greet` reads `self.name`, Python looks for the correctly
@@ -91,15 +92,15 @@ at the point of writing, which can make the bug appear to be in the wrong place.
 To find it: print `vars(s)` after creating the student. The dictionary will contain
 `nane` but not `name`. Fix the spelling in `__init__`.
 
-:::
-
+</details>
 ## Access the computed area of a circle
 
 Create a `Circle` with radius 5 and print its area. Does it print a number close to 78.5?
 
 {{< inc oopy/prop_call.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is the parentheses in `c.area()`. Because `area` is decorated with
 `@property`, accessing `c.area` already calls the function and returns the computed
@@ -112,8 +113,7 @@ like data, not call it like a function.
 To find it: the traceback says `TypeError: 'float' object is not callable`, pointing
 to the line with `c.area()`. Remove the parentheses: `c.area`.
 
-:::
-
+</details>
 ## Add a vector and a tuple in either order
 
 Create a `Vector(1, 2)` and add it to `(3, 4)` — and also add `(3, 4)` to the vector.
@@ -121,7 +121,8 @@ Do both additions work?
 
 {{< inc oopy/radd.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is defining `__add__` but not `__radd__`. When Python evaluates
 `vector + (3, 4)`, it calls `vector.__add__((3, 4))`, which works. But for
@@ -136,15 +137,15 @@ right-hand side.
 To find it: the traceback says `TypeError: unsupported operand type(s) for +: 'tuple'
 and 'Vector'`. Add a `__radd__` method (often implemented by delegating to `__add__`).
 
-:::
-
+</details>
 ## Check whether a status matches a target
 
 Create a `Status("ok")` and call `is_ok()`. Does it return `True`?
 
 {{< inc oopy/is_equals.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is using `is` to compare objects. `is` tests whether two names refer to the
 exact same object in memory—identity, not equality. `Status("ok")` inside `is_ok`
@@ -158,15 +159,15 @@ should be reserved for comparisons against singletons like `None`, `True`, and `
 To find it: print `id(self)` and `id(Status("ok"))` inside `is_ok`. The numbers will
 differ. Replace `is` with `==` and compare the `code` attributes directly.
 
-:::
-
+</details>
 ## Create a person with the right details
 
 Create a `Person` and call `introduce()`. Does the output contain the correct name and age?
 
 {{< inc oopy/wrong_args.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is the argument order. `Person.__init__` expects `first, last, age`, but the
 call passes `"Alice", 30, "Smith"`—putting the age in the `last` position and the
@@ -181,8 +182,7 @@ this class of mistake.
 To find it: compare the output of `introduce()` against what you expect. The name and
 age will be swapped. Reorder the arguments or switch to keyword arguments.
 
-:::
-
+</details>
 ## Record a score before reporting it
 
 Create a `Scoreboard` for `"Alice"` and immediately call `report()`.
@@ -190,7 +190,8 @@ Does it print a score?
 
 {{< inc oopy/late_attr.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that `self.score` is only created inside `record()`, not in `__init__`.
 If `report()` is called before `record()` has ever run, `self.score` does not exist
@@ -202,15 +203,15 @@ Shows: that all instance attributes an object may need should be initialized in
 To find it: add `print(vars(board))` after creating the `Scoreboard`. The dictionary
 will not contain `score`. Add `self.score = 0` to `__init__`.
 
-:::
-
+</details>
 ## Show a card as text
 
 Create a `Card` and print its `repr`. Does the output show the rank and suit?
 
 {{< inc oopy/repr_none.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is the missing `return`. The f-string `f"{self.rank} of {self.suit}"` is
 evaluated and the resulting string is immediately discarded. `__repr__` then returns
@@ -222,8 +223,7 @@ string with an f-string does nothing unless the result is returned or assigned.
 To find it: the traceback says `TypeError: __repr__ returned non-string`. Add
 `return` before the f-string.
 
-:::
-
+</details>
 ## Store data in an instance
 
 Create a `Point` with `x=3` and `y=4` and call `distance()`.
@@ -231,7 +231,8 @@ Does it return 5.0?
 
 {{< inc oopy/init_attr.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is `x = x` and `y = y` inside `__init__`. Those lines rebind the local
 parameter names to themselves and do nothing else. Without `self.x = x` and
@@ -245,8 +246,7 @@ assignment inside a method creates a local variable, not an attribute.
 To find it: add `print(vars(p))` after creating the point. The dictionary will be
 empty, revealing that no attributes were stored.
 
-:::
-
+</details>
 ## Copy an object with nested data
 
 Create a `Playlist` with a list of songs, make a copy with `copy.copy`, and add a song
@@ -254,7 +254,8 @@ to the copy. Does the original's song list stay unchanged?
 
 {{< inc oopy/shallowcopy.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is using `copy.copy`, which performs a shallow copy. The new `Playlist` is a
 different object, but its `songs` attribute still points to the *same* list object as
@@ -268,8 +269,7 @@ To find it: print `id(original.songs)` and `id(clone.songs)`. They are the same
 number, proving both point to one list. Replace `copy.copy` with `copy.deepcopy` to
 copy the list too.
 
-:::
-
+</details>
 ## Use a custom context manager
 
 Use a `Timer` inside a `with` block and then call `elapsed()` on the bound variable.
@@ -277,7 +277,8 @@ Does it work?
 
 {{< inc oopy/contextmanager.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that `__enter__` never returns `self`. The value returned by `__enter__`
 is what the `as` target in `with Timer() as t` binds to. With no `return` statement,
@@ -290,8 +291,7 @@ Shows: the context-manager protocol, and that `__enter__` must return the resour
 To find it: print `t` inside the `with` block — it will be `None`. Add `return self`
 at the end of `__enter__`.
 
-:::
-
+</details>
 ## Instantiate a class with an abstract method
 
 Create a `Dog` from an `Animal` base class that declares an abstract `speak` method.
@@ -299,7 +299,8 @@ Does `Dog("Rex")` succeed?
 
 {{< inc oopy/abstractmethod.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that `Dog` does not implement the abstract method `speak`. A class
 inheriting from `ABC` with an `@abstractmethod` cannot be instantiated until every
@@ -313,8 +314,7 @@ implement every abstract method before it can be instantiated.
 To find it: the traceback names the abstract method and the class. Add a `speak`
 method to `Dog` that returns the appropriate sound.
 
-:::
-
+</details>
 ## Display an object as a string
 
 Create a `Temperature` of 100 degrees and print it.
@@ -322,7 +322,8 @@ Does the output look like a sensible string?
 
 {{< inc oopy/str_type.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is returning `self.celsius` (an integer) from `__str__`. Python requires
 `__str__` to return a `str` object. When it gets anything else, it raises
@@ -334,8 +335,7 @@ returning the wrong type produces a `TypeError` that mentions the method by name
 To find it: the traceback says `TypeError: __str__ returned non-string (type int)`.
 Fix it by returning `str(self.celsius)` or `f"{self.celsius} C"`.
 
-:::
-
+</details>
 ## Count how many widgets exist
 
 Create two `Widget` objects and call `Widget.how_many()`.
@@ -343,7 +343,8 @@ Does it return 2?
 
 {{< inc oopy/static_class.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is `@staticmethod`. A static method receives no implicit first argument, so
 `cls` is undefined inside `how_many` and raises `NameError`. The fix is `@classmethod`,
@@ -356,8 +357,7 @@ To find it: the traceback says `NameError: name 'cls' is not defined`. Replace
 `@staticmethod` with `@classmethod` and add `cls` as the first parameter of
 `how_many`.
 
-:::
-
+</details>
 ## Update the radius of a circle
 
 Create a `Circle` with radius 5, update the radius to 10, and print the area.
@@ -365,7 +365,8 @@ Does the area reflect the new radius?
 
 {{< inc oopy/property_setter.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that `radius` is a read-only property. A `@property` decorator with no
 corresponding `@radius.setter` creates a getter only. Assigning `c.radius = 10`
@@ -382,8 +383,7 @@ def radius(self, value):
     self._radius = value
 ```
 
-:::
-
+</details>
 ## Accept any animal in a function
 
 Call `make_sound` with a `Dog` object.
@@ -391,7 +391,8 @@ Does it print `"Woof"`, or does it raise an error?
 
 {{< inc oopy/isinstance_check.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is `type(creature) == Animal`. The `type()` function returns the exact runtime
 type of an object. A `Dog` instance has type `Dog`, not `Animal`, so the comparison is
@@ -406,8 +407,7 @@ To find it: print `type(d)` and `type(d) == Animal` before calling the function.
 output `False` makes the bug obvious. Replace `type(creature) == Animal` with
 `isinstance(creature, Animal)`.
 
-:::
-
+</details>
 ## Read a private attribute from outside a class
 
 Create a `BankAccount`, deposit some money, and print the balance by accessing
@@ -415,7 +415,8 @@ Create a `BankAccount`, deposit some money, and print the balance by accessing
 
 {{< inc oopy/name_mangling.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is accessing `account.__balance` from outside the class. Python rewrites any
 identifier starting with two underscores (but not ending with two) to
@@ -431,8 +432,7 @@ To find it: print `dir(account)` and look for `_BankAccount__balance` in the out
 Use the public `get_balance()` method instead, or access the mangled name directly
 as `account._BankAccount__balance` for debugging.
 
-:::
-
+</details>
 ## Use points as dictionary keys
 
 Create two equal `Point` objects and check whether the second is in a set containing
@@ -440,7 +440,8 @@ the first. Does `p2 in seen` return `True`?
 
 {{< inc oopy/eq_hash.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is defining `__eq__` without also defining `__hash__`. Python's data model
 specifies that any class defining `__eq__` must also define `__hash__`, or Python
@@ -459,8 +460,7 @@ def __hash__(self):
     return hash((self.x, self.y))
 ```
 
-:::
-
+</details>
 ## Check whether a collection is empty
 
 Create an empty `Cart` and test it with `if cart:`. Does Python treat it as empty or
@@ -468,7 +468,8 @@ as having items?
 
 {{< inc oopy/truthiness.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that `__len__` always returns 1. Python's truthiness protocol calls
 `__bool__` if defined, otherwise `__len__`, and an object is falsy only if `__len__`
@@ -481,8 +482,7 @@ container's emptiness check depends on those methods returning the real size.
 To find it: print `len(cart)` — it prints 1 even though the cart is empty. Change
 `__len__` to return `len(self._items)`.
 
-:::
-
+</details>
 ## Build a query with method chaining
 
 Build a `QueryBuilder`, chain `.filter()` and `.limit()`, and call `.build()`.
@@ -490,7 +490,8 @@ Does it return a dictionary with both values?
 
 {{< inc oopy/method_chain.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is the missing `return self` in `filter`. Every method in a fluent interface
 must return the object it was called on so the next method has something to call.
@@ -503,8 +504,7 @@ return `self`.
 To find it: the traceback says the error is on the chained line, pointing at `.limit`.
 The call before it—`filter`—is the culprit. Add `return self` at the end of `filter`.
 
-:::
-
+</details>
 ## Add a prefix to log messages
 
 Create an `AppLogger` and call `run()`.
@@ -512,7 +512,8 @@ Does it print a log message, or does it raise an error?
 
 {{< inc oopy/attr_shadow.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is `self.log = "application"` inside `__init__`. That statement creates an
 instance attribute named `log` that holds the string `"application"`. When Python
@@ -527,8 +528,7 @@ To find it: print `type(self.log)` inside `run()` before the call. It will show
 `<class 'str'>`. Rename the attribute—for example, `self.prefix = "application"`—and
 update any references to it.
 
-:::
-
+</details>
 ## Get the number of items in a dataset
 
 Create a `DataSet` with three numbers and call `len()` on it.
@@ -536,7 +536,8 @@ Does it return the integer 3?
 
 {{< inc oopy/len_type.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is the `/` operator in `__len__`. In Python 3, `/` always performs true
 (floating-point) division and always returns a `float`, even when both operands are
@@ -550,8 +551,7 @@ division, returns int), and that `__len__` has a strict return-type contract.
 To find it: the traceback says `TypeError` and names `__len__`. Replace `/` with
 `//`, or just write `return len(self.data)`.
 
-:::
-
+</details>
 ## Add a third coordinate to a point
 
 Create a `Point` with `x=3` and `y=4`, add `z=0`, and print all three coordinates.
@@ -559,7 +559,8 @@ Does it work?
 
 {{< inc oopy/slots_attr.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that `__slots__` lists only `x` and `y`. When `__slots__` is defined,
 Python removes the instance `__dict__` and allows only the named attributes. Assigning
@@ -573,8 +574,7 @@ is also included in `__slots__`).
 To find it: the traceback points directly at `p.z = 0`. Either add `"z"` to
 `__slots__`, or remove `__slots__` entirely if dynamic attributes are needed.
 
-:::
-
+</details>
 ## Track items added to each account
 
 Create two `BankAccount` objects, add transactions to each, and print each account's
@@ -582,7 +582,8 @@ history. Does each account show only its own transactions?
 
 {{< inc oopy/sharemut.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that `history = []` is defined at class level, so all instances share the
 same list object instead of each having their own, and every account's transactions
@@ -596,8 +597,7 @@ to the second, then print `alice.history` and `bob.history`. If both lists conta
 both transactions, confirm the sharing with `print(BankAccount.history is
 alice.history)` — it will print `True`.
 
-:::
-
+</details>
 ## Initialize a subclass with its parent's attributes
 
 Create a `Dog` named `"Rex"` and call `speak()`. Does it print a sentence with both
@@ -605,7 +605,8 @@ the name and the sound?
 
 {{< inc oopy/super.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is forgetting `super().__init__()`, so the parent's `__init__` is never
 called and required attributes are missing when a subclass method tries to use them.
@@ -616,4 +617,4 @@ To find it: instantiate the subclass and immediately try to access a parent-defi
 attribute. The `AttributeError` names the missing attribute. Search the subclass
 `__init__` for a call to `super().__init__()` — its absence is the cause.
 
-:::
+</details>

@@ -11,7 +11,8 @@ Open the page. The heading should be red. Is it?
 
 {{< inc css/fontcolor.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is `font-color`, which is not a valid CSS property. The correct property is
 `color`. When a browser encounters a property name it does not recognize, it discards
@@ -25,8 +26,7 @@ To find it: open DevTools, select the `<h1>`, and look at the Styles panel. The
 `font-color: tomato` declaration will have a yellow warning triangle or a strikethrough
 indicating it is invalid. Change `font-color` to `color`.
 
-:::
-
+</details>
 ## Make a heading larger
 
 Open the page. The heading should be noticeably larger than the paragraph below it.
@@ -34,7 +34,8 @@ Is it?
 
 {{< inc css/unitless.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is a missing unit. `font-size: 48` is invalid—CSS requires a unit such as
 `px`, `em`, or `rem` for length values (zero is the only exception). The browser
@@ -46,15 +47,15 @@ are completely different things to the browser.
 To find it: open DevTools, select the `<h1>`, and look at the Styles panel. The
 `font-size: 48` line will be flagged as invalid. Change it to `font-size: 48px`.
 
-:::
-
+</details>
 ## Style an error message
 
 Open the page. The message should have a red background and white text. Does it?
 
 {{< inc css/classmatch.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is a mismatch between the selector and the HTML. The CSS targets `.warning`
 but the element has `class="error"`. CSS class selectors are case-sensitive and must
@@ -68,8 +69,7 @@ To find it: compare the selector in the stylesheet to the `class` attribute in t
 HTML. Either change `.warning` to `.error` in the CSS, or change `class="error"` to
 `class="warning"` in the HTML.
 
-:::
-
+</details>
 ## Style a button with several properties
 
 Open the page. The button should have white text and visible padding around it.
@@ -77,7 +77,8 @@ Does it?
 
 {{< inc css/semicolon.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is a missing semicolon after `color: white`. CSS declarations inside a rule
 are separated by semicolons. When the semicolon is absent, the parser treats the next
@@ -92,15 +93,15 @@ To find it: open DevTools, select the button, and look at the Styles panel. Both
 `color` and `padding` will be absent or flagged. Add the missing semicolon after
 `color: white`.
 
-:::
-
+</details>
 ## Set the width of a label
 
 Open the page. The blue label should be 200px wide. Is it wider than its text?
 
 {{< inc css/inline.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that `<span>` is an inline element. Inline elements flow with text and
 ignore `width` and `height` declarations. The label is exactly as wide as its content
@@ -113,8 +114,7 @@ To find it: in DevTools, select the `<span>` and look at the box model diagram. 
 width will equal the text width, not 200px. Add `display: inline-block` or
 `display: block` to the `.label` rule to make `width` take effect.
 
-:::
-
+</details>
 ## Add a background image to a panel
 
 Open the page. The panel should have a blue background (shown when the image is
@@ -122,7 +122,8 @@ missing). Is it blue?
 
 {{< inc css/background.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is declaration order. The `background` shorthand property sets every
 background sub-property at once, including `background-color`, resetting it to
@@ -138,8 +139,7 @@ will be transparent. Either move `background-color` after the `background` line,
 include the color directly in the shorthand: `background: url("...") no-repeat center
 center steelblue`.
 
-:::
-
+</details>
 ## Hide a notice without moving other content
 
 Open the page. Compare where the paragraph sits relative to where it would be if the
@@ -147,7 +147,8 @@ notice were visible. Did the paragraph move up?
 
 {{< inc css/visibility.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is using `display: none` when `visibility: hidden` is needed. `display: none`
 removes the element from the layout entirely—other elements flow in as if it were not
@@ -162,15 +163,15 @@ paragraph drops back to its original position, confirming the layout was collaps
 Change `display: none` to `visibility: hidden` to hide the notice while preserving
 the layout.
 
-:::
-
+</details>
 ## Center a button on the page
 
 Open the page. The button should be centered horizontally on the page. Is it?
 
 {{< inc css/textalign.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is applying `text-align: center` to the button itself. `text-align` controls
 the alignment of inline content—text and inline elements—inside the element it is
@@ -185,8 +186,7 @@ stretches edge to edge. Move `text-align: center` to the parent element (e.g., `
 or a wrapper `<div>`). A block-level child inherits the alignment hint and centers
 within its parent.
 
-:::
-
+</details>
 ## Center a card horizontally
 
 Open the page. The blue card should be centered with equal space on each side.
@@ -194,7 +194,8 @@ Is it?
 
 {{< inc css/marginauto.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is a missing `width`. `margin: 0 auto` centers a block element by dividing
 leftover horizontal space equally between the left and right margins. But a block
@@ -209,15 +210,15 @@ To find it: in DevTools, look at the computed `margin-left` and `margin-right`�
 will be 0. Add `width: 300px` (or any value less than the container width) to `.card`
 so the browser has remaining space to divide equally.
 
-:::
-
+</details>
 ## Color a link differently on hover
 
 Click the link to visit it, then come back and hover over it. Does it turn red?
 
 {{< inc css/hoverorder.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is rule order. All three selectors (`a:hover`, `a:visited`, `a:link`) have
 the same specificity, so the browser uses source order as a tiebreaker—the last
@@ -233,8 +234,7 @@ To find it: reorder the rules so `a:link` comes first, then `a:visited`, then
 `a:hover`. With that order, `:hover` appears later and overrides `:visited` when
 the cursor is present.
 
-:::
-
+</details>
 ## Fit a panel inside a container
 
 Open the page. The blue panel should sit entirely within the grey container.
@@ -242,7 +242,8 @@ Does it, or does it overflow to the right?
 
 {{< inc css/boxmodel.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is `box-sizing: content-box`, which is the default. When `width: 100%` is set,
 the browser assigns 100% of the container's width to the content area alone. Padding is
@@ -256,15 +257,15 @@ Computed tab. The total rendered width will exceed the container's width. Add
 `box-sizing: border-box` to the `.panel` rule so that padding is included inside the
 declared width rather than added to it.
 
-:::
-
+</details>
 ## Override a color in a stylesheet
 
 Open the page. Both elements use the `.highlight` class. Are they both red?
 
 {{< inc css/specificity.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is a specificity conflict. The selector `nav.highlight` targets an element type
 plus a class, giving it specificity (0,1,1). The later rule `.highlight` is class-only,
@@ -281,8 +282,7 @@ overridden. To fix it, either change `.highlight` to `nav.highlight, .highlight`
 restructure the stylesheet so both elements share a single rule without the extra type
 selector.
 
-:::
-
+</details>
 ## Add space between sections
 
 Open the page. Section Two has `margin-top: 60px` and Section One has
@@ -290,7 +290,8 @@ Open the page. Section Two has `margin-top: 60px` and Section One has
 
 {{< inc css/collapse.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is margin collapsing. When two block elements are adjacent siblings, their
 vertical margins do not add up—they collapse into a single margin equal to the larger
@@ -305,8 +306,7 @@ will show only the dominant margin. To get the full 80px gap, convert one of the
 to padding on the element itself, or add `display: flow-root` to a wrapper to create a
 new block formatting context that prevents collapsing.
 
-:::
-
+</details>
 ## Put a border around an image and caption
 
 Open the page. The blue border should enclose the image placeholder and the caption.
@@ -314,7 +314,8 @@ Does the border appear to wrap them?
 
 {{< inc css/clearfix.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that floated elements are removed from the normal flow. The parent `.card`
 has no in-flow children to give it height, so it collapses to zero height (plus
@@ -327,8 +328,7 @@ Fix it by adding `overflow: auto` to `.card`, which forces the parent to contain
 floated children. Alternatively, add a clearing element after the floats, or switch to
 flexbox or grid.
 
-:::
-
+</details>
 ## Show a tooltip above an icon
 
 Open the page. The dark tooltip should appear in front of the red banner.
@@ -336,7 +336,8 @@ Does it?
 
 {{< inc css/zindex.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that `z-index` only works on elements with a `position` value other than
 `static`. The `.tooltip` element has no `position` property, so it remains `position:
@@ -350,8 +351,7 @@ To find it: in DevTools, select `.tooltip` and look for `z-index` in the Compute
 styles. It will show `auto` (ignored) rather than `100`. Add `position: relative` to
 `.tooltip` to activate `z-index` and let the tooltip stack above the banner.
 
-:::
-
+</details>
 ## Add a decorative bullet to each list item
 
 Open the page. Each list item should have a gold star to its left.
@@ -359,7 +359,8 @@ Do any stars appear?
 
 {{< inc css/pseudo.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is a missing `content` property. The `::before` pseudo-element exists in the
 DOM only when `content` is present—without it the pseudo-element is not generated at
@@ -373,8 +374,7 @@ the tree. Add `content: "\2605"` (the Unicode star character) to the `li::before
 Use `content: ""` as a baseline if you only want to style a generated box with no
 visible text.
 
-:::
-
+</details>
 ## Fill half a page with a colored banner
 
 Open the page. The blue banner should fill half the grey wrapper.
@@ -382,7 +382,8 @@ Is the wrapper visible at all?
 
 {{< inc css/pctheight.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that percentage heights are resolved relative to the parent's computed
 height. The `.wrapper` has no explicit height—its height is `auto`, which the browser
@@ -397,8 +398,7 @@ To find it: in DevTools, select `.banner` and look at its computed height: 0px. 
 it, give `.wrapper` an explicit height (e.g., `height: 300px`), use viewport units
 (`height: 50vh`) on the banner directly, or switch to a flexbox or grid layout.
 
-:::
-
+</details>
 ## Animate a button color on hover
 
 Open the page and hover over the button. Does the background color fade smoothly to
@@ -406,7 +406,8 @@ red, or does it snap?
 
 {{< inc css/transition.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that `transition: color 0.4s ease` animates the `color` property (text
 color), not `background-color`. The hover rule changes `background-color`, which has
@@ -421,8 +422,7 @@ transitioned property (`color`) does not match the property changed on hover
 (`background-color`). Fix it by changing the transition to `background-color 0.4s ease`
 or using `transition: all 0.4s ease` to cover every animated property.
 
-:::
-
+</details>
 ## Wrap a grid of cards to a new row
 
 Open the page. Five cards should wrap onto two rows inside the dashed box.
@@ -430,7 +430,8 @@ Do they wrap, or do they overflow to the right?
 
 {{< inc css/flexwrap.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that `flex-wrap` defaults to `nowrap`. All flex children are forced onto a
 single line regardless of the container's width. When the total minimum size of the
@@ -443,8 +444,7 @@ To find it: open DevTools and select the `.grid` container. In the Layout panel,
 flex wrapping option will show `nowrap`. Add `flex-wrap: wrap` to `.grid` so children
 that do not fit on one line flow onto subsequent lines.
 
-:::
-
+</details>
 ## Add a shadow to a card
 
 Open the page. The white card should have a visible drop shadow.
@@ -452,7 +452,8 @@ Can you see any shadow?
 
 {{< inc css/overflow.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is `overflow: hidden` on the container. `box-shadow` is painted outside the
 element's border-box, in the space between the card and the container's edge. Because
@@ -467,8 +468,7 @@ shadow will reappear immediately. Fix it by removing `overflow: hidden`, switchi
 `overflow: clip` (which does not affect shadows in all browsers), or adding enough
 `padding` to the container so the shadow falls inside rather than outside it.
 
-:::
-
+</details>
 ## Make a full-width header with no horizontal scroll
 
 Open the page and scroll down until the vertical scrollbar appears.
@@ -476,7 +476,8 @@ Does a horizontal scrollbar also appear at the bottom?
 
 {{< inc css/vw.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is `width: 100vw`. The `vw` unit measures the full viewport width including
 the scrollbar gutter. When a vertical scrollbar is present (about 15–17px wide on
@@ -492,8 +493,7 @@ scrollbar disappears. Add the scrollbar back—it returns. Replace `width: 100vw
 `width: 100%` on the header. Because block-level elements default to `width: 100%`,
 you can also simply remove the width declaration entirely.
 
-:::
-
+</details>
 ## Show a dropdown menu on top of a card
 
 Open the page. The dark dropdown should appear in front of the red overlay.
@@ -501,7 +501,8 @@ Does it?
 
 {{< inc css/stacking.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is `opacity: 0.99` on `.card`. Any `opacity` value less than `1` creates a
 new stacking context. Inside that context, the dropdown's `z-index: 200` is compared
@@ -518,8 +519,7 @@ in front of the overlay immediately. If you need transparency, apply it only to 
 card's background color using `rgba()` rather than the `opacity` property, which
 affects all descendants.
 
-:::
-
+</details>
 ## Set consistent font sizes with relative units
 
 Open the page. Each nested box uses `font-size: 1.5em`. Should they all be the same
@@ -527,7 +527,8 @@ size?
 
 {{< inc css/em.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is using `em` where `rem` is needed. An `em` is relative to the element's own
 computed font size—which is itself resolved from the parent's font size. Each level of
@@ -541,8 +542,7 @@ To find it: in DevTools, check the computed `font-size` for each nested element.
 will be 1.5 times the previous. Replace `em` with `rem` in all three rules so every
 element resolves against the root 16px rather than its parent.
 
-:::
-
+</details>
 ## Highlight every other row in a table
 
 Open the page. The blue shading should appear on rows 2 and 4 of the data (Banana
@@ -550,7 +550,8 @@ and Date). Which rows are actually shaded?
 
 {{< inc css/nthchild.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that `tr:nth-child(even)` counts all `<tr>` elements in the table,
 including the header row inside `<thead>`. The header is child 1, so the even-numbered
@@ -565,4 +566,4 @@ Fix the selector by scoping it to the body rows: `tbody tr:nth-child(even)`. Bec
 `<tbody>` contains only the data rows, the count starts fresh at Apple (child 1),
 making Banana (child 2) and Date (child 4) the even-numbered rows.
 
-:::
+</details>

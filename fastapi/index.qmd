@@ -18,7 +18,8 @@ Check the server terminal for any error messages.
 
 {{< inc fastapi/wrongstatus_client.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is the missing `status_code=201` argument on the `@app.post` decorator.
 FastAPI defaults to `200 OK` for every route.
@@ -33,8 +34,7 @@ To find it: print `r.status_code` in the client.
 If it prints `200` for a creation endpoint,
 check the decorator for a missing `status_code=201` argument.
 
-:::
-
+</details>
 ## Retrieve an item by its identifier
 
 Start the server, run the client, and read the output.
@@ -45,7 +45,8 @@ What type does the server use to look up items?
 
 {{< inc fastapi/pathtype_client.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is declaring `item_id: str` in the route function.
 FastAPI parses the path segment and passes a string to the handler,
@@ -60,8 +61,7 @@ To find it: add `print(type(item_id), item_id, type(list(ITEMS.keys())[0]))` at
 the top of the handler.
 If the types differ, the annotation is wrong.
 
-:::
-
+</details>
 ## Search a catalogue with a required filter
 
 Start the server, run the client, and read the output.
@@ -71,7 +71,8 @@ The client prints a status code and a response body: are either what you expecte
 
 {{< inc fastapi/queryrequired_client.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is omitting the `category` query parameter in the client.
 FastAPI treats any function parameter that is not a path parameter and has
@@ -87,8 +88,7 @@ To find it: print `r.status_code`.
 A `422` means the request was malformed.
 The `r.json()["detail"]` list names each missing or invalid field.
 
-:::
-
+</details>
 ## Submit form data to a JSON endpoint
 
 Start the server, run the client, and read the status code.
@@ -98,7 +98,8 @@ The client sends valid JSON, so why does the server reject it?
 
 {{< inc fastapi/formdata_client.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that the server declares the fields with `Form(...)`, which
 tells FastAPI to read them from form-encoded data, but the client sends
@@ -112,8 +113,7 @@ server's declaration.
 To find it: change the client's `json=` to `data=` and rerun. The
 request now succeeds, confirming the server expected form data.
 
-:::
-
+</details>
 ## Place an order through the API
 
 Start the server, run the client, and read the output.
@@ -124,7 +124,8 @@ Where in the HTTP request does the data actually end up?
 
 {{< inc fastapi/bodyasquery_client.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is using `params=` in the POST call.
 `params=` appends key-value pairs to the URL query string.
@@ -141,8 +142,7 @@ If the product and quantity appear after a `?` in the URL,
 the data was sent as query parameters.
 Change `params=` to `json=`.
 
-:::
-
+</details>
 ## Navigate to a form for creating new items
 
 Start the server, run the client, and read the response.
@@ -152,7 +152,8 @@ Which route actually handled the request?
 
 {{< inc fastapi/routeorder_client.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is declaring the parameterized route `/items/{item_id}` before the
 static route `/items/new`.
@@ -166,8 +167,7 @@ must be declared before parameterized ones that could absorb them.
 To find it: move `@app.get("/items/new")` above `@app.get("/items/{item_id}")`
 and rerun the client.
 
-:::
-
+</details>
 ## Serve slow and fast endpoints concurrently
 
 Start the server, run the client, and read the elapsed time.
@@ -177,7 +177,8 @@ Both requests are sent almost simultaneously, so why does the fast one wait?
 
 {{< inc fastapi/asyncblocking_client.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is calling `time.sleep()` inside an `async def` route.
 `time.sleep()` is a blocking call that holds the CPU and prevents the event
@@ -194,8 +195,7 @@ the client.
 The elapsed time will drop to just over 2 seconds and `/fast` will respond
 immediately.
 
-:::
-
+</details>
 ## Count requests to an endpoint
 
 Start the server, run the client five times in a row, and read the output.
@@ -205,7 +205,8 @@ What value does the counter hold on every call?
 
 {{< inc fastapi/startupstate_client.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is initializing `counter = 0` inside the route handler.
 Python re-executes the assignment on every request, so the counter always
@@ -219,8 +220,7 @@ To find it: move `counter = 0` to module level (outside the function) and
 declare it `global` inside the handler before modifying it.
 The counter will then persist between requests.
 
-:::
-
+</details>
 ## Look up an item that may not exist
 
 Start the server, run the client, and compare the status codes for item 1 and item 99.
@@ -230,7 +230,8 @@ What does item 99's response look like?
 
 {{< inc fastapi/noexcept_client.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is returning the result of `dict.get()` directly.
 When `item_id` is not in `ITEMS`, `get()` returns `None`,
@@ -245,8 +246,7 @@ To find it: check `r.status_code` for the missing item.
 If it is `200` with body `null`, the handler returned `None` instead of
 raising an exception.
 
-:::
-
+</details>
 ## Allow a browser on another origin to call the API
 
 Start the server, run the client, and read the output.
@@ -256,7 +256,8 @@ Which header is missing from the response, and why does that matter for browsers
 
 {{< inc fastapi/cors_client.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is missing CORS middleware.
 Browsers enforce the Same-Origin Policy: a page at `http://example.com` may
@@ -274,8 +275,7 @@ To find it: add `from fastapi.middleware.cors import CORSMiddleware` and call
 Rerun the client and confirm the `Access-Control-Allow-Origin` header now
 appears.
 
-:::
-
+</details>
 ## Submit an item with its price
 
 Start the server, run the client, and read the response.
@@ -286,7 +286,8 @@ Is it what the client sent?
 
 {{< inc fastapi/extrafields_client.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is a typo: `"prise"` instead of `"price"`.
 Pydantic's default behaviour is to ignore extra fields it does not recognise,
@@ -303,8 +304,7 @@ names (`price`).
 If you set `extra="forbid"` in the model config, Pydantic raises the error
 for you automatically.
 
-:::
-
+</details>
 ## Return an item with its tracking code
 
 Start the server, run the client, and read the response.
@@ -314,7 +314,8 @@ Which field is missing from the response even though you sent it in the request?
 
 {{< inc fastapi/responsemodel_client.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that `ItemOut` does not include `internal_code`.
 `response_model=ItemOut` tells FastAPI to filter every response through that
@@ -329,8 +330,7 @@ need it.
 To find it: add `internal_code: str` to `ItemOut` and rerun the client.
 The field will appear in the response.
 
-:::
-
+</details>
 ## Protect an endpoint with a dependency
 
 Start the server, run the client with no API key, and read the status code.
@@ -340,7 +340,8 @@ The endpoint is protected — why does it return the secret anyway?
 
 {{< inc fastapi/apikeyheader_client.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that the `require_api_key` dependency does nothing: it
 returns `None` instead of raising `HTTPException(status_code=401)` when
@@ -354,8 +355,7 @@ To find it: make the dependency raise
 `HTTPException(status_code=401, detail="unauthorized")` when the header
 is missing. Rerun the client and confirm it now gets `401`.
 
-:::
-
+</details>
 ## Log the body of every incoming request
 
 Start the server, run the client, and compare what the middleware prints to what
@@ -366,7 +366,8 @@ Are they the same?
 
 {{< inc fastapi/middleware_client.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is calling `await request.body()` in the middleware without caching
 the result.
@@ -384,8 +385,7 @@ it with what the middleware printed.
 If the route sees an empty body while the middleware saw the real one, the
 stream was consumed and not cached.
 
-:::
-
+</details>
 ## List all items through the API router
 
 Start the server, run the client, and read the status codes.
@@ -395,7 +395,8 @@ Which path actually works?
 
 {{< inc fastapi/routerprefix_client.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is setting `prefix="/api"` in both the `APIRouter` constructor and the
 `include_router` call.
@@ -411,4 +412,4 @@ To find it: call `print([r.path for r in app.routes])` after the
 `include_router` call and before `uvicorn.run`.
 The registered path will show the duplication.
 
-:::
+</details>

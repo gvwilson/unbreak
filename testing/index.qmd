@@ -7,7 +7,8 @@ report that no tests were collected?
 
 {{< inc testing/test_discovery.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is the test function name `check_total`. pytest only collects
 functions whose names start with `test_`, so `check_total` is silently
@@ -20,8 +21,7 @@ To find it: run `pytest test_discovery.py --collect-only`. It lists no
 tests. Rename `check_total` to `test_total` and rerun to confirm the
 function is now collected.
 
-:::
-
+</details>
 ## Test that a doubling function returns the right value
 
 Run `pytest test_tupleassert.py -v`. Does the test pass? What value
@@ -30,7 +30,8 @@ output.
 
 {{< inc testing/test_tupleassert.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is `assert (result, expected)`, which creates a two-element
 tuple. A non-empty tuple is always truthy, so the assertion never
@@ -46,8 +47,7 @@ that a non-empty tuple is always truthy. Remove the outer parentheses
 so the assertion becomes `assert result == expected`, then rerun to
 confirm the test can now fail.
 
-:::
-
+</details>
 ## Test that a result contains no NaN
 
 Run `pytest test_nan.py -v`. Does the test pass? The result list
@@ -55,7 +55,8 @@ contains a `NaN` — should it have failed?
 
 {{< inc testing/test_nan.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is using `float("nan") not in result`. `NaN` is not equal to
 anything, including itself, so the `in` test (which uses `==`) is
@@ -68,8 +69,7 @@ Shows: that `NaN` comparisons are always `False`, and how to detect
 To find it: print `float("nan") == float("nan")` — it prints `False`.
 Replace the assertion with `assert not any(math.isnan(x) for x in result)`.
 
-:::
-
+</details>
 ## Test that a function rejects invalid input
 
 Run `pytest test_broadexc.py -v`. Does the test pass? What exception
@@ -78,7 +78,8 @@ test intended to check?
 
 {{< inc testing/test_broadexc.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is using `pytest.raises(Exception)`, which accepts any
 exception, including `TypeError`. The test passes even though
@@ -94,8 +95,7 @@ To find it: add `assert isinstance(exc.value, ValueError)` after the
 fails, the function is raising a different exception type than
 intended.
 
-:::
-
+</details>
 ## Test a function that reads from a temporary file
 
 Run `pytest test_noyield.py -v`. The test fails. After it fails, check
@@ -105,7 +105,8 @@ check the filesystem.
 
 {{< inc testing/test_noyield.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is using `return` in a fixture that needs to perform
 cleanup. With `return`, there is no way to run code after the test
@@ -122,8 +123,7 @@ run. Change `return path` to `yield path` in the fixture and add
 `os.remove(path)` after the `yield`, then rerun to confirm the file is
 removed.
 
-:::
-
+</details>
 ## Test a registry that stores and retrieves entries
 
 Run `pytest test_orderdep.py -v`. Both tests pass. Now run
@@ -132,7 +132,8 @@ test. What happens?
 
 {{< inc testing/test_orderdep.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that `test_lookup` relies on `test_register` having
 populated `_registry` first. When `test_lookup` runs alone or in a
@@ -147,8 +148,7 @@ To find it: run `pytest test_orderdep.py::test_lookup -v` alone
 without running `test_register` first. If it fails with a `KeyError`,
 the test depends on state left by another test.
 
-:::
-
+</details>
 ## Share a list fixture across multiple tests
 
 Run `pytest test_scopemut.py -v`. Which test fails? Reverse the order
@@ -156,7 +156,8 @@ of the two tests and run again. Does the other test now fail?
 
 {{< inc testing/test_scopemut.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is `scope="session"` on a fixture that returns a mutable
 list. A session-scoped fixture is created once and reused across every
@@ -173,8 +174,7 @@ again. If a different test now fails, the tests are sharing state
 through the fixture. Check the fixture for a `scope=` argument:
 `"session"` means one instance is shared across the entire run.
 
-:::
-
+</details>
 ## Test that a function raises an error on bad input
 
 Run `pytest test_deadassert.py -v`. The test passes. Add a
@@ -183,7 +183,8 @@ again. Is the print executed?
 
 {{< inc testing/test_deadassert.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is placing an assertion inside a `with pytest.raises()` block
 after the line that raises. Once `parse_positive(0)` raises
@@ -200,8 +201,7 @@ raising call, inside the `with` block. Run the test: if the print
 never appears, execution never reached that line. Move the assertion
 to after the `with` block.
 
-:::
-
+</details>
 ## Test a function with an unreachable assertion
 
 Run `pytest test_unreachable.py -v`. Does the test pass? Does it
@@ -209,7 +209,8 @@ actually exercise all three branches of `classify`?
 
 {{< inc testing/test_unreachable.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is a bare `return` in the middle of `test_classify`. It exits
 the test before the assertions for the `"zero"` and `"positive"` cases
@@ -222,8 +223,7 @@ coverage tools flag branches that no assertion ever reaches.
 To find it: add `print("after return")` on the line after the `return`.
 It never prints. Remove the `return` so every assertion runs.
 
-:::
-
+</details>
 ## Test that the right error message is raised
 
 Run `pytest test_raisematch.py -v`. Does the test pass? Which
@@ -232,7 +232,8 @@ the test intended?
 
 {{< inc testing/test_raisematch.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is `pytest.raises(ValueError)` without a `match=` argument. It
 checks only the exception type, not the message, so a `ValueError`
@@ -247,8 +248,7 @@ To find it: print the caught exception with
 `match="cannot be None"` and rerun to confirm the test now fails for
 the wrong input.
 
-:::
-
+</details>
 ## Test a function that writes JSON to a file
 
 Run `pytest test_tmpfile.py -v`. The test passes. After it finishes,
@@ -256,7 +256,8 @@ list the files in your working directory. What file was left behind?
 
 {{< inc testing/test_tmpfile.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is opening `"output.json"` as a plain filename, which creates
 the file in the current working directory. The file is not deleted
@@ -273,4 +274,4 @@ current directory rather than a temporary one. Use the `tmp_path`
 fixture to get a per-test directory that pytest cleans up
 automatically.
 
-:::
+</details>

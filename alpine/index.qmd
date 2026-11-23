@@ -20,7 +20,8 @@ Does the message appear?
 
 {{< inc alpine/wrongscope.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is placing `x-data="{ visible: false }"` on an inner `<span>` while
 putting `x-show="visible"` and `@click` on the outer `<div>`. Alpine directives
@@ -35,8 +36,7 @@ To find it: open DevTools, click Toggle, and watch the console for an "undefined
 reference. Move `x-data="{ visible: false }"` from the `<span>` to the outer
 `<div>` so that `x-show` and `@click` can both see the reactive property.
 
-:::
-
+</details>
 ## Submit a name and show a confirmation
 
 Type a name and click Submit.
@@ -44,7 +44,8 @@ Does the confirmation appear, or does the page reload?
 
 {{< inc alpine/noprevent.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is `@submit` without the `.prevent` modifier. Without `.prevent`,
 Alpine runs `submitted = true` and then lets the browser's default form submission
@@ -57,8 +58,7 @@ is essential whenever a form has a `type="submit"` button.
 To find it: watch the address bar after clicking Submit. If it appends `?name=...`
 and refreshes, the native action is firing. Change `@submit` to `@submit.prevent`.
 
-:::
-
+</details>
 ## Show content only after Alpine loads
 
 Reload the page with network throttling enabled in DevTools (Network tab,
@@ -67,7 +67,8 @@ appears?
 
 {{< inc alpine/xcloak.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that `x-cloak` is applied to the element, but the CSS rule that hides
 it is missing. Alpine removes the `x-cloak` attribute after it initializes the
@@ -85,15 +86,15 @@ To find it: inspect the element and search for `x-cloak` in the Styles panel.
 If no rule targets `[x-cloak]`, add one in a `<style>` block in `<head>`, before
 the Alpine script tag.
 
-:::
-
+</details>
 ## Display a greeting from component state
 
 Open the page. Does any text appear in the paragraph?
 
 {{< inc alpine/stringdata.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is `x-data="'hello'"`. Alpine evaluates the attribute value as a JavaScript
 expression, which here produces the string `"hello"`. Alpine wraps whatever
@@ -108,8 +109,7 @@ To find it: open DevTools and inspect the element. Check what `x-data` evaluates
 to. Replace `x-data="'hello'"` with `x-data="{ message: 'hello' }"` so that
 `message` is a named, reactive property.
 
-:::
-
+</details>
 ## Show and hide an error message
 
 Open the page and click "Trigger Error" several times.
@@ -117,7 +117,8 @@ Does the error message appear and disappear?
 
 {{< inc alpine/xiftemplate.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is putting `x-if` on a `<div>` instead of a `<template>` element.
 Alpine requires `x-if` to be on a `<template>` tag, because `<template>` has
@@ -131,8 +132,7 @@ any element).
 To find it: open the console. Alpine logs a warning when `x-if` is misused.
 Replace `<div x-if="hasError">` with `<template x-if="hasError"><div>...</div></template>`.
 
-:::
-
+</details>
 ## Mirror text input in real time
 
 Open the page and type in the input field.
@@ -140,7 +140,8 @@ Does the paragraph below update as you type?
 
 {{< inc alpine/modelbind.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is using `x-bind:value` instead of `x-model`. `x-bind:value` only sets the
 input's `value` attribute from the reactive property — it does not listen for changes.
@@ -155,8 +156,7 @@ To find it: type in the input and check `message` in the Alpine devtools or the
 console. If it stays empty, the input is not sending updates back. Replace
 `x-bind:value="message"` with `x-model="message"`.
 
-:::
-
+</details>
 ## Show an input and move focus to it
 
 Open the page and click "Edit".
@@ -164,7 +164,8 @@ Does the cursor appear inside the input field?
 
 {{< inc alpine/nexttick.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is calling `$refs.field.focus()` in the same synchronous tick as the
 `x-show` update. When `editing = true` runs, Alpine schedules the DOM update
@@ -179,8 +180,7 @@ To find it: add `console.log($refs.field.style.display)` before the focus call.
 If it logs `"none"`, the element is still hidden. Change the click handler to
 `editing = true; $nextTick(() => $refs.field.focus())`.
 
-:::
-
+</details>
 ## Load data from the server on startup
 
 Start the server, open the page, and wait a moment.
@@ -188,7 +188,8 @@ Does a greeting appear, or does the paragraph show the fallback message?
 
 {{< inc alpine/asyncinit.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that `loadGreeting` is a named global function. Inside a named function,
 bare identifiers like `greeting` refer to the surrounding JavaScript scope — in this
@@ -209,8 +210,7 @@ writing it inline so Alpine's scope applies:
 x-init="async () => { const r = await fetch('/api/greeting'); greeting = (await r.json()).message; }"
 ```
 
-:::
-
+</details>
 ## Display a count from a shared store
 
 Open the page and check the browser console.
@@ -218,7 +218,8 @@ Does a number appear next to "Items in cart"?
 
 {{< inc alpine/storeorder.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that `Alpine.store('cart', { count: 0 })` is never called, so
 `$store.cart` is `undefined`. When the template tries to read `$store.cart.count`,
@@ -232,8 +233,7 @@ components that use it. The correct place to register a store is inside the
 To find it: open the console and read the error. Uncomment the
 `Alpine.store('cart', { count: 0 })` line inside the `alpine:init` listener.
 
-:::
-
+</details>
 ## Remove items from a list
 
 Open the page, type something in the second row's input, then click Delete
@@ -241,7 +241,8 @@ next to the first item. Which row's typed text disappears?
 
 {{< inc alpine/forkey.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is the missing `:key` binding on `x-for`. Without a key, Alpine matches
 old DOM nodes to new data items purely by position. After the first item is removed,
@@ -257,8 +258,7 @@ To find it: type in the second input, delete the first item, and watch which inp
 retains the typed value. Add `:key="item"` to the `<template>` tag (or use a unique
 id if items can repeat) so Alpine tracks each DOM node correctly.
 
-:::
-
+</details>
 ## Increment a counter using an external object
 
 Open the page and click Increment several times.
@@ -266,7 +266,8 @@ Does the counter change?
 
 {{< inc alpine/globalstate.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is `config.count++`. When Alpine sees `x-data="config"`, it copies the
 properties of `config` into a new reactive proxy and uses that proxy to drive the
@@ -283,8 +284,7 @@ To find it: add `console.log(config.count)` to the click handler. If it incremen
 but the display doesn't, the external object and the proxy have diverged. Change
 `config.count++` to `count++`.
 
-:::
-
+</details>
 ## Close a panel by pressing Escape
 
 Open the page, click somewhere inside the panel, and press Escape.
@@ -292,7 +292,8 @@ Does the panel close?
 
 {{< inc alpine/keyboardtarget.html >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is placing `@keydown.escape` on a `<div>` that has no `tabindex` attribute.
 Keyboard events are dispatched only to elements that can receive focus. Plain `<div>`
@@ -311,4 +312,4 @@ To find it: open DevTools, click inside the panel, and check the Elements panel 
 see if the `<div>` is focused (a blue outline or the `:focus` pseudo-class). If it
 isn't focusable, keyboard events skip it.
 
-:::
+</details>

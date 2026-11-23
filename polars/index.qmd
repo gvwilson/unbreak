@@ -7,7 +7,8 @@ have? How many columns did the original DataFrame have?
 
 {{< inc polars/selectdrop.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is using `.select()` to add a new column. `.select()` returns only the
 columns listed in the call and drops all others, so `id` and `name` are lost.
@@ -19,8 +20,7 @@ To find it: print `result.columns` and compare to `df.columns`. If the result
 has fewer columns than the original, `.select()` dropped them. Find the `.select()`
 call in the pipeline and replace it with `.with_columns()`.
 
-:::
-
+</details>
 ## Filter and select rows from a dataset
 
 Run the script and look at what is printed. Is the output a table of data, or
@@ -28,7 +28,8 @@ something else? What type does `type(result)` report?
 
 {{< inc polars/nocollect.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is calling `.lazy()` to start a lazy pipeline but never calling `.collect()`
 at the end, so the result is a `LazyFrame` (a query plan) rather than a `DataFrame`.
@@ -41,15 +42,15 @@ To find it: add `print(type(result))` after the pipeline. Seeing
 `<class 'polars.LazyFrame'>` instead of `<class 'polars.DataFrame'>` confirms the
 pipeline never executed. Add `.collect()` at the end of the chain.
 
-:::
-
+</details>
 ## Find rows with missing scores
 
 Run the script. How many rows does it print? How many rows contain a missing score?
 
 {{< inc polars/nullequal.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is using `== None` to test for missing values. In Polars, any comparison
 involving null yields null rather than a boolean, so every row in the filtered
@@ -63,8 +64,7 @@ compare to `len(result)` after the filter. If the filter returns 0 rows but the
 null count is positive, the comparison `== None` is the problem — replace it with
 `.is_null()`.
 
-:::
-
+</details>
 ## Convert float scores to integers
 
 Run the script and compare the values in the `score` column to the expected rounded
@@ -72,7 +72,8 @@ values printed below them. What happened to 88.7 and 95.6?
 
 {{< inc polars/castsilent.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that `cast(pl.Int64)` truncates toward zero rather than rounding, so
 88.7 becomes 88 and 95.6 becomes 95 instead of 89 and 96. No error is raised.
@@ -88,15 +89,15 @@ For a value like 88.7, the `rounded` column shows 89 and the `truncated` column
 shows 88. The mismatch reveals that `.cast()` alone is discarding the fractional
 part rather than rounding.
 
-:::
-
+</details>
 ## Add a department average salary to each employee row
 
 Run the script. How many rows does the output have? How many rows did you expect?
 
 {{< inc polars/overwindow.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is using `group_by().agg()` when the goal is to add a per-row column showing
 each employee's department mean. `group_by().agg()` collapses the DataFrame to one row
@@ -112,8 +113,7 @@ row per department instead of one per employee, `group_by().agg()` collapsed the
 rows. Replace the `group_by().agg()` pipeline with
 `.with_columns(pl.col("salary").mean().over("department").alias("dept_avg"))`.
 
-:::
-
+</details>
 ## Join orders to customer records
 
 Run the script and compare the number of input orders to the number of rows in the
@@ -121,7 +121,8 @@ result. Which order is missing, and why?
 
 {{< inc polars/innerjoin.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is using the default join, which is inner. Order 4 has a `customer_id` of 99
 that does not appear in the customers table, so it is silently dropped.
@@ -136,8 +137,7 @@ differ, rows were dropped. To identify which, print
 `False` entries name the customer IDs that have no match and will be lost in an
 inner join.
 
-:::
-
+</details>
 ## Add a total price column to an order table
 
 Run the script and compare the column names and values to the original DataFrame.
@@ -145,7 +145,8 @@ Which column was overwritten, and which column was supposed to be added?
 
 {{< inc polars/aliasexpr.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is omitting `.alias()` on the expression. Without an explicit name, Polars
 assigns the column the name of the left operand (`"price"`), which silently replaces
@@ -161,8 +162,7 @@ contains the product of `price * quantity` rather than unit prices, the expressi
 was assigned back to `price` rather than creating a new column. Add
 `.alias("total")` to the expression inside `.with_columns()`.
 
-:::
-
+</details>
 ## Parse dates from a CSV file
 
 Run the script and look at the parsed `date` column. Is `"03/04/2024"` shown as
@@ -170,7 +170,8 @@ April 3rd or March 4th? What date was intended?
 
 {{< inc polars/strptime.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is a mismatch between the data order (day/month/year) and the format string
 (`%m/%d/%Y`, month/day/year). Because all day and month values are 12 or below,
@@ -186,8 +187,7 @@ example, `"15/04/2024"`) and check whether the parsed month is 15 or the parsed
 day is 15. Only one interpretation is possible, and it immediately reveals whether
 `%d` and `%m` are swapped in the format string.
 
-:::
-
+</details>
 ## Split a tags column into one row per tag
 
 Run the script and read the error message. What type does Polars report for the
@@ -195,7 +195,8 @@ Run the script and read the error message. What type does Polars report for the
 
 {{< inc polars/explodestring.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is calling `.explode()` on a column that contains plain strings rather than
 lists. Polars raises an `InvalidOperationError` because `.explode()` requires a
@@ -210,8 +211,7 @@ To find it: print `df.schema` and check the type of the `tags` column. Seeing
 `.explode()` requires a list-type column. Add
 `.with_columns(pl.col("tags").str.split(", "))` before the `.explode()` call.
 
-:::
-
+</details>
 ## Compute a discounted price and order total in one step
 
 Run the script and read the error message. Which column is reported as not found?
@@ -219,7 +219,8 @@ Is that column present in the original DataFrame?
 
 {{< inc polars/withcolumnsdep.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is referencing `discounted_price` in the same `.with_columns()` call where
 it is first computed. All expressions in a single `.with_columns()` call are
@@ -236,4 +237,4 @@ referenced. If both appear in the same `.with_columns()` call, split them: put
 the expression that creates `discounted_price` in one `.with_columns()` call and
 the expression that uses it in a second chained call.
 
-:::
+</details>

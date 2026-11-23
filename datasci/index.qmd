@@ -8,7 +8,8 @@ CSV should satisfy the condition. Do the two counts agree?
 {{< inc datasci/filterboundary.py >}}
 {{< inc datasci/filterboundary.csv >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is using `>=` instead of `>` (or vice versa) in the filter expression, so
 the script keeps rows it should drop.
@@ -20,8 +21,7 @@ To find it: count the matching rows by hand from the CSV, then compare to
 `print(len(df.filter(...)))`. If the counts differ by one, check whether the boundary
 date itself should be included or excluded, and verify whether `>=` or `>` is correct.
 
-:::
-
+</details>
 ## Read a spreadsheet with a two-row header
 
 Run the script and look at the row count and the first few rows of the DataFrame.
@@ -30,7 +30,8 @@ Do they match the data you expected to load?
 {{< inc datasci/multilinecsv.py >}}
 {{< inc datasci/multilinecsv.csv >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is not passing `skip_rows` to skip the extra header lines, so Polars reads
 the multi-line header as data and reports the wrong number of rows.
@@ -43,8 +44,7 @@ To find it: print `df.head()` and compare the first few rows to the raw CSV. If 
 first "data" row contains what looks like a column header, the loader read one or
 more header lines as data. Check `df.shape[0]` against the expected row count.
 
-:::
-
+</details>
 ## Combine two datasets on a shared identifier
 
 Run the script and examine the `mean_amount` column in the result. Are there any
@@ -52,7 +52,8 @@ null values where you did not expect them?
 
 {{< inc datasci/casejoin.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is joining on a column whose name differs by case (`"Region"` vs.
 `"region"`), which Polars treats as different columns, so every row in the joined
@@ -65,8 +66,7 @@ To find it: print `df1.columns` and `df2.columns` side by side. Look for a colum
 that appears in both but differs by capitalization. A join on mismatched names
 produces a null-filled column for the unmatched side.
 
-:::
-
+</details>
 ## Sort records by date of collection
 
 Run the script and check the schema of the DataFrame. What type does Polars assign
@@ -75,7 +75,8 @@ to the `date` column? How many rows does the filter return?
 {{< inc datasci/datestring.py >}}
 {{< inc datasci/datestring.csv >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that Polars read the date column as strings, so the comparison is
 lexicographic rather than chronological and the filter returns no rows even though
@@ -88,8 +89,7 @@ To find it: print `df.schema` and check the type of the date column. If it shows
 `String` instead of `Date`, comparisons against a `datetime` value will return no
 rows because string comparison is lexicographic, not chronological.
 
-:::
-
+</details>
 ## Compute per-group statistics before filtering
 
 Run the script and compare the output totals to the values in the CSV file. Do the
@@ -98,7 +98,8 @@ per-region totals make sense?
 {{< inc datasci/aggorder.py >}}
 {{< inc datasci/aggorder.csv >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is calling `.sum()` before `.group_by()`, which sums the entire column first
 and then groups a single-row DataFrame, producing unexpectedly large totals.
@@ -110,8 +111,7 @@ To find it: break the pipeline into two steps and print the DataFrame after each
 After `.sum()` alone, you will see a single-row DataFrame — the sum already happened
 before grouping.
 
-:::
-
+</details>
 ## Debug a pipeline that fails at the wrong step
 
 Run the script and read the error message and traceback. Which step in the pipeline
@@ -119,7 +119,8 @@ does the error appear to come from? Is that where the mistake actually is?
 
 {{< inc datasci/lazyerror.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is referencing a column that was renamed in an earlier step, so a
 `ColumnNotFoundError` is raised at `.collect()` time rather than when the
@@ -134,8 +135,7 @@ again. The first step where `.collect()` raises a `ColumnNotFoundError` is where
 the broken reference is — even though the original error appeared only at the final
 `.collect()`.
 
-:::
-
+</details>
 ## Read a tab-separated export from a database
 
 Run the script and examine the column names and values in the combined DataFrame.
@@ -145,7 +145,8 @@ Are the columns what you expected?
 {{< inc datasci/wrongdelim_a.csv >}}
 {{< inc datasci/wrongdelim_b.csv >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that the second file uses semicolons as delimiters, so Polars reads the
 entire row as a single column. When `concat` is called with `how="diagonal"`, missing
@@ -158,8 +159,7 @@ To find it: print `df1.columns` and `df2.columns` before the concat. If `df2` ha
 one column whose name looks like an entire row — e.g., `"id;name;value"` — the file
 uses a different delimiter than the one specified.
 
-:::
-
+</details>
 ## Average measurements that include missing values
 
 Run the script and look at the mean. Then inspect the raw data. Are there any
@@ -168,7 +168,8 @@ values in the column that seem unusually large?
 {{< inc datasci/sentinel.py >}}
 {{< inc datasci/sentinel.csv >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that the dataset uses `999` as a sentinel for missing data rather than a
 true null, so `.fill_null()` has no effect on them and the mean is skewed by what
@@ -181,8 +182,7 @@ To find it: print `df["measurement"].max()`. A suspiciously round large value li
 `999` in a column of biological measurements is a sentinel for "not recorded," not
 a real reading. Replace it with `pl.Null` before computing the mean.
 
-:::
-
+</details>
 ## Group survey responses by category
 
 Run the script and count the number of groups produced. Is it more than you
@@ -191,7 +191,8 @@ expected? Call `.unique()` on the grouping column and examine what you see.
 {{< inc datasci/whitespace.py >}}
 {{< inc datasci/whitespace.csv >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that a string column has inconsistent whitespace (e.g., `"North "` and
 `"North"` are treated as different groups), so `group_by` followed by `agg` produces
@@ -205,8 +206,7 @@ To find it: print `df["category"].unique()` and count the items. If you see
 `"North"` and `"North "` as separate entries, trailing whitespace is causing the
 split.
 
-:::
-
+</details>
 ## Smooth a noisy sensor signal
 
 Run the script and count the null values in the `rolling_mean` column. Is the
@@ -215,7 +215,8 @@ number of null rows what you expected for a 7-day window?
 {{< inc datasci/rolling.py >}}
 {{< inc datasci/rolling.csv >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is passing `window_size=7` without setting `min_periods=1`, so any window
 that cannot be fully filled returns null and the result has far more nulls than
@@ -229,8 +230,7 @@ count is much larger than `window_size - 1`, the window requires more data point
 than are available for most positions. Setting `min_periods=1` allows partial windows
 to produce a result.
 
-:::
-
+</details>
 ## Plot measurement values on a scatter chart
 
 Run the script and open the saved chart in a browser. Do all the bars have heights
@@ -238,7 +238,8 @@ that reflect the `value` column?
 
 {{< inc datasci/quanttype.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is encoding the y-axis with `alt.Y("value")` without specifying
 `type="quantitative"`, so Altair treats the column as nominal and counts categories
@@ -252,8 +253,7 @@ height, Altair is counting rows rather than summing values. Call
 `alt.Chart(data).mark_bar().encode(y="value").to_dict()` and search for `"type"` in
 the output to see what Altair inferred.
 
-:::
-
+</details>
 ## Color a chart by a numeric category
 
 Run the script and open the saved chart. Does the color scale appear as a
@@ -261,7 +261,8 @@ continuous gradient, or as a discrete set of colors?
 
 {{< inc datasci/colorscale.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that the color column was read as a string (e.g., `"3.5"`) rather than a
 float, so Altair applies a nominal color scale and the scatter plot shows a discrete
@@ -273,8 +274,7 @@ default encoding choices.
 To find it: print `df.schema` and check the type of the color column. If it shows
 `String` instead of `Float64`, cast it with `.cast(pl.Float64)` before charting.
 
-:::
-
+</details>
 ## Plot measurements collected over time
 
 Open the saved chart in a browser. Are the months arranged in chronological order
@@ -282,7 +282,8 @@ along the x-axis, or in a different order?
 
 {{< inc datasci/temporal.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is encoding the x-axis date column as `type="nominal"` instead of
 `type="temporal"`, so Altair does not order the points chronologically and the line
@@ -295,8 +296,7 @@ To find it: open the chart and check whether the x-axis dates are in chronologic
 order. If months appear alphabetically — e.g., April before August before December —
 rather than in calendar order, check the `alt.X(...)` call for `type=`.
 
-:::
-
+</details>
 ## Add an interactive filter to a chart
 
 Open the saved chart in a browser. Does it show only the categories whose count
@@ -304,7 +304,8 @@ is 100 or more, or does it show all of them?
 
 {{< inc datasci/filterfield.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is a field name in `alt.Filter` that does not match any column. Altair
 silently ignores the filter rather than raising an error, so all categories are
@@ -317,8 +318,7 @@ To find it: call `.to_dict()` on the chart and search for the field name inside 
 `transform` section. Compare it character by character to the actual column name in
 the DataFrame — a one-character difference silently disables the filter.
 
-:::
-
+</details>
 ## Show column values in a chart tooltip
 
 Open the saved chart in a browser and hover over a point. Does the `Sales Region`
@@ -326,7 +326,8 @@ field in the tooltip show a value?
 
 {{< inc datasci/tooltip.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that the tooltip field name has a space in it (e.g., `"Sales Region"`)
 but is referenced without quoting in the Altair shorthand string, so the tooltip
@@ -340,8 +341,7 @@ To find it: hover over a point in the chart and note which tooltip field shows
 a space, the Altair shorthand parser stops at the space and the field is never
 matched.
 
-:::
-
+</details>
 ## Pass a Polars dataframe to a chart library
 
 Run the script and open the saved chart in a browser. Does the chart show any data
@@ -349,7 +349,8 @@ points?
 
 {{< inc datasci/polarsinaltair.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is passing the Polars DataFrame directly to `alt.Chart()` instead of
 converting it to a pandas DataFrame or using `alt.Data`, so the chart is blank.
@@ -361,8 +362,7 @@ To find it: print `type(df)` to confirm it is a Polars `DataFrame`, then open th
 chart — if it is blank, Altair did not receive a supported data format. Convert with
 `df.to_pandas()` and open the chart again.
 
-:::
-
+</details>
 ## Check whether two measurements are related
 
 Run the script and note the correlation value. Then examine how `metric_a` and
@@ -370,7 +370,8 @@ Run the script and note the correlation value. Then examine how `metric_a` and
 
 {{< inc datasci/spurcorr.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that both columns were derived from the same source column in the same
 pipeline step (a copy rather than an independent transformation), so the correlation
@@ -383,8 +384,7 @@ To find it: print the expression used to create each column side by side. If bot
 are derived from `df["x"]` in the same step, they are the same data. A scatter plot
 of `metric_a` vs. `metric_b` that falls on a perfect diagonal confirms it.
 
-:::
-
+</details>
 ## Process a large file in pieces
 
 Run the script on a large file and watch how memory usage changes as the script
@@ -393,7 +393,8 @@ runs. Does memory stay roughly constant, or does it grow?
 {{< inc datasci/chunkaccum.py >}}
 {{< inc datasci/chunkaccum.csv >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is accumulating all chunks in memory before concatenating rather than
 processing each chunk and writing results incrementally, so the pipeline runs out of
@@ -408,8 +409,7 @@ To find it: add `import tracemalloc; tracemalloc.start()` at the top and print
 grows linearly with the number of chunks, the chunks are being accumulated in memory
 rather than discarded after each step.
 
-:::
-
+</details>
 ## Facet a chart by year of collection
 
 Open the saved chart in a browser. How many facet panels does it show? Inspect the
@@ -417,7 +417,8 @@ type of the `year` column in the DataFrame.
 
 {{< inc datasci/floatyear.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that the year column contains floats (e.g., `2021.0`) because Polars
 inferred it as `Float64`. Altair's facet treats each unique float as a separate
@@ -430,8 +431,7 @@ To find it: print `df["year"].dtype` and `df["year"].unique()`. If the type is
 `Float64` and the values show `.0` suffixes, cast the column with `.cast(pl.Int32)`
 before passing to Altair.
 
-:::
-
+</details>
 ## Run a notebook after restarting the kernel
 
 Run this script from top to bottom. Does it raise an error? Which line causes the
@@ -439,7 +439,8 @@ error?
 
 {{< inc datasci/outoforder.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is that the notebook had cells executed out of order, leaving a modified
 DataFrame in memory that masked an error in the cleaning step. The script produces
@@ -455,4 +456,4 @@ notebook). If it raises an error that never appeared during interactive executio
 a cell was run out of order. Add `print(df.columns)` at the start of each step to
 confirm each step's input matches what the previous step produced.
 
-:::
+</details>

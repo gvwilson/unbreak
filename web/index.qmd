@@ -8,7 +8,8 @@ fails or somewhere earlier?
 
 {{< inc web/nostatuscheck.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is calling `.json()` without first checking `r.status_code`. A
 404 response returns an HTML error page, not JSON, so `.json()` raises
@@ -23,8 +24,7 @@ other than 200 means the response body is likely an error page, not
 JSON. The `JSONDecodeError` is a symptom; the root cause is the failed
 request that was never checked.
 
-:::
-
+</details>
 ## Submit a new record to an API as JSON
 
 Run the script and read the output. What content type does the server
@@ -32,7 +32,8 @@ report receiving? What content type did you intend to send?
 
 {{< inc web/jsonparam.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is using `data=` instead of `json=` in the POST call. `data=`
 sends a form-encoded body with
@@ -49,8 +50,7 @@ To find it: print `r.request.headers["content-type"]`. If it shows
 data. Change `data=` to `json=` and print the header again to confirm
 it now shows `application/json`.
 
-:::
-
+</details>
 ## Search an API with a multi-word query parameter
 
 Run the script and read the output. How many query parameters did the
@@ -58,7 +58,8 @@ server receive?  How many did the code intend to send?
 
 {{< inc web/urlparam.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is embedding a value that contains `&` directly in an f-string
 URL. The ampersand is interpreted as a query-string separator, so the
@@ -74,8 +75,7 @@ ampersand was interpreted as a separator rather than being
 percent-encoded. Pass parameters as a `params=` dictionary to let the
 HTTP library encode them correctly.
 
-:::
-
+</details>
 ## Retrieve all records from a paginated API
 
 Run the script and compare the number of records retrieved to the
@@ -84,7 +84,8 @@ exists?
 
 {{< inc web/nopaginate.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is fetching only the first page and ignoring the `next_page`
 field in the response. No error is raised; the script silently
@@ -98,8 +99,7 @@ To find it: print `len(records)` after fetching and compare it to the
 is returning data in pages.  Check the response for a `next_page`,
 `next_cursor`, or `Link` header that points to the next page.
 
-:::
-
+</details>
 ## Fetch data from a potentially slow API endpoint
 
 Run the script. Does it return promptly? How long does it wait before
@@ -107,7 +107,8 @@ producing output?
 
 {{< inc web/notimeout.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is passing `timeout=None`, which disables all timeouts and
 causes the call to wait indefinitely for a slow or unresponsive
@@ -123,8 +124,7 @@ value is `None`. Replace it with an explicit duration such as
 `timeout=10` and confirm the script now returns promptly with a
 timeout error.
 
-:::
-
+</details>
 ## Create a new resource via a POST request
 
 Run the script. What status code does the server return? What does the
@@ -132,7 +132,8 @@ script print?  Is the request actually successful?
 
 {{< inc web/created.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is comparing `r.status_code == 200` when a successful POST
 returns `201 Created`. The response is treated as a failure even
@@ -146,8 +147,7 @@ the resource was created successfully but the check `r.status_code == 200`
 treats it as a failure. Replace the check with `r.is_success` to
 accept any 2xx status code.
 
-:::
-
+</details>
 ## Retry a request after hitting a rate limit
 
 Run the script and look at the status code and headers on each
@@ -156,7 +156,8 @@ wait before retrying?
 
 {{< inc web/ratelimit.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is retrying immediately after a 429 Too Many Requests response
 without reading the `Retry-After` header. Each retry is rejected for
@@ -171,8 +172,7 @@ on each attempt. If the status is `429` on every attempt and the
 retrying. Add `time.sleep(int(r.headers["Retry-After"]))` before the
 next attempt.
 
-:::
-
+</details>
 ## Update a single field in an existing API resource
 
 Run the script and compare the resource state before and after the PUT
@@ -181,7 +181,8 @@ keep?
 
 {{< inc web/putpatch.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is using PUT with a partial body. PUT replaces the entire
 resource with the request body, so any field not included in the
@@ -196,8 +197,7 @@ fetch and print it again after. If fields you did not include in the
 request body now show default or null values, PUT replaced the entire
 resource. Switch to PATCH and send only the fields you want to change.
 
-:::
-
+</details>
 ## Authenticate with an API using a secret key
 
 Run the script and read the output. In which part of the request does
@@ -205,7 +205,8 @@ the API key appear? What would a server log entry look like?
 
 {{< inc web/tokenurl.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is placing the API key in the URL query string. Query strings
 are recorded in server access logs, browser history, and any
@@ -219,8 +220,7 @@ query parameters. If the API key appears there (e.g., if
 `?api_key=secret` is in the query) it will be recorded in any server
 access log. Move it to an `Authorization` header instead.
 
-:::
-
+</details>
 ## Submit form data to an endpoint that redirects
 
 Run the script and read the output. What HTTP method reached the final
@@ -229,7 +229,8 @@ endpoint?  What happened to the request body that was sent to
 
 {{< inc web/postredirect.py >}}
 
-::: {.callout-note collapse="true" title="Show explanation"}
+<details>
+<summary>Show explanation</summary>
 
 The bug is following a 302 redirect from a POST request. HTTP
 convention changes the method from POST to GET when following a 302,
@@ -244,4 +245,4 @@ call. If the final method is `GET` but you sent a `POST`, the redirect
 changed the method. Print `r.request.body` to confirm the body was
 dropped.
 
-:::
+</details>
