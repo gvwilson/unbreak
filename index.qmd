@@ -1,5 +1,4 @@
----
----
+# {.unnumbered}
 
 A short course on debugging.
 All of the material is available under an open license,
