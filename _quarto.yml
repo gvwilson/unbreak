@@ -4,7 +4,6 @@ metadata-files:
 book:
   title: "Unbreaking Software"
   repo-url: "https://github.com/gvwilson/unbreak"
-  repo-actions: [edit, source, issue]
   chapters:
     - index.qmd
     - intro/index.qmd
