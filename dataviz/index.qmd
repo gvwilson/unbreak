@@ -2,7 +2,7 @@
 
 ## Compare candidate approval ratings
 
-![Candidate approval ratings with a truncated Y-axis.](truncated_axis.svg)
+![Candidate approval ratings with a truncated Y-axis.](truncated_axis.svg){fig-alt="bar chart, y-axis starts at 85"}
 
 Compare the visual height of candidate A's bar to candidate D's bar. How much larger
 does D appear? Now look at the actual numbers. How large is the real difference?
@@ -24,12 +24,12 @@ divide the visual height ratio of two bars by their actual data ratio. If the vi
 ratio is several times larger than the data ratio, the truncated axis is distorting
 the comparison.
 
-![The same data with the Y-axis starting at 0.](truncated_axis_fixed.svg)
+![The same data with the Y-axis starting at 0.](truncated_axis_fixed.svg){fig-alt="bar chart, y-axis starts at 0"}
 
 </details>
 ## Assess a product's long-term performance trend
 
-![Performance trend over the last 8 months.](cherry_pick.svg)
+![Performance trend over the last 8 months.](cherry_pick.svg){fig-alt="line chart of an 8-month uptrend"}
 
 The chart shows a clear upward trend over 8 months. What conclusion might you draw
 about this product's long-term trajectory? What information would you need to know
@@ -52,12 +52,12 @@ the earliest available data. If the start date coincides with a local minimum, e
 the chart to show the complete history. If only the selected window is available,
 that absence of context is itself a warning sign.
 
-![The full 60-month history.](cherry_pick_fixed.svg)
+![The full 60-month history.](cherry_pick_fixed.svg){fig-alt="line chart of the full 60 months"}
 
 </details>
 ## Interpret the relationship between coffee consumption and code commits
 
-![Coffee consumption vs code commits over 48 months.](spurious_correlation.svg)
+![Coffee consumption vs code commits over 48 months.](spurious_correlation.svg){fig-alt="scatter plot of coffee vs commits"}
 
 The scatter plot shows a strong positive relationship between monthly coffee
 consumption and code commits, with a tight regression line. What conclusion might
@@ -83,7 +83,7 @@ the apparent correlation is temporal ordering rather than a direct relationship.
 ask whether a plausible common cause — such as growth in team size — could explain
 both trends independently.
 
-![The same scatter with points colored by month. Early months are dark; late months are light.](spurious_correlation_fixed.svg)
+![The same scatter with points colored by month. Early months are dark; late months are light.](spurious_correlation_fixed.svg){fig-alt="scatter plot, points colored by month"}
 
 Early months cluster in the lower left and late months in the upper right — the
 apparent correlation is entirely temporal ordering.
@@ -91,7 +91,7 @@ apparent correlation is entirely temporal ordering.
 </details>
 ## Interpret the relationship between study hours and exam scores
 
-![Study hours vs exam score across all students.](simpsons_paradox.svg)
+![Study hours vs exam score across all students.](simpsons_paradox.svg){fig-alt="scatter plot with a downward slope"}
 
 The trend line shows that students who study more tend to score lower. Does that
 mean studying is counterproductive? What might explain the pattern?
@@ -115,12 +115,12 @@ might be driving the outcome—here, course difficulty. If the aggregate slope
 reverses within each group, the confound is real. List candidate confounds before
 looking at the data: any variable that plausibly affects both axes is worth testing.
 
-![The same data colored by difficulty, with a separate regression line for each group.](simpsons_paradox_fixed.svg)
+![The same data colored by difficulty, with a separate regression line for each group.](simpsons_paradox_fixed.svg){fig-alt="scatter plot with three upward slopes"}
 
 </details>
 ## Compare two groups by average score
 
-![Average score by group.](mean_hides_distribution.svg)
+![Average score by group.](mean_hides_distribution.svg){fig-alt="bar chart of two group means"}
 
 Both groups have nearly the same average score. Would you conclude they are
 performing similarly? What other chart type would you choose before drawing that
@@ -145,12 +145,12 @@ chart of the raw values. If the two groups look different in the distribution ch
 despite identical averages, or if one group shows two distinct clusters, the mean
 was suppressing the most important information in the data.
 
-![Individual scores for each group as a strip plot.](mean_hides_distribution_fixed.svg)
+![Individual scores for each group as a strip plot.](mean_hides_distribution_fixed.svg){fig-alt="strip plot of individual scores"}
 
 </details>
 ## Identify which city has the worst traffic safety record
 
-![Traffic accidents by city (raw counts).](absolute_vs_rate.svg)
+![Traffic accidents by city (raw counts).](absolute_vs_rate.svg){fig-alt="bar chart of raw accident counts"}
 
 Which city appears to have the most serious traffic safety problem? Now calculate
 accidents per 100,000 residents for each city using the figures below. Does the
@@ -179,12 +179,12 @@ normalizing, the raw counts were misleading. As a rule of thumb, if the groups
 differ in size by more than a factor of two, rates are almost always more
 informative than counts.
 
-![Traffic accidents per 100,000 residents by city.](absolute_vs_rate_fixed.svg)
+![Traffic accidents per 100,000 residents by city.](absolute_vs_rate_fixed.svg){fig-alt="bar chart of accident rates"}
 
 </details>
 ## Assess a product's user growth over the past year
 
-![Cumulative user signups over 52 weeks.](cumulative_hides_slowdown.svg)
+![Cumulative user signups over 52 weeks.](cumulative_hides_slowdown.svg){fig-alt="line chart of cumulative signups"}
 
 The total user count is rising steadily. Would you describe the product as growing?
 Now think about what the weekly rate of new signups looks like in the second half of
@@ -208,12 +208,12 @@ previous one to get weekly new additions) and plot that instead of the running t
 If the differences drop sharply while the cumulative line keeps rising, growth has
 stopped even though the total continues to climb.
 
-![Weekly new signups for the same period.](cumulative_hides_slowdown_fixed.svg)
+![Weekly new signups for the same period.](cumulative_hides_slowdown_fixed.svg){fig-alt="line chart of weekly signups"}
 
 </details>
 ## Read exam scores by hours studied for 600 students
 
-![Exam scores by hours studied (600 students).](discrete_overplot.svg)
+![Exam scores by hours studied (600 students).](discrete_overplot.svg){fig-alt="overplotted scatter of scores vs hours"}
 
 How many students appear to have studied for 4 hours and scored 65? How confident
 are you that each visible dot represents the same number of students?
@@ -236,12 +236,12 @@ scatter plot with a bubble chart where marker area encodes count. If the chart l
 dramatically different, e.g., dense clusters appearing where everything looked uniform
 before, then overplotting was hiding the true distribution.
 
-![The same data with bubble area proportional to number of students.](discrete_overplot_fixed.svg)
+![The same data with bubble area proportional to number of students.](discrete_overplot_fixed.svg){fig-alt="bubble chart sized by count"}
 
 </details>
 ## Rank seven categories by market share
 
-![Market share by category.](pie_chart.svg)
+![Market share by category.](pie_chart.svg){fig-alt="pie chart with seven slices"}
 
 Without reading the exact percentages, rank the seven categories from largest to
 smallest share. How confident are you in your ranking? Which pairs of adjacent
@@ -265,12 +265,12 @@ cannot confidently order the middle categories, replace the pie with a bar chart
 sorted by value and compare how long the ranking takes. The bar chart should be
 almost instantaneous.
 
-![The same data as a sorted horizontal bar chart.](pie_chart_fixed.svg)
+![The same data as a sorted horizontal bar chart.](pie_chart_fixed.svg){fig-alt="sorted horizontal bar chart"}
 
 </details>
 ## Predict individual student scores from district income data
 
-![District average income vs average test score (20 districts).](group_vs_individual.svg)
+![District average income vs average test score (20 districts).](group_vs_individual.svg){fig-alt="scatter of district averages"}
 
 The chart shows that school districts with higher average household income have higher
 average test scores, with a tight regression line. Would you expect to be able to
@@ -301,7 +301,7 @@ overstating predictive power for individuals. The gap between the two values is 
 proportion of individual variance that lies within groups and is invisible in the
 aggregate chart.
 
-![Individual student scores plotted at their district's average income level.](group_vs_individual_fixed.svg)
+![Individual student scores plotted at their district's average income level.](group_vs_individual_fixed.svg){fig-alt="scatter of individual students"}
 
 The upward trend is still present but the scatter is so wide that knowing a student's
 district tells you little about that student's score.
